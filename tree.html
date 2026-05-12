@@ -40,6 +40,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-family: system-ui
 .tree-node { cursor: pointer; }
 .tree-node.is-center { cursor: default; }
 .tree-node circle { fill: #1a1a1a; }
+.tree-node.is-stub circle { fill: #fff; stroke: #1a1a1a; stroke-width: 1.5; }
 .tree-node:not(.is-center):hover circle { stroke: #555; stroke-width: 2.5; }
 
 text.lbl {
@@ -89,7 +90,7 @@ text.lbl {
 @media (max-width: 768px) {
   html, body { height: auto; overflow: auto; }
   #split { flex-direction: column; height: auto; }
-  #tree-panel { flex: none; width: 100%; height: 100vh; min-width: 0; }
+  #tree-panel { flex: none; width: 100%; height: 100vh; min-width: 0; transition: height 950ms ease-in-out; }
   #app-panel { flex: none; overflow-y: visible; height: auto; border-top: 0.5px solid #eee; }
   .app-content { margin: 24px auto; padding: 0 16px 60px; }
 }
@@ -227,6 +228,30 @@ function navigateTo(targetId, animate = true) {
   const delayIn = animate ? Math.round(dur * 0.42) : 0;
   const t       = d3.transition().duration(dur).ease(d3.easeCubicInOut);
 
+  // ── Mobile: resize panel to fit this concept's tree exactly ──
+  if (window.innerWidth <= 768) {
+    let minY = Infinity, maxY = -Infinity;
+    for (const n of layout.nodes) {
+      minY = Math.min(minY, n.y - n.r);
+      maxY = Math.max(maxY, n.y + n.r + LBL_DY);
+    }
+    const PAD_TOP = 72, PAD_BOT = 40;
+    const newH  = Math.ceil(maxY - minY + PAD_TOP + PAD_BOT);
+    const newTY = Math.round(-minY + PAD_TOP);
+    if (!animate) {
+      treePanel.style.transition = 'none';
+      treePanel.getBoundingClientRect();
+    }
+    treePanel.style.height = newH + 'px';
+    svg.attr('height', newH);
+    if (animate) {
+      root.transition(t).attr('transform', `translate(${TW / 2},${newTY})`);
+    } else {
+      root.attr('transform', `translate(${TW / 2},${newTY})`);
+      requestAnimationFrame(() => { treePanel.style.transition = ''; });
+    }
+  }
+
   // ── Edges ──
   edgeLayer.selectAll('line.tree-edge').data(layout.links, d => d.key).join(
     enter => enter.append('line').attr('class', 'tree-edge')
@@ -245,7 +270,10 @@ function navigateTo(targetId, animate = true) {
   nodeLayer.selectAll('g.tree-node').data(layout.nodes, d => d.id).join(
     enter => {
       const g = enter.append('g')
-        .attr('class', d => `tree-node${d.role === 'center' ? ' is-center' : ''}`)
+        .attr('class', d => {
+        const stub = !isFullConcept(conceptIndex[d.id]);
+        return `tree-node${d.role === 'center' ? ' is-center' : ''}${stub ? ' is-stub' : ''}`;
+      })
         .attr('transform', d => `translate(${d.x},${d.y})`)
         .style('opacity', 0)
         .on('click', (_ev, d) => { if (d.role !== 'center') navigateTo(d.id); });
@@ -258,7 +286,10 @@ function navigateTo(targetId, animate = true) {
       return g;
     },
     update => {
-      update.attr('class', d => `tree-node${d.role === 'center' ? ' is-center' : ''}`)
+      update.attr('class', d => {
+        const stub = !isFullConcept(conceptIndex[d.id]);
+        return `tree-node${d.role === 'center' ? ' is-center' : ''}${stub ? ' is-stub' : ''}`;
+      })
         .on('click', (_ev, d) => { if (d.role !== 'center') navigateTo(d.id); });
       update.select('circle').transition(t).attr('r', d => d.r);
       update.select('text.lbl')
