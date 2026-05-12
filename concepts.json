@@ -1,0 +1,1814 @@
+{
+  "concepts": [
+    {
+      "id": "ideal",
+      "title": "Ideal",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Ringe und Ideale",
+      "inline": "Ein Ideal \\(\\mathfrak{a}\\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist eine <span class=\"t\" data-ref=\"untergruppe\">Untergruppe</span> der additiven Gruppe von \\(R\\), die unter Multiplikation mit beliebigen Ringelementen abgeschlossen ist. Ideale sind genau die Kerne von <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismen</span> und ermöglichen die Bildung des <span class=\"t\" data-ref=\"quotientenring\">Quotientenrings</span> \\(R/\\mathfrak{a}\\).",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "untergruppe",
+          "type": "required"
+        },
+        {
+          "id": "ringhomomorphismus",
+          "type": "required"
+        },
+        {
+          "id": "quotientenring",
+          "type": "required"
+        },
+        {
+          "id": "untermodul",
+          "type": "required"
+        },
+        {
+          "id": "aequivalenzrelation",
+          "type": "required"
+        },
+        {
+          "id": "universelle-eigenschaft",
+          "type": "required"
+        },
+        {
+          "id": "kanonischer-isomorphismus",
+          "type": "required"
+        },
+        {
+          "id": "normalteiler",
+          "type": "enriches"
+        },
+        {
+          "id": "lokalisierung",
+          "type": "enriches"
+        },
+        {
+          "id": "spektrum-eines-rings",
+          "type": "enriches"
+        },
+        {
+          "id": "primaerzerlegung",
+          "type": "enriches"
+        },
+        {
+          "id": "modultheorie",
+          "type": "enriches"
+        },
+        {
+          "id": "varietaet",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "In der Theorie kommutativer Ringe übernehmen Ideale die Rolle, die <span class=\"t\" data-ref=\"normalteiler\">Normalteiler</span> in der Gruppentheorie spielen: Sie sind genau jene Teilmengen, nach denen man konsistent Quotienten bilden kann. Sie kodieren Teilbarkeits- und Lösbarkeitsbedingungen (etwa das Verschwinden von Polynomen auf einer <span class=\"t\" data-ref=\"varietaet\">Varietät</span>) und bilden den Grundbaustein für nahezu alle Konstruktionen der kommutativen Algebra: <span class=\"t\" data-ref=\"lokalisierung\">Lokalisierung</span>, <span class=\"t\" data-ref=\"spektrum-eines-rings\">Spektrum</span>, <span class=\"t\" data-ref=\"primaerzerlegung\">Primärzerlegung</span>, <span class=\"t\" data-ref=\"modultheorie\">Modultheorie</span>. Ohne den Begriff des Ideals lässt sich weder die Struktur eines Rings analysieren noch eine sinnvolle Geometrie auf \\(\\mathrm{Spec}(R)\\) etablieren."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring mit Eins. Eine Teilmenge \\(\\mathfrak{a} \\subseteq R\\) heißt Ideal, falls gilt: (i) \\(0 \\in \\mathfrak{a}\\); (ii) für alle \\(a,b \\in \\mathfrak{a}\\) ist \\(a + b \\in \\mathfrak{a}\\); (iii) für alle \\(r \\in R\\) und \\(a \\in \\mathfrak{a}\\) ist \\(r a \\in \\mathfrak{a}\\). Äquivalent: \\(\\mathfrak{a}\\) ist ein \\(R\\)-<span class=\"t\" data-ref=\"untermodul\">Untermodul</span> von \\(R\\). Ein Ideal \\(\\mathfrak{a}\\) heißt echt, falls \\(\\mathfrak{a} \\neq R\\); dies ist gleichbedeutend mit \\(1 \\notin \\mathfrak{a}\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Eine Teilmenge \\(\\mathfrak{a} \\subseteq R\\) ist genau dann ein Ideal, wenn es einen Ringhomomorphismus \\(\\varphi: R \\to S\\) mit \\(\\mathfrak{a} = \\ker(\\varphi)\\) gibt. In diesem Fall existiert ein eindeutiger Quotientenring \\(R/\\mathfrak{a}\\) zusammen mit der kanonischen Projektion \\(\\pi: R \\to R/\\mathfrak{a}\\), deren Kern gerade \\(\\mathfrak{a}\\) ist."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Ist \\(\\varphi: R \\to S\\) ein Ringhomomorphismus, so ist \\(\\ker(\\varphi)\\) eine additive <span class=\"t\" data-ref=\"untergruppe\">Untergruppe</span>; für \\(r \\in R\\) und \\(a \\in \\ker(\\varphi)\\) gilt \\(\\varphi(ra) = \\varphi(r)\\varphi(a) = \\varphi(r)\\cdot 0 = 0\\), also \\(ra \\in \\ker(\\varphi)\\). Somit ist \\(\\ker(\\varphi)\\) ein Ideal.",
+              "Sei umgekehrt \\(\\mathfrak{a}\\) ein Ideal. Definiere auf \\(R\\) die Relation \\(a \\sim b :\\Leftrightarrow a - b \\in \\mathfrak{a}\\); aus den Idealaxiomen folgt, dass dies eine Äquivalenzrelation ist, die mit Addition und Multiplikation verträglich ist.",
+              "Auf der Menge \\(R/\\mathfrak{a}\\) der Äquivalenzklassen \\([a] = a + \\mathfrak{a}\\) erklärt man \\([a]+[b] := [a+b]\\) und \\([a]\\cdot[b] := [ab]\\). Diese Operationen sind wohldefiniert, da \\(\\mathfrak{a}\\) unter Addition und Multiplikation mit Ringelementen abgeschlossen ist.",
+              "Mit dieser Struktur wird \\(R/\\mathfrak{a}\\) ein kommutativer Ring mit Einselement \\([1]\\), und die Abbildung \\(\\pi: R \\to R/\\mathfrak{a}\\), \\(a \\mapsto [a]\\), ist ein surjektiver Ringhomomorphismus mit \\(\\ker(\\pi) = \\mathfrak{a}\\).",
+              "Die <span class=\"t\" data-ref=\"universelle-eigenschaft\">universelle Eigenschaft</span> (jeder Ringhomomorphismus \\(\\varphi: R \\to S\\) mit \\(\\mathfrak{a} \\subseteq \\ker(\\varphi)\\) faktorisiert eindeutig über \\(\\pi\\)) liefert die Eindeutigkeit des <span class=\"t\" data-ref=\"quotientenring\">Quotientenrings</span> bis auf <span class=\"t\" data-ref=\"kanonischer-isomorphismus\">kanonischen Isomorphismus</span>."
+            ]
+          }
+        ],
+        "related": []
+      }
+    },
+    {
+      "id": "kommutativer-ring",
+      "title": "Kommutativer Ring",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Grundbegriffe",
+      "inline": "Ein kommutativer Ring ist eine Menge \\(R\\) mit zwei Verknüpfungen \\(+\\) und \\(\\cdot\\), so dass \\((R,+)\\) eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span> ist, \\((R,\\cdot)\\) ein <span class=\"t\" data-ref=\"monoid\">kommutatives Monoid</span> mit Einselement \\(1\\) und das <span class=\"t\" data-ref=\"distributivgesetz\">Distributivgesetz</span> gilt. Kommutative Ringe bilden den zentralen Studiengegenstand der kommutativen Algebra.",
+      "refs": [
+        {
+          "id": "abelsche-gruppe",
+          "type": "required"
+        },
+        {
+          "id": "monoid",
+          "type": "required"
+        },
+        {
+          "id": "distributivgesetz",
+          "type": "required"
+        },
+        {
+          "id": "polynomring",
+          "type": "enriches"
+        },
+        {
+          "id": "ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "modultheorie",
+          "type": "enriches"
+        },
+        {
+          "id": "spektrum-eines-rings",
+          "type": "enriches"
+        },
+        {
+          "id": "quotientenring",
+          "type": "enriches"
+        },
+        {
+          "id": "koerper",
+          "type": "enriches"
+        },
+        {
+          "id": "nullring",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Die kommutative Algebra untersucht Lösungsräume polynomialer Gleichungen und algebraische Strukturen wie Zahlbereiche. Beide Welten — Geometrie über <span class=\"t\" data-ref=\"polynomring\">Polynomringen</span> \\(k[x_1,\\dots,x_n]\\) und Arithmetik über \\(\\mathbb{Z}\\) — werden durch die einheitliche Sprache des kommutativen Rings erfasst. Der Ringbegriff liefert das axiomatische Fundament, auf dem Ideale, <span class=\"t\" data-ref=\"modultheorie\">Moduln</span>, <span class=\"t\" data-ref=\"spektrum-eines-rings\">Spektren</span> und alle weiteren Konzepte aufbauen."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Ein kommutativer Ring ist ein Tripel \\((R,+,\\cdot)\\) bestehend aus einer Menge \\(R\\) und zwei binären Operationen mit folgenden Eigenschaften: (i) \\((R,+)\\) ist eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span> mit neutralem Element \\(0\\); (ii) die Multiplikation \\(\\cdot\\) ist assoziativ und kommutativ und besitzt ein neutrales Element \\(1 \\in R\\); (iii) für alle \\(a,b,c \\in R\\) gilt das <span class=\"t\" data-ref=\"distributivgesetz\">Distributivgesetz</span> \\(a\\cdot(b+c) = a\\cdot b + a\\cdot c\\). In diesem Skript bezeichnet das Wort \"Ring\" stets einen kommutativen Ring mit Eins."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Standardbeispiele kommutativer Ringe: (a) der Ring \\(\\mathbb{Z}\\) der ganzen Zahlen; (b) jeder <span class=\"t\" data-ref=\"koerper\">Körper</span> \\(k\\); (c) der Polynomring \\(R[x_1,\\dots,x_n]\\) über einem Ring \\(R\\); (d) der <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> \\(R/\\mathfrak{a}\\) nach einem <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{a} \\subseteq R\\); (e) der <span class=\"t\" data-ref=\"nullring\">Nullring</span> \\(\\{0\\}\\), in dem \\(0 = 1\\)."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Zu (a): \\(\\mathbb{Z}\\) mit gewöhnlicher Addition und Multiplikation erfüllt offenbar alle Axiome.",
+              "Zu (b): Ein <span class=\"t\" data-ref=\"koerper\">Körper</span> ist per Definition ein kommutativer Ring, in dem zusätzlich jedes \\(a \\neq 0\\) ein multiplikatives Inverses besitzt.",
+              "Zu (c): Polynome werden komponentenweise addiert und durch Faltung der Koeffizienten multipliziert; die Ringaxiome übertragen sich von \\(R\\).",
+              "Zu (d): Auf \\(R/\\mathfrak{a}\\) sind \\((a+\\mathfrak{a})+(b+\\mathfrak{a}) := (a+b)+\\mathfrak{a}\\) und \\((a+\\mathfrak{a})\\cdot(b+\\mathfrak{a}) := ab+\\mathfrak{a}\\) wohldefiniert, da \\(\\mathfrak{a}\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> ist.",
+              "Zu (e): Im <span class=\"t\" data-ref=\"nullring\">Nullring</span> stimmt das additive mit dem multiplikativen Neutralelement überein; die Axiome sind trivial erfüllt."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "lokalisierung",
+            "type": "see-also"
+          },
+          {
+            "id": "ringhomomorphismus",
+            "type": "see-also"
+          },
+          {
+            "id": "varietaet",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "untergruppe",
+      "title": "Untergruppe",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine Untergruppe ist eine Teilmenge einer Gruppe, die selbst unter der Gruppenoperation eine Gruppe bildet.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "ringhomomorphismus",
+      "title": "Ringhomomorphismus",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Grundbegriffe",
+      "inline": "Ein Ringhomomorphismus ist eine Abbildung \\( \\varphi\\colon R \\to R' \\) zwischen <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ringen</span>, die Addition, Multiplikation und das Einselement respektiert. Solche Abbildungen sind die strukturerhaltenden Morphismen der Kategorie der Ringe.",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "abelsche-gruppe",
+          "type": "required"
+        },
+        {
+          "id": "untergruppe",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "kanonischer-isomorphismus",
+          "type": "enriches"
+        },
+        {
+          "id": "quotientenring",
+          "type": "enriches"
+        },
+        {
+          "id": "polynomring",
+          "type": "enriches"
+        },
+        {
+          "id": "lokalisierung",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Um Ringe systematisch zu vergleichen, braucht man Abbildungen, die ihre algebraische Struktur erhalten. Ringhomomorphismen erlauben es, Ringe ineinander einzubetten, <span class=\"t\" data-ref=\"quotientenring\">Quotienten</span> zu bilden und universelle Konstruktionen wie <span class=\"t\" data-ref=\"polynomring\">Polynomringe</span>, <span class=\"t\" data-ref=\"lokalisierung\">Lokalisierungen</span> und Tensorprodukte präzise zu formulieren. Sie sind das Fundament für die Kategorie der kommutativen Ringe und damit für die gesamte algebraische Geometrie und kommutative Algebra."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Seien \\( R \\) und \\( R' \\) kommutative Ringe. Eine Abbildung \\( \\varphi\\colon R \\to R' \\) heißt Ringhomomorphismus, falls für alle \\( a, b \\in R \\) gilt: \\[ \\varphi(a+b) = \\varphi(a) + \\varphi(b), \\qquad \\varphi(a\\cdot b) = \\varphi(a)\\cdot \\varphi(b), \\qquad \\varphi(1_R) = 1_{R'}. \\] Ein bijektiver Ringhomomorphismus heißt Isomorphismus. Der Kern ist \\( \\ker(\\varphi) := \\{a \\in R \\mid \\varphi(a) = 0\\} \\), das Bild ist \\( \\operatorname{im}(\\varphi) := \\varphi(R) \\). Eine \\( R \\)-Algebra ist ein Ringhomomorphismus \\( R \\to R' \\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Sei \\( \\varphi\\colon R \\to R' \\) ein Ringhomomorphismus. Dann ist \\( \\ker(\\varphi) \\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> von \\( R \\), \\( \\operatorname{im}(\\varphi) \\) ein Unterring von \\( R' \\), und \\( \\varphi \\) induziert einen <span class=\"t\" data-ref=\"kanonischer-isomorphismus\">kanonischen Isomorphismus</span> \\[ \\bar{\\varphi}\\colon R/\\ker(\\varphi) \\xrightarrow{\\sim} \\operatorname{im}(\\varphi). \\]"
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Da \\( \\varphi \\) ein Homomorphismus <span class=\"t\" data-ref=\"abelsche-gruppe\">abelscher Gruppen</span> bezüglich der Addition ist, ist \\( \\ker(\\varphi) \\) eine <span class=\"t\" data-ref=\"untergruppe\">Untergruppe</span> von \\( (R,+) \\).",
+              "Für \\( a \\in \\ker(\\varphi) \\) und \\( r \\in R \\) gilt \\( \\varphi(ra) = \\varphi(r)\\varphi(a) = \\varphi(r)\\cdot 0 = 0 \\), also \\( ra \\in \\ker(\\varphi) \\). Damit ist \\( \\ker(\\varphi) \\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>.",
+              "Das Bild \\( \\operatorname{im}(\\varphi) \\) ist abgeschlossen unter Addition und Multiplikation, da \\( \\varphi \\) diese Operationen respektiert, und enthält \\( 1_{R'} = \\varphi(1_R) \\); also ein Unterring.",
+              "Definiere \\( \\bar{\\varphi}\\colon R/\\ker(\\varphi) \\to \\operatorname{im}(\\varphi) \\) durch \\( \\bar{\\varphi}(a + \\ker(\\varphi)) := \\varphi(a) \\). Diese Abbildung ist wohldefiniert, denn aus \\( a - b \\in \\ker(\\varphi) \\) folgt \\( \\varphi(a) = \\varphi(b) \\).",
+              "Per Konstruktion ist \\( \\bar{\\varphi} \\) ein surjektiver Ringhomomorphismus. Injektivität: \\( \\bar{\\varphi}(a + \\ker(\\varphi)) = 0 \\) bedeutet \\( a \\in \\ker(\\varphi) \\), also \\( a + \\ker(\\varphi) = 0 \\). Damit ist \\( \\bar{\\varphi} \\) ein Isomorphismus."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "universelle-eigenschaft",
+            "type": "see-also"
+          },
+          {
+            "id": "spektrum-eines-rings",
+            "type": "see-also"
+          },
+          {
+            "id": "koerper",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "id": "quotientenring",
+      "title": "Quotientenring",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Ringkonstruktionen",
+      "inline": "Der Quotientenring \\(R/\\mathfrak{a}\\) entsteht, indem man im <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) modulo eines <span class=\"t\" data-ref=\"ideal\">Ideals</span> \\(\\mathfrak{a}\\) rechnet. Seine Elemente sind die Nebenklassen \\(r+\\mathfrak{a}\\), und Addition und Multiplikation werden repräsentantenweise erklärt.",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "aequivalenzrelation",
+          "type": "enriches"
+        },
+        {
+          "id": "ringhomomorphismus",
+          "type": "required"
+        },
+        {
+          "id": "universelle-eigenschaft",
+          "type": "enriches"
+        },
+        {
+          "id": "homomorphiesatz",
+          "type": "enriches"
+        },
+        {
+          "id": "faktorgruppe",
+          "type": "enriches"
+        },
+        {
+          "id": "varietaet",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Quotientenringe sind das algebraische Werkzeug, um Relationen in einen Ring einzuführen: möchte man gewisse Elemente zu Null erklären, so faktorisiert man nach dem von ihnen erzeugten Ideal. Sie liefern systematisch neue Ringe (etwa \\(\\mathbb{Z}/n\\mathbb{Z}\\) oder \\(k[x]/(f)\\)) und sind das ringtheoretische Analogon zu <span class=\"t\" data-ref=\"faktorgruppe\">Faktorgruppen</span>. Zudem charakterisieren sie surjektive <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismen</span> vermöge des <span class=\"t\" data-ref=\"homomorphiesatz\">Homomorphiesatzes</span> und beschreiben algebraisch das Verschwinden auf abgeschlossenen Teilmengen einer <span class=\"t\" data-ref=\"varietaet\">Varietät</span>."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring und \\(\\mathfrak{a}\\subseteq R\\) ein Ideal. Auf \\(R\\) definiere die <span class=\"t\" data-ref=\"aequivalenzrelation\">Äquivalenzrelation</span> \\(r\\sim s :\\Longleftrightarrow r-s\\in\\mathfrak{a}\\). Die Menge der Äquivalenzklassen \\(R/\\mathfrak{a}=\\{r+\\mathfrak{a}\\mid r\\in R\\}\\) wird durch \\[(r+\\mathfrak{a})+(s+\\mathfrak{a}):=(r+s)+\\mathfrak{a},\\qquad (r+\\mathfrak{a})\\cdot(s+\\mathfrak{a}):=(rs)+\\mathfrak{a}\\] zu einem <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span>, dem Quotientenring von \\(R\\) modulo \\(\\mathfrak{a}\\). Die kanonische Abbildung \\(\\pi\\colon R\\to R/\\mathfrak{a},\\ r\\mapsto r+\\mathfrak{a}\\), ist ein surjektiver Ringhomomorphismus mit Kern \\(\\mathfrak{a}\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "<span class=\"t\" data-ref=\"universelle-eigenschaft\">Universelle Eigenschaft</span>: Ist \\(\\varphi\\colon R\\to S\\) ein Ringhomomorphismus mit \\(\\mathfrak{a}\\subseteq\\ker\\varphi\\), so existiert genau ein Ringhomomorphismus \\(\\bar\\varphi\\colon R/\\mathfrak{a}\\to S\\) mit \\(\\bar\\varphi\\circ\\pi=\\varphi\\). Insbesondere induziert jeder surjektive Ringhomomorphismus \\(\\varphi\\colon R\\to S\\) einen Isomorphismus \\(R/\\ker\\varphi\\xrightarrow{\\sim} S\\) (Homomorphiesatz)."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Wohldefiniertheit der Verknüpfungen: Sind \\(r\\equiv r'\\) und \\(s\\equiv s'\\) modulo \\(\\mathfrak{a}\\), also \\(r-r',s-s'\\in\\mathfrak{a}\\), so ist \\((r+s)-(r'+s')=(r-r')+(s-s')\\in\\mathfrak{a}\\) und \\(rs-r's'=(r-r')s+r'(s-s')\\in\\mathfrak{a}\\), da \\(\\mathfrak{a}\\) ein Ideal ist. Damit hängen Summe und Produkt nicht von den Repräsentanten ab.",
+              "Ringaxiome: Assoziativität, Kommutativität, Distributivität sowie die Existenz der Eins \\(1+\\mathfrak{a}\\) und der Negativen \\(-r+\\mathfrak{a}\\) folgen unmittelbar aus den entsprechenden Eigenschaften in \\(R\\), da alle Identitäten repräsentantenweise erfüllt sind.",
+              "Die Abbildung \\(\\pi\\) ist nach Konstruktion additiv und multiplikativ und erfüllt \\(\\pi(1)=1+\\mathfrak{a}\\); ihr Kern ist \\(\\{r\\in R\\mid r+\\mathfrak{a}=0+\\mathfrak{a}\\}=\\mathfrak{a}\\), und sie ist surjektiv.",
+              "<span class=\"t\" data-ref=\"universelle-eigenschaft\">Universelle Eigenschaft</span>: Definiere \\(\\bar\\varphi(r+\\mathfrak{a}):=\\varphi(r)\\). Aus \\(r-r'\\in\\mathfrak{a}\\subseteq\\ker\\varphi\\) folgt \\(\\varphi(r)=\\varphi(r')\\), also ist \\(\\bar\\varphi\\) wohldefiniert. Die Homomorphie überträgt sich aus jener von \\(\\varphi\\), und die Gleichung \\(\\bar\\varphi\\circ\\pi=\\varphi\\) erzwingt die Eindeutigkeit, da \\(\\pi\\) surjektiv ist.",
+              "Homomorphiesatz: Für surjektives \\(\\varphi\\) liefert \\(\\bar\\varphi\\) eine surjektive Abbildung; aus \\(\\bar\\varphi(r+\\mathfrak{a})=0\\) folgt \\(r\\in\\ker\\varphi=\\mathfrak{a}\\), also ist \\(\\bar\\varphi\\) injektiv und somit ein Isomorphismus \\(R/\\ker\\varphi\\xrightarrow{\\sim}S\\)."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "hauptideal",
+            "type": "see-also"
+          },
+          {
+            "id": "lokalisierung",
+            "type": "see-also"
+          },
+          {
+            "id": "spektrum-eines-rings",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "normalteiler",
+      "title": "Normalteiler",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Normalteiler ist eine Untergruppe, die unter Konjugation invariant ist und nach der Quotientengruppen gebildet werden können.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "lokalisierung",
+      "title": "Lokalisierung",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Die Lokalisierung eines Rings an einer multiplikativ abgeschlossenen Menge invertiert formal deren Elemente.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "spektrum-eines-rings",
+      "title": "Spektrum",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Das Spektrum \\(\\mathrm{Spec}(R)\\) eines Rings ist die Menge seiner Primideale, ausgestattet mit der Zariski-Topologie.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "primaerzerlegung",
+      "title": "Primärzerlegung",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine Primärzerlegung stellt ein Ideal als Durchschnitt primärer Ideale dar.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "modultheorie",
+      "title": "Modultheorie",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Die Modultheorie untersucht Moduln über Ringen als Verallgemeinerung von Vektorräumen.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "untermodul",
+      "title": "Untermodul",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Untermodul ist eine unter Addition und Skalarmultiplikation abgeschlossene Teilmenge eines Moduls.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "aequivalenzrelation",
+      "title": "Äquivalenzrelation",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine Äquivalenzrelation ist eine reflexive, symmetrische und transitive Relation auf einer Menge.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "universelle-eigenschaft",
+      "title": "universelle Eigenschaft",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine universelle Eigenschaft charakterisiert ein Objekt durch eine eindeutige Faktorisierung von Morphismen.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "kanonischer-isomorphismus",
+      "title": "kanonischen Isomorphismus",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein kanonischer Isomorphismus ist ein durch die universelle Eigenschaft eindeutig bestimmter Isomorphismus.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "varietaet",
+      "title": "Varietät",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine Varietät ist die Nullstellenmenge eines Systems von Polynomen.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "abelsche-gruppe",
+      "title": "abelsche Gruppe",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine abelsche Gruppe ist eine Gruppe \\((G,+)\\), in der die Verknüpfung kommutativ ist.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "monoid",
+      "title": "kommutatives Monoid",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Monoid ist eine Menge mit einer assoziativen Verknüpfung und einem neutralen Element; es heißt kommutativ, wenn die Verknüpfung kommutativ ist.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "distributivgesetz",
+      "title": "Distributivgesetz",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Das Distributivgesetz besagt \\(a\\cdot(b+c) = a\\cdot b + a\\cdot c\\) für alle Elemente eines Rings.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "polynomring",
+      "title": "Polynomringen",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Der Polynomring \\(R[x_1,\\dots,x_n]\\) über einem Ring \\(R\\) ist der Ring aller Polynome in den Variablen \\(x_1,\\dots,x_n\\) mit Koeffizienten in \\(R\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "koerper",
+      "title": "Körper",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Körper ist ein kommutativer Ring, in dem jedes Element \\(a \\neq 0\\) ein multiplikatives Inverses besitzt.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "nullring",
+      "title": "Nullring",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Der Nullring ist der Ring \\(\\{0\\}\\), in dem \\(0 = 1\\) gilt.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "hauptideal",
+      "title": "Hauptideal",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Hauptideal ist ein Ideal der Form \\(\\langle a \\rangle = aR\\), das von einem einzelnen Element \\(a \\in R\\) erzeugt wird.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "homomorphiesatz",
+      "title": "Homomorphiesatzes",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Der Homomorphiesatz besagt, dass jeder Ringhomomorphismus \\(\\varphi\\colon R\\to S\\) einen Isomorphismus \\(R/\\ker\\varphi\\xrightarrow{\\sim}\\operatorname{im}\\varphi\\) induziert.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "faktorgruppe",
+      "title": "Faktorgruppen",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine Faktorgruppe ist die Gruppe der Nebenklassen \\(G/N\\) einer Gruppe \\(G\\) modulo eines Normalteilers \\(N\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "nullteiler",
+      "title": "Nullteiler",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Ringtheorie",
+      "inline": "Ein Nullteiler in einem <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) ist ein Element \\(a \\in R\\), für das ein \\(b \\neq 0\\) mit \\(ab = 0\\) existiert. Nullteiler messen die Abweichung von \\(R\\) von einem <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>.",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "nullring",
+          "type": "required"
+        },
+        {
+          "id": "integritaetsbereich",
+          "type": "required"
+        },
+        {
+          "id": "koerper",
+          "type": "enriches"
+        },
+        {
+          "id": "lokalisierung",
+          "type": "enriches"
+        },
+        {
+          "id": "primideal",
+          "type": "enriches"
+        },
+        {
+          "id": "primaerzerlegung",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "In <span class=\"t\" data-ref=\"koerper\">Körpern</span> und Integritätsbereichen folgt aus \\(ab = 0\\) stets \\(a = 0\\) oder \\(b = 0\\) — diese Kürzungseigenschaft ist fundamental für lineare Algebra und Polynomarithmetik. In allgemeinen kommutativen Ringen wie \\(\\mathbb{Z}/6\\mathbb{Z}\\) oder Produktringen \\(R \\times S\\) versagt diese Eigenschaft. Der Begriff des Nullteilers fasst genau die Elemente, die diese Pathologie verursachen, und ist Ausgangspunkt für zentrale Konzepte wie <span class=\"t\" data-ref=\"lokalisierung\">Lokalisierung</span> an der Menge der Nichtnullteiler, assoziierte <span class=\"t\" data-ref=\"primideal\">Primideale</span> und <span class=\"t\" data-ref=\"primaerzerlegung\">Primärzerlegung</span>."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring. Ein Element \\(a \\in R\\) heißt Nullteiler, falls es ein \\(b \\in R\\) mit \\(b \\neq 0\\) und \\(ab = 0\\) gibt. Andernfalls heißt \\(a\\) Nichtnullteiler (oder regulär). Insbesondere ist \\(0\\) im <span class=\"t\" data-ref=\"nullring\">Nullring</span> der einzige Nichtnullteiler nicht; im <span class=\"t\" data-ref=\"nullring\">Nullring</span> \\(R = 0\\) gibt es keine Nullteiler, da kein \\(b \\neq 0\\) existiert. Ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span> ist ein vom <span class=\"t\" data-ref=\"nullring\">Nullring</span> verschiedener kommutativer Ring, in dem \\(0\\) der einzige Nullteiler ist."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Sei \\(R\\) ein kommutativer Ring und \\(a \\in R\\) ein Nichtnullteiler. Dann gilt die Kürzungsregel: Aus \\(ax = ay\\) für \\(x, y \\in R\\) folgt \\(x = y\\). Insbesondere ist die Multiplikationsabbildung \\(\\mu_a \\colon R \\to R,\\ r \\mapsto ar\\) injektiv."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Aus \\(ax = ay\\) folgt durch Subtraktion \\(a(x - y) = 0\\).",
+              "Da \\(a\\) ein Nichtnullteiler ist, gilt nach Definition: aus \\(a \\cdot c = 0\\) folgt \\(c = 0\\). Setze \\(c := x - y\\).",
+              "Es folgt \\(x - y = 0\\), also \\(x = y\\).",
+              "Die Abbildung \\(\\mu_a\\) ist somit injektiv: \\(\\mu_a(x) = \\mu_a(y)\\) impliziert \\(x = y\\)."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "spektrum-eines-rings",
+            "type": "see-also"
+          },
+          {
+            "id": "polynomring",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "integritaetsbereich",
+      "title": "Integritätsbereich",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Integritätsbereich ist ein vom Nullring verschiedener kommutativer Ring, in dem aus \\(ab=0\\) stets \\(a=0\\) oder \\(b=0\\) folgt.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "primideal",
+      "title": "Primideal",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Spezielle Ideale",
+      "inline": "Ein Primideal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist ein echtes <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{p} \\subsetneq R\\), so dass aus \\(ab \\in \\mathfrak{p}\\) stets \\(a \\in \\mathfrak{p}\\) oder \\(b \\in \\mathfrak{p}\\) folgt. Äquivalent ist der <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> \\(R/\\mathfrak{p}\\) ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>.",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "quotientenring",
+          "type": "required"
+        },
+        {
+          "id": "integritaetsbereich",
+          "type": "required"
+        },
+        {
+          "id": "spektrum-eines-rings",
+          "type": "required"
+        },
+        {
+          "id": "maximales-ideal",
+          "type": "required"
+        },
+        {
+          "id": "koerper",
+          "type": "required"
+        },
+        {
+          "id": "nullring",
+          "type": "required"
+        },
+        {
+          "id": "multiplikativ-abgeschlossene-menge",
+          "type": "required"
+        },
+        {
+          "id": "primzahl",
+          "type": "enriches"
+        },
+        {
+          "id": "hauptideal",
+          "type": "enriches"
+        },
+        {
+          "id": "lokalisierung",
+          "type": "enriches"
+        },
+        {
+          "id": "nullideal",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Primideale verallgemeinern den Begriff der <span class=\"t\" data-ref=\"primzahl\">Primzahl</span> von \\(\\mathbb{Z}\\) auf beliebige kommutative Ringe: in \\(\\mathbb{Z}\\) sind die Primideale genau die <span class=\"t\" data-ref=\"hauptideal\">Hauptideale</span> \\((p)\\) zu Primzahlen \\(p\\) sowie das <span class=\"t\" data-ref=\"nullideal\">Nullideal</span>. Sie bilden das fundamentale geometrische Objekt der kommutativen Algebra, da sie die Punkte des <span class=\"t\" data-ref=\"spektrum-eines-rings\">Spektrums</span> \\(\\operatorname{Spec}(R)\\) parametrisieren und somit eine Brücke zwischen Algebra und Geometrie schlagen. Faktorisierung, <span class=\"t\" data-ref=\"lokalisierung\">Lokalisierung</span> und Dimensionstheorie hängen wesentlich von Primidealen ab."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring. Ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{p} \\subseteq R\\) heißt Primideal, falls gilt: (i) \\(\\mathfrak{p} \\neq R\\), und (ii) für alle \\(a, b \\in R\\) mit \\(ab \\in \\mathfrak{p}\\) ist \\(a \\in \\mathfrak{p}\\) oder \\(b \\in \\mathfrak{p}\\). Die Menge aller Primideale von \\(R\\) wird mit \\(\\operatorname{Spec}(R)\\) bezeichnet."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Für ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{p} \\subseteq R\\) sind äquivalent: (1) \\(\\mathfrak{p}\\) ist ein Primideal; (2) der <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> \\(R/\\mathfrak{p}\\) ist ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>; (3) das Komplement \\(R \\setminus \\mathfrak{p}\\) ist <span class=\"t\" data-ref=\"multiplikativ-abgeschlossene-menge\">multiplikativ abgeschlossen</span> und enthält \\(1\\). Insbesondere ist jedes maximale <span class=\"t\" data-ref=\"ideal\">Ideal</span> ein Primideal."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "(1) \\(\\Rightarrow\\) (2): Sei \\(\\mathfrak{p}\\) ein Primideal. Da \\(\\mathfrak{p} \\neq R\\), ist \\(R/\\mathfrak{p}\\) nicht der <span class=\"t\" data-ref=\"nullring\">Nullring</span>, also \\(\\bar{1} \\neq \\bar{0}\\). Seien \\(\\bar{a}, \\bar{b} \\in R/\\mathfrak{p}\\) mit \\(\\bar{a}\\bar{b} = \\bar{0}\\), das heißt \\(ab \\in \\mathfrak{p}\\). Nach Voraussetzung folgt \\(a \\in \\mathfrak{p}\\) oder \\(b \\in \\mathfrak{p}\\), also \\(\\bar{a} = \\bar{0}\\) oder \\(\\bar{b} = \\bar{0}\\). Somit ist \\(R/\\mathfrak{p}\\) nullteilerfrei und damit ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>.",
+              "(2) \\(\\Rightarrow\\) (1): Ist \\(R/\\mathfrak{p}\\) ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>, so ist \\(R/\\mathfrak{p} \\neq 0\\), folglich \\(\\mathfrak{p} \\neq R\\). Aus \\(ab \\in \\mathfrak{p}\\) folgt \\(\\bar{a}\\bar{b} = \\bar{0}\\) in \\(R/\\mathfrak{p}\\), und die Nullteilerfreiheit liefert \\(\\bar{a} = \\bar{0}\\) oder \\(\\bar{b} = \\bar{0}\\), also \\(a \\in \\mathfrak{p}\\) oder \\(b \\in \\mathfrak{p}\\).",
+              "(1) \\(\\Leftrightarrow\\) (3): Da \\(\\mathfrak{p} \\neq R\\), ist \\(1 \\notin \\mathfrak{p}\\), also \\(1 \\in R \\setminus \\mathfrak{p}\\). Die Primidealeigenschaft ist die Kontraposition von: \\(a \\notin \\mathfrak{p}\\) und \\(b \\notin \\mathfrak{p}\\) impliziert \\(ab \\notin \\mathfrak{p}\\), was genau die multiplikative Abgeschlossenheit von \\(R \\setminus \\mathfrak{p}\\) ist.",
+              "Zusatz: Ist \\(\\mathfrak{m}\\) maximal, so ist \\(R/\\mathfrak{m}\\) ein <span class=\"t\" data-ref=\"koerper\">Körper</span>, insbesondere ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>; nach (2) ist \\(\\mathfrak{m}\\) somit ein Primideal."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "primaerzerlegung",
+            "type": "see-also"
+          },
+          {
+            "id": "varietaet",
+            "type": "see-also"
+          },
+          {
+            "id": "nullteiler",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "id": "nilpotentes-element",
+      "title": "Nilpotentes Element",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Grundbegriffe der Ringtheorie",
+      "inline": "Ein Element \\( x \\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\( R \\) heißt nilpotent, falls eine natürliche Zahl \\( n \\geq 1 \\) existiert mit \\( x^n = 0 \\). Die Menge aller nilpotenten Elemente bildet ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>, das sogenannte Nilradikal \\( \\operatorname{nil}(R) \\).",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "integritaetsbereich",
+          "type": "enriches"
+        },
+        {
+          "id": "quotientenring",
+          "type": "enriches"
+        },
+        {
+          "id": "primideal",
+          "type": "enriches"
+        },
+        {
+          "id": "nullteiler",
+          "type": "enriches"
+        },
+        {
+          "id": "binomischer-lehrsatz",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Nilpotente Elemente messen das Versagen der Reduziertheit eines Rings: in einem <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span> kommen sie ausser \\( 0 \\) nicht vor. In allgemeineren Ringen, etwa <span class=\"t\" data-ref=\"quotientenring\">Quotientenringen</span> wie \\( \\mathbb{Z}/p^2\\mathbb{Z} \\) oder Koordinatenringen nichtreduzierter Schemata, treten sie jedoch natürlich auf und tragen geometrische Information über Vielfachheiten und infinitesimale Strukturen. Das Studium des Nilradikals verbindet Ringtheorie mit Geometrie, da \\( \\operatorname{nil}(R) \\) genau der Durchschnitt aller <span class=\"t\" data-ref=\"primideal\">Primideale</span> von \\( R \\) ist."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\( R \\) ein kommutativer Ring. Ein Element \\( x \\in R \\) heisst nilpotent, falls es ein \\( n \\in \\mathbb{N}_{\\geq 1} \\) gibt mit \\( x^n = 0 \\). Die Menge \\[ \\operatorname{nil}(R) := \\{ x \\in R \\mid \\exists\\, n \\geq 1 : x^n = 0 \\} \\] heisst das Nilradikal von \\( R \\). Ein Ring \\( R \\) heisst reduziert, falls \\( \\operatorname{nil}(R) = \\{0\\} \\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Das Nilradikal \\( \\operatorname{nil}(R) \\) ist ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> von \\( R \\), und der Quotientenring \\( R/\\operatorname{nil}(R) \\) ist reduziert. Ferner ist jedes nilpotente Element von \\( 0 \\) verschieden ein <span class=\"t\" data-ref=\"nullteiler\">Nullteiler</span>."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Offenbar ist \\( 0 \\in \\operatorname{nil}(R) \\), da \\( 0^1 = 0 \\). Für \\( x \\in \\operatorname{nil}(R) \\) mit \\( x^n = 0 \\) und \\( r \\in R \\) gilt \\( (rx)^n = r^n x^n = 0 \\), also \\( rx \\in \\operatorname{nil}(R) \\).",
+              "Seien \\( x, y \\in \\operatorname{nil}(R) \\) mit \\( x^n = 0 \\) und \\( y^m = 0 \\). Mit dem <span class=\"t\" data-ref=\"binomischer-lehrsatz\">binomischen Lehrsatz</span> folgt \\[ (x+y)^{n+m-1} = \\sum_{k=0}^{n+m-1} \\binom{n+m-1}{k} x^k y^{n+m-1-k}. \\] In jedem Summanden ist entweder \\( k \\geq n \\) oder \\( n+m-1-k \\geq m \\), so dass jeder Term verschwindet. Also ist \\( x + y \\in \\operatorname{nil}(R) \\), und \\( \\operatorname{nil}(R) \\) ist ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>.",
+              "Reduziertheit von \\( R/\\operatorname{nil}(R) \\): Ist \\( \\overline{x}^n = 0 \\) in \\( R/\\operatorname{nil}(R) \\), so \\( x^n \\in \\operatorname{nil}(R) \\), also \\( (x^n)^m = x^{nm} = 0 \\) für ein \\( m \\). Damit ist \\( x \\in \\operatorname{nil}(R) \\), das heisst \\( \\overline{x} = 0 \\).",
+              "Nullteilereigenschaft: Sei \\( x \\neq 0 \\) nilpotent und \\( n \\geq 2 \\) minimal mit \\( x^n = 0 \\). Dann ist \\( x^{n-1} \\neq 0 \\), aber \\( x \\cdot x^{n-1} = 0 \\), also ist \\( x \\) ein <span class=\"t\" data-ref=\"nullteiler\">Nullteiler</span>."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "spektrum-eines-rings",
+            "type": "see-also"
+          },
+          {
+            "id": "primaerzerlegung",
+            "type": "see-also"
+          },
+          {
+            "id": "lokalisierung",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "binomischer-lehrsatz",
+      "title": "binomischen Lehrsatz",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Der binomische Lehrsatz besagt, dass in einem kommutativen Ring \\((x+y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}\\) gilt.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "einheit",
+      "title": "Einheit",
+      "subtitle": "Kap. 1 · Altman & Kleiman · Ringtheorie",
+      "inline": "Eine Einheit in einem <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) ist ein Element \\(u \\in R\\), zu dem ein \\(v \\in R\\) mit \\(uv = 1\\) existiert. Die Menge aller Einheiten bildet bezüglich der Multiplikation eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span> \\(R^{\\times}\\), die Einheitengruppe von \\(R\\).",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "abelsche-gruppe",
+          "type": "required"
+        },
+        {
+          "id": "koerper",
+          "type": "enriches"
+        },
+        {
+          "id": "ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "lokalisierung",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "In einem allgemeinen <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> ist die Multiplikation nicht zwingend invertierbar. Um Division im Ring zu verstehen, muss man genau jene Elemente herausarbeiten, die ein multiplikatives Inverses besitzen. Diese Einheiten steuern den Übergang zwischen Ringen und Körpern: Ein kommutativer Ring ist genau dann ein <span class=\"t\" data-ref=\"koerper\">Körper</span>, wenn jedes von Null verschiedene Element eine Einheit ist. Auch für die Strukturtheorie ist der Begriff zentral, etwa zur Charakterisierung von <span class=\"t\" data-ref=\"ideal\">Idealen</span> (\\(\\mathfrak{a} = R\\) genau dann, wenn \\(\\mathfrak{a}\\) eine Einheit enthält) oder zur Beschreibung von <span class=\"t\" data-ref=\"lokalisierung\">Lokalisierungen</span>, die gezielt neue Einheiten erzeugen."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring mit Einselement \\(1\\). Ein Element \\(u \\in R\\) heißt Einheit, falls ein \\(v \\in R\\) existiert mit \\(uv = 1\\). Das Element \\(v\\) ist dann eindeutig bestimmt, wird mit \\(u^{-1}\\) bezeichnet und heißt Inverses von \\(u\\). Die Menge \\[ R^{\\times} := \\{ u \\in R \\mid \\exists\\, v \\in R: uv = 1 \\} \\] heißt Einheitengruppe von \\(R\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Die Menge \\(R^{\\times}\\) bildet mit der Multiplikation von \\(R\\) eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span>. Insbesondere ist das Inverse einer Einheit eindeutig bestimmt, und für \\(u, w \\in R^{\\times}\\) gilt \\((uw)^{-1} = w^{-1} u^{-1}\\)."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Eindeutigkeit des Inversen: Sind \\(v, v' \\in R\\) mit \\(uv = 1 = uv'\\), so folgt \\(v = v \\cdot 1 = v(uv') = (vu)v' = 1 \\cdot v' = v'\\) unter Verwendung der Kommutativität und Assoziativität der Multiplikation.",
+              "Abgeschlossenheit: Für \\(u, w \\in R^{\\times}\\) mit Inversen \\(u^{-1}, w^{-1}\\) gilt \\((uw)(w^{-1}u^{-1}) = u(w w^{-1})u^{-1} = u \\cdot 1 \\cdot u^{-1} = 1\\). Damit ist \\(uw \\in R^{\\times}\\) und \\((uw)^{-1} = w^{-1}u^{-1}\\).",
+              "Neutrales Element: Wegen \\(1 \\cdot 1 = 1\\) ist \\(1 \\in R^{\\times}\\), und \\(1\\) ist neutrales Element der Multiplikation in \\(R\\).",
+              "Inverse: Ist \\(u \\in R^{\\times}\\) mit \\(uv = 1\\), so zeigt dieselbe Gleichung, dass \\(v\\) eine Einheit ist mit Inversem \\(u\\), also \\(u^{-1} \\in R^{\\times}\\).",
+              "Kommutativität und Assoziativität von \\(R^{\\times}\\) folgen unmittelbar aus den entsprechenden Eigenschaften der Multiplikation in \\(R\\). Damit ist \\((R^{\\times}, \\cdot, 1)\\) eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span>."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "integritaetsbereich",
+            "type": "see-also"
+          },
+          {
+            "id": "nullteiler",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "id": "maximales-ideal",
+      "title": "Maximales Ideal",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Idealtheorie",
+      "inline": "Ein maximales <span class=\"t\" data-ref=\"ideal\">Ideal</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist ein echtes <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{m} \\subsetneq R\\), das in keinem anderen echten <span class=\"t\" data-ref=\"ideal\">Ideal</span> echt enthalten ist. Maximale Ideale charakterisieren genau jene Ideale, deren <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> ein <span class=\"t\" data-ref=\"koerper\">Körper</span> ist.",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "quotientenring",
+          "type": "required"
+        },
+        {
+          "id": "koerper",
+          "type": "required"
+        },
+        {
+          "id": "einheit",
+          "type": "enriches"
+        },
+        {
+          "id": "primideal",
+          "type": "enriches"
+        },
+        {
+          "id": "nullring",
+          "type": "enriches"
+        },
+        {
+          "id": "integritaetsbereich",
+          "type": "enriches"
+        },
+        {
+          "id": "zornsches-lemma",
+          "type": "enriches"
+        },
+        {
+          "id": "varietaet",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Maximale Ideale sind die feinsten echten Ideale eines Rings: sie liefern die einfachsten Quotienten, nämlich <span class=\"t\" data-ref=\"koerper\">Körper</span>, und stellen damit die Brücke zwischen Ringtheorie und Körpertheorie dar. In der algebraischen Geometrie entsprechen sie den Punkten klassischer <span class=\"t\" data-ref=\"varietaet\">Varietäten</span> über algebraisch abgeschlossenen Körpern. Ihre Existenz (Lemma von Krull) ist ein zentrales Werkzeug, um etwa zu zeigen, dass jedes Nicht-Element einer <span class=\"t\" data-ref=\"einheit\">Einheit</span> in einem geeigneten Quotienten verschwindet."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring. Ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{m} \\subseteq R\\) heißt maximales <span class=\"t\" data-ref=\"ideal\">Ideal</span>, falls gilt: (i) \\(\\mathfrak{m} \\neq R\\), und (ii) für jedes <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{a}\\) mit \\(\\mathfrak{m} \\subseteq \\mathfrak{a} \\subseteq R\\) folgt \\(\\mathfrak{a} = \\mathfrak{m}\\) oder \\(\\mathfrak{a} = R\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Sei \\(R\\) ein kommutativer Ring und \\(\\mathfrak{m} \\subseteq R\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>. Dann sind äquivalent: (1) \\(\\mathfrak{m}\\) ist ein maximales <span class=\"t\" data-ref=\"ideal\">Ideal</span>; (2) der <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> \\(R/\\mathfrak{m}\\) ist ein <span class=\"t\" data-ref=\"koerper\">Körper</span>. Insbesondere ist jedes maximale <span class=\"t\" data-ref=\"ideal\">Ideal</span> ein <span class=\"t\" data-ref=\"primideal\">Primideal</span>. Ferner gilt das Lemma von Krull: Jedes echte <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{a} \\subsetneq R\\) ist in einem maximalen <span class=\"t\" data-ref=\"ideal\">Ideal</span> enthalten."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "(1) \\(\\Rightarrow\\) (2): Sei \\(\\mathfrak{m}\\) maximal. Da \\(\\mathfrak{m} \\neq R\\), ist \\(R/\\mathfrak{m}\\) nicht der <span class=\"t\" data-ref=\"nullring\">Nullring</span>. Sei \\(\\bar{x} \\in R/\\mathfrak{m}\\) mit \\(\\bar{x} \\neq 0\\), also \\(x \\notin \\mathfrak{m}\\). Das <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{m} + (x)\\) enthält \\(\\mathfrak{m}\\) echt, ist also nach Maximalität gleich \\(R\\). Somit existieren \\(m \\in \\mathfrak{m}\\) und \\(r \\in R\\) mit \\(m + rx = 1\\), woraus \\(\\bar{r}\\bar{x} = 1\\) in \\(R/\\mathfrak{m}\\) folgt. Also ist \\(\\bar{x}\\) eine <span class=\"t\" data-ref=\"einheit\">Einheit</span> und \\(R/\\mathfrak{m}\\) ein <span class=\"t\" data-ref=\"koerper\">Körper</span>.",
+              "(2) \\(\\Rightarrow\\) (1): Sei \\(R/\\mathfrak{m}\\) ein <span class=\"t\" data-ref=\"koerper\">Körper</span>, also nicht der <span class=\"t\" data-ref=\"nullring\">Nullring</span>; somit \\(\\mathfrak{m} \\neq R\\). Sei \\(\\mathfrak{a}\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> mit \\(\\mathfrak{m} \\subsetneq \\mathfrak{a}\\). Wähle \\(x \\in \\mathfrak{a} \\setminus \\mathfrak{m}\\); dann ist \\(\\bar{x} \\neq 0\\) in \\(R/\\mathfrak{m}\\), also <span class=\"t\" data-ref=\"einheit\">Einheit</span>. Es gibt \\(r \\in R\\) mit \\(rx \\equiv 1 \\pmod{\\mathfrak{m}}\\), d.h. \\(1 - rx \\in \\mathfrak{m} \\subseteq \\mathfrak{a}\\). Wegen \\(rx \\in \\mathfrak{a}\\) folgt \\(1 \\in \\mathfrak{a}\\), also \\(\\mathfrak{a} = R\\).",
+              "Da jeder <span class=\"t\" data-ref=\"koerper\">Körper</span> insbesondere ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span> ist, folgt aus (2), dass \\(R/\\mathfrak{m}\\) nullteilerfrei ist; somit ist \\(\\mathfrak{m}\\) ein <span class=\"t\" data-ref=\"primideal\">Primideal</span>.",
+              "Lemma von Krull: Betrachte die Menge \\(\\Sigma\\) aller echten Ideale \\(\\mathfrak{b}\\) mit \\(\\mathfrak{a} \\subseteq \\mathfrak{b}\\), partiell geordnet durch Inklusion. \\(\\Sigma\\) ist nichtleer (\\(\\mathfrak{a} \\in \\Sigma\\)). Ist \\(\\{\\mathfrak{b}_i\\}\\) eine Kette in \\(\\Sigma\\), so ist \\(\\mathfrak{b} := \\bigcup_i \\mathfrak{b}_i\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> mit \\(\\mathfrak{a} \\subseteq \\mathfrak{b}\\); da \\(1 \\notin \\mathfrak{b}_i\\) für alle \\(i\\), gilt \\(1 \\notin \\mathfrak{b}\\), also \\(\\mathfrak{b} \\in \\Sigma\\). Nach dem <span class=\"t\" data-ref=\"zornsches-lemma\">Zornschen Lemma</span> besitzt \\(\\Sigma\\) ein maximales Element \\(\\mathfrak{m}\\), welches per Konstruktion ein maximales <span class=\"t\" data-ref=\"ideal\">Ideal</span> mit \\(\\mathfrak{a} \\subseteq \\mathfrak{m}\\) ist."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "spektrum-eines-rings",
+            "type": "see-also"
+          },
+          {
+            "id": "lokalisierung",
+            "type": "see-also"
+          },
+          {
+            "id": "hauptideal",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "multiplikativ-abgeschlossene-menge",
+      "title": "multiplikativ abgeschlossen",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine Teilmenge \\(S \\subseteq R\\) eines Rings heißt multiplikativ abgeschlossen, falls \\(1 \\in S\\) und mit \\(a, b \\in S\\) auch \\(ab \\in S\\) gilt.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "primzahl",
+      "title": "Primzahl",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Eine Primzahl ist eine natürliche Zahl \\(p \\geq 2\\), die nur durch \\(1\\) und sich selbst teilbar ist.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "nullideal",
+      "title": "Nullideal",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Das Nullideal eines Rings \\(R\\) ist das Ideal \\(\\{0\\} \\subseteq R\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "zornsches-lemma",
+      "title": "Zornschen Lemma",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Das Zornsche Lemma besagt, dass jede nichtleere, partiell geordnete Menge, in der jede Kette eine obere Schranke besitzt, ein maximales Element enthält.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "nilradikal",
+      "title": "Nilradikal",
+      "subtitle": "Kap. 1 · Altman–Kleiman · Radikale",
+      "inline": "Das Nilradikal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist die Menge \\(\\operatorname{nil}(R)\\) aller <span class=\"t\" data-ref=\"nilpotentes-element\">nilpotenten Elemente</span>. Es ist ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> und stimmt mit dem Durchschnitt aller <span class=\"t\" data-ref=\"primideal\">Primideale</span> von \\(R\\) überein.",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "nilpotentes-element",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "primideal",
+          "type": "required"
+        },
+        {
+          "id": "quotientenring",
+          "type": "required"
+        },
+        {
+          "id": "binomischer-lehrsatz",
+          "type": "required"
+        },
+        {
+          "id": "zornsches-lemma",
+          "type": "required"
+        },
+        {
+          "id": "integritaetsbereich",
+          "type": "enriches"
+        },
+        {
+          "id": "spektrum-eines-rings",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Nilpotente Elemente sind die ringtheoretischen Pendants zu \"infinitesimalen\" Größen: Sie verschwinden in jedem <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereichsquotienten</span>. Um sie systematisch zu behandeln, fasst man sie zu einem <span class=\"t\" data-ref=\"ideal\">Ideal</span> zusammen. Das Nilradikal misst, wie weit ein Ring vom Reduziertsein entfernt ist, und liefert eine erste Brücke zwischen algebraischer Struktur (nilpotente Elemente) und geometrischer Struktur (<span class=\"t\" data-ref=\"primideal\">Primideale</span>, <span class=\"t\" data-ref=\"spektrum-eines-rings\">Spektrum</span>)."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring. Das Nilradikal von \\(R\\) ist \\[ \\operatorname{nil}(R) := \\{\\, x \\in R \\mid \\exists\\, n \\geq 1 : x^n = 0 \\,\\}. \\] Ein Ring \\(R\\) heißt reduziert, falls \\(\\operatorname{nil}(R) = 0\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Das Nilradikal \\(\\operatorname{nil}(R)\\) ist ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> von \\(R\\), und es gilt \\[ \\operatorname{nil}(R) = \\bigcap_{\\mathfrak{p} \\in \\operatorname{Spec}(R)} \\mathfrak{p}, \\] wobei der Durchschnitt über alle <span class=\"t\" data-ref=\"primideal\">Primideale</span> \\(\\mathfrak{p}\\) von \\(R\\) läuft. Insbesondere ist der <span class=\"t\" data-ref=\"quotientenring\">Quotient</span> \\(R/\\operatorname{nil}(R)\\) reduziert."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Idealeigenschaft: Sind \\(x, y \\in \\operatorname{nil}(R)\\) mit \\(x^m = 0\\) und \\(y^n = 0\\), so liefert der <span class=\"t\" data-ref=\"binomischer-lehrsatz\">binomische Lehrsatz</span> \\((x+y)^{m+n-1} = \\sum_{k} \\binom{m+n-1}{k} x^k y^{m+n-1-k}\\). In jedem Summanden ist \\(k \\geq m\\) oder \\(m+n-1-k \\geq n\\), also verschwindet jeder Term, und \\(x+y\\) ist nilpotent. Für \\(r \\in R\\) gilt \\((rx)^m = r^m x^m = 0\\), also \\(rx \\in \\operatorname{nil}(R)\\).",
+              "Inklusion \\(\\subseteq\\): Ist \\(x^n = 0\\) und \\(\\mathfrak{p}\\) ein Primideal, so liegt \\(x^n = 0 \\in \\mathfrak{p}\\). Da \\(\\mathfrak{p}\\) prim ist, folgt induktiv \\(x \\in \\mathfrak{p}\\). Also liegt jedes nilpotente Element in jedem Primideal.",
+              "Inklusion \\(\\supseteq\\): Sei \\(x \\in R\\) nicht nilpotent. Wir zeigen, dass es ein Primideal \\(\\mathfrak{p}\\) mit \\(x \\notin \\mathfrak{p}\\) gibt. Betrachte die Menge \\(\\Sigma\\) aller Ideale \\(\\mathfrak{a} \\subseteq R\\) mit \\(x^n \\notin \\mathfrak{a}\\) für alle \\(n \\geq 1\\). Wegen \\(0 \\in \\Sigma\\) ist \\(\\Sigma\\) nicht leer.",
+              "Geordnet durch Inklusion erfüllt \\(\\Sigma\\) die Voraussetzungen des <span class=\"t\" data-ref=\"zornsches-lemma\">Zornschen Lemmas</span>: Für eine Kette \\((\\mathfrak{a}_i)\\) ist die Vereinigung \\(\\bigcup_i \\mathfrak{a}_i\\) wieder in \\(\\Sigma\\). Sei \\(\\mathfrak{p}\\) ein maximales Element.",
+              "Zu zeigen: \\(\\mathfrak{p}\\) ist prim. Seien \\(a, b \\notin \\mathfrak{p}\\). Dann enthalten \\(\\mathfrak{p} + (a)\\) und \\(\\mathfrak{p} + (b)\\) je eine Potenz \\(x^m\\) bzw. \\(x^n\\), wegen Maximalität. Also \\(x^{m+n} \\in (\\mathfrak{p} + (a))(\\mathfrak{p} + (b)) \\subseteq \\mathfrak{p} + (ab)\\). Wäre \\(ab \\in \\mathfrak{p}\\), so \\(x^{m+n} \\in \\mathfrak{p}\\), Widerspruch. Somit \\(ab \\notin \\mathfrak{p}\\), und \\(\\mathfrak{p}\\) ist prim mit \\(x \\notin \\mathfrak{p}\\).",
+              "Reduziertheit von \\(R/\\operatorname{nil}(R)\\): Ist \\((x + \\operatorname{nil}(R))^n = 0\\) in \\(R/\\operatorname{nil}(R)\\), so \\(x^n \\in \\operatorname{nil}(R)\\), also \\((x^n)^m = x^{nm} = 0\\) für ein \\(m\\), folglich \\(x \\in \\operatorname{nil}(R)\\)."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "lokalisierung",
+            "type": "see-also"
+          },
+          {
+            "id": "primaerzerlegung",
+            "type": "see-also"
+          },
+          {
+            "id": "varietaet",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jacobson-radikal",
+      "title": "Jacobson-Radikal",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Radikale eines Rings",
+      "inline": "Das Jacobson-Radikal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist der Durchschnitt aller <span class=\"t\" data-ref=\"maximales-ideal\">maximalen Ideale</span> von \\(R\\). Es enthält das <span class=\"t\" data-ref=\"nilradikal\">Nilradikal</span> und charakterisiert genau jene Elemente, deren \"Verschiebung um 1\" stets eine <span class=\"t\" data-ref=\"einheit\">Einheit</span> liefert.",
+      "refs": [
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "maximales-ideal",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "einheit",
+          "type": "required"
+        },
+        {
+          "id": "nilradikal",
+          "type": "required"
+        },
+        {
+          "id": "nullring",
+          "type": "required"
+        },
+        {
+          "id": "zornsches-lemma",
+          "type": "required"
+        },
+        {
+          "id": "koerper",
+          "type": "required"
+        },
+        {
+          "id": "nilpotentes-element",
+          "type": "required"
+        },
+        {
+          "id": "primideal",
+          "type": "enriches"
+        },
+        {
+          "id": "lokalisierung",
+          "type": "enriches"
+        },
+        {
+          "id": "modultheorie",
+          "type": "enriches"
+        },
+        {
+          "id": "lemma-von-nakayama",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Während das <span class=\"t\" data-ref=\"nilradikal\">Nilradikal</span> die nilpotenten Elemente erfasst, fragt man oft nach einem feineren Radikal, das die Einheiten des Rings kontrolliert. Das Jacobson-Radikal liefert eine solche Größe: Es misst, welche Elemente von jedem maximalen <span class=\"t\" data-ref=\"ideal\">Ideal</span> eingefangen werden, und steuert damit das Verhalten modulo der \"Restkörper\" \\(R/\\mathfrak{m}\\). In der <span class=\"t\" data-ref=\"lokalisierung\">Lokalisierungs</span>- und <span class=\"t\" data-ref=\"modultheorie\">Modultheorie</span> (etwa beim <span class=\"t\" data-ref=\"lemma-von-nakayama\">Lemma von Nakayama</span>) ist es das zentrale Werkzeug, um globale Aussagen aus lokalen Daten zu gewinnen."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring. Das Jacobson-Radikal \\(\\operatorname{rad}(R)\\) ist definiert als der Durchschnitt aller <span class=\"t\" data-ref=\"maximales-ideal\">maximalen Ideale</span> von \\(R\\): \\[ \\operatorname{rad}(R) \\;=\\; \\bigcap_{\\mathfrak{m}\\subset R\\text{ maximal}} \\mathfrak{m}. \\] Ist \\(R\\) der <span class=\"t\" data-ref=\"nullring\">Nullring</span>, so setzt man \\(\\operatorname{rad}(R)=R\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Für jeden kommutativen Ring \\(R\\) und jedes \\(x\\in R\\) gilt: \\[ x\\in\\operatorname{rad}(R) \\quad\\Longleftrightarrow\\quad 1-xy \\text{ ist eine Einheit für alle } y\\in R. \\] Insbesondere ist \\(\\operatorname{rad}(R)\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> von \\(R\\), und das <span class=\"t\" data-ref=\"nilradikal\">Nilradikal</span> \\(\\operatorname{nil}(R)\\) ist in \\(\\operatorname{rad}(R)\\) enthalten."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "\\(\\Rightarrow\\): Sei \\(x\\in\\operatorname{rad}(R)\\) und \\(y\\in R\\). Angenommen, \\(1-xy\\) wäre keine <span class=\"t\" data-ref=\"einheit\">Einheit</span>. Dann liegt \\(1-xy\\) in einem maximalen <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{m}\\) (jedes Nicht-Einheits-Element ist in einem maximalen <span class=\"t\" data-ref=\"ideal\">Ideal</span> enthalten, nach dem <span class=\"t\" data-ref=\"zornsches-lemma\">Zornschen Lemma</span>).",
+              "Wegen \\(x\\in\\operatorname{rad}(R)\\subset\\mathfrak{m}\\) folgt \\(xy\\in\\mathfrak{m}\\), also \\(1=(1-xy)+xy\\in\\mathfrak{m}\\). Das widerspricht der Maximalität von \\(\\mathfrak{m}\\). Also ist \\(1-xy\\) eine <span class=\"t\" data-ref=\"einheit\">Einheit</span>.",
+              "\\(\\Leftarrow\\): Sei \\(1-xy\\) für jedes \\(y\\in R\\) eine <span class=\"t\" data-ref=\"einheit\">Einheit</span>. Angenommen, \\(x\\notin\\operatorname{rad}(R)\\). Dann existiert ein maximales <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{m}\\) mit \\(x\\notin\\mathfrak{m}\\). Da \\(R/\\mathfrak{m}\\) ein <span class=\"t\" data-ref=\"koerper\">Körper</span> ist und \\(x\\) modulo \\(\\mathfrak{m}\\) nicht null ist, gibt es \\(y\\in R\\) mit \\(xy\\equiv 1\\pmod{\\mathfrak{m}}\\), d.h. \\(1-xy\\in\\mathfrak{m}\\).",
+              "Damit ist \\(1-xy\\) keine <span class=\"t\" data-ref=\"einheit\">Einheit</span> (Einheiten liegen in keinem maximalen <span class=\"t\" data-ref=\"ideal\">Ideal</span>), Widerspruch. Also \\(x\\in\\operatorname{rad}(R)\\).",
+              "Da \\(\\operatorname{rad}(R)\\) als Durchschnitt von Idealen selbst ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> ist, folgt die Idealeigenschaft. Schließlich liegt jedes nilpotente Element in jedem <span class=\"t\" data-ref=\"primideal\">Primideal</span>, also erst recht in jedem maximalen <span class=\"t\" data-ref=\"ideal\">Ideal</span>; somit \\(\\operatorname{nil}(R)\\subset\\operatorname{rad}(R)\\)."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "spektrum-eines-rings",
+            "type": "see-also"
+          },
+          {
+            "id": "integritaetsbereich",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "lemma-von-nakayama",
+      "title": "Lemma von Nakayama",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Das Lemma von Nakayama besagt, dass für einen endlich erzeugten Modul \\(M\\) über einem kommutativen Ring \\(R\\) mit \\(\\operatorname{rad}(R)\\cdot M = M\\) bereits \\(M=0\\) folgt.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "idealsumme",
+      "title": "Idealsumme",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Konstruktionen mit Idealen",
+      "inline": "Die Summe \\(\\mathfrak{a}+\\mathfrak{b}\\) zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist das kleinste Ideal, das sowohl \\(\\mathfrak{a}\\) als auch \\(\\mathfrak{b}\\) enthält. Sie besteht aus allen Summen \\(a+b\\) mit \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) und verallgemeinert sich auf beliebige Familien von Idealen.",
+      "refs": [
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "chinesischer-restsatz",
+          "type": "enriches"
+        },
+        {
+          "id": "koprime-ideale",
+          "type": "enriches"
+        },
+        {
+          "id": "idealverband",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Beim Rechnen mit Idealen benötigt man Operationen, die wieder <span class=\"t\" data-ref=\"ideal\">Ideale</span> liefern. Der mengentheoretische Durchschnitt zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> ist stets ein Ideal, die Vereinigung jedoch im Allgemeinen nicht. Die Idealsumme schließt diese Lücke: Sie ist das kleinste Ideal, das eine gegebene Vereinigung von Idealen enthält, und entspricht dem Supremum im <span class=\"t\" data-ref=\"idealverband\">Verband aller Ideale</span>. So lassen sich beispielsweise Aussagen wie der <span class=\"t\" data-ref=\"chinesischer-restsatz\">Chinesische Restsatz</span> oder das Konzept <span class=\"t\" data-ref=\"koprime-ideale\">koprimer Ideale</span> (\\(\\mathfrak{a}+\\mathfrak{b}=R\\)) formulieren."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring und \\((\\mathfrak{a}_\\lambda)_{\\lambda\\in\\Lambda}\\) eine Familie von Idealen in \\(R\\). Die Summe dieser <span class=\"t\" data-ref=\"ideal\">Ideale</span> ist definiert durch \\[\\sum_{\\lambda\\in\\Lambda}\\mathfrak{a}_\\lambda \\;:=\\; \\Bigl\\{\\sum_{\\lambda\\in F} a_\\lambda \\;\\Big|\\; F\\subseteq\\Lambda \\text{ endlich},\\; a_\\lambda\\in\\mathfrak{a}_\\lambda\\Bigr\\}.\\] Im Fall zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> \\(\\mathfrak{a},\\mathfrak{b}\\) erhält man insbesondere \\[\\mathfrak{a}+\\mathfrak{b}=\\{a+b\\mid a\\in\\mathfrak{a},\\,b\\in\\mathfrak{b}\\}.\\]"
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Die Idealsumme \\(\\sum_{\\lambda}\\mathfrak{a}_\\lambda\\) ist ein Ideal von \\(R\\). Sie ist das kleinste Ideal, das die Vereinigung \\(\\bigcup_{\\lambda}\\mathfrak{a}_\\lambda\\) enthält, und somit das Supremum der Familie \\((\\mathfrak{a}_\\lambda)\\) im <span class=\"t\" data-ref=\"idealverband\">Verband aller Ideale</span> von \\(R\\)."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Sei \\(S:=\\sum_{\\lambda}\\mathfrak{a}_\\lambda\\). Wegen \\(0\\in\\mathfrak{a}_\\lambda\\) ist \\(0\\in S\\), insbesondere \\(S\\neq\\emptyset\\).",
+              "Abgeschlossenheit unter Addition: Sind \\(s=\\sum_{\\lambda\\in F}a_\\lambda\\) und \\(t=\\sum_{\\lambda\\in G}b_\\lambda\\) zwei Elemente von \\(S\\) mit endlichen Indexmengen \\(F,G\\subseteq\\Lambda\\), so ergänze beide Summen mit Nullen zu Summen über \\(F\\cup G\\). Dann ist \\(s+t=\\sum_{\\lambda\\in F\\cup G}(a_\\lambda+b_\\lambda)\\in S\\), da \\(\\mathfrak{a}_\\lambda\\) als Ideal unter Addition abgeschlossen ist.",
+              "Abgeschlossenheit unter Multiplikation mit \\(R\\): Für \\(r\\in R\\) und \\(s=\\sum_{\\lambda\\in F}a_\\lambda\\in S\\) ist \\(rs=\\sum_{\\lambda\\in F}(r\\,a_\\lambda)\\), und jedes \\(r\\,a_\\lambda\\) liegt in \\(\\mathfrak{a}_\\lambda\\). Also \\(rs\\in S\\).",
+              "Damit ist \\(S\\) ein Ideal. Offensichtlich gilt \\(\\mathfrak{a}_\\mu\\subseteq S\\) für jedes \\(\\mu\\in\\Lambda\\), denn jedes \\(a\\in\\mathfrak{a}_\\mu\\) ist die einelementige Summe \\(a\\in S\\).",
+              "Minimalität: Ist \\(\\mathfrak{c}\\) ein beliebiges Ideal mit \\(\\mathfrak{a}_\\lambda\\subseteq\\mathfrak{c}\\) für alle \\(\\lambda\\), so liegen alle endlichen Summen \\(\\sum_{\\lambda\\in F}a_\\lambda\\) wegen der Abgeschlossenheit von \\(\\mathfrak{c}\\) unter Addition wieder in \\(\\mathfrak{c}\\). Folglich \\(S\\subseteq\\mathfrak{c}\\), und \\(S\\) ist das kleinste solche Ideal."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "hauptideal",
+            "type": "see-also"
+          },
+          {
+            "id": "maximales-ideal",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "chinesischer-restsatz",
+      "title": "Chinesische Restsatz",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Der Chinesische Restsatz besagt, dass für paarweise koprime Ideale \\(\\mathfrak{a}_1,\\dots,\\mathfrak{a}_n\\) eines kommutativen Rings \\(R\\) ein kanonischer Isomorphismus \\(R/\\bigcap_i\\mathfrak{a}_i \\cong \\prod_i R/\\mathfrak{a}_i\\) besteht.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "koprime-ideale",
+      "title": "Koprime Ideale",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Idealoperationen",
+      "inline": "Zwei <span class=\"t\" data-ref=\"ideal\">Ideale</span> \\(\\mathfrak{a},\\mathfrak{b}\\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) heißen koprim, wenn \\(\\mathfrak{a}+\\mathfrak{b}=R\\) gilt. Diese Bedingung verallgemeinert die Teilerfremdheit ganzer Zahlen und ist die Voraussetzung des <span class=\"t\" data-ref=\"chinesischer-restsatz\">Chinesischen Restsatzes</span>.",
+      "refs": [
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "idealprodukt",
+          "type": "required"
+        },
+        {
+          "id": "idealdurchschnitt",
+          "type": "required"
+        },
+        {
+          "id": "ringhomomorphismus",
+          "type": "required"
+        },
+        {
+          "id": "homomorphiesatz",
+          "type": "required"
+        },
+        {
+          "id": "quotientenring",
+          "type": "enriches"
+        },
+        {
+          "id": "chinesischer-restsatz",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "In \\(\\mathbb{Z}\\) sind zwei Zahlen \\(m,n\\) genau dann teilerfremd, wenn es \\(x,y\\in\\mathbb{Z}\\) mit \\(xm+yn=1\\) gibt; äquivalent erzeugen \\((m)\\) und \\((n)\\) zusammen den ganzen Ring. Diese Charakterisierung lässt sich wörtlich auf beliebige kommutative Ringe übertragen und wird zum entscheidenden Werkzeug, um <span class=\"t\" data-ref=\"quotientenring\">Quotientenringe</span> zu zerlegen, simultane Kongruenzen zu lösen und <span class=\"t\" data-ref=\"idealprodukt\">Idealprodukt</span> mit <span class=\"t\" data-ref=\"idealdurchschnitt\">Idealdurchschnitt</span> zu vergleichen. Koprimheit ist daher die natürliche Voraussetzung für den Chinesischen Restsatz und für viele Aussagen über Faktorisierungen in der kommutativen Algebra."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring. Zwei <span class=\"t\" data-ref=\"ideal\">Ideale</span> \\(\\mathfrak{a},\\mathfrak{b}\\subseteq R\\) heißen koprim (oder komaximal), falls \\(\\mathfrak{a}+\\mathfrak{b}=R\\), d.h. falls es \\(a\\in\\mathfrak{a}\\) und \\(b\\in\\mathfrak{b}\\) mit \\(a+b=1\\) gibt. Eine Familie \\((\\mathfrak{a}_i)_{i\\in I}\\) heißt paarweise koprim, falls \\(\\mathfrak{a}_i+\\mathfrak{a}_j=R\\) für alle \\(i\\neq j\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Sind \\(\\mathfrak{a},\\mathfrak{b}\\subseteq R\\) koprim, so gilt \\(\\mathfrak{a}\\cap\\mathfrak{b}=\\mathfrak{a}\\mathfrak{b}\\). Sind ferner \\(\\mathfrak{a}_1,\\dots,\\mathfrak{a}_n\\) paarweise koprim, so ist \\(\\mathfrak{a}_1\\cap\\dots\\cap\\mathfrak{a}_n=\\mathfrak{a}_1\\cdots\\mathfrak{a}_n\\), und der kanonische Homomorphismus \\(R/(\\mathfrak{a}_1\\cdots\\mathfrak{a}_n)\\to\\prod_{i=1}^n R/\\mathfrak{a}_i\\) ist ein Isomorphismus."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Es gilt stets \\(\\mathfrak{a}\\mathfrak{b}\\subseteq\\mathfrak{a}\\cap\\mathfrak{b}\\), denn jedes Produkt \\(ab\\) mit \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) liegt in beiden Idealen.",
+              "Sei umgekehrt \\(x\\in\\mathfrak{a}\\cap\\mathfrak{b}\\). Wegen Koprimheit existieren \\(a\\in\\mathfrak{a}\\) und \\(b\\in\\mathfrak{b}\\) mit \\(a+b=1\\). Dann gilt \\(x=x\\cdot 1=xa+xb\\). Hier liegt \\(xa\\) in \\(\\mathfrak{b}\\mathfrak{a}\\subseteq\\mathfrak{a}\\mathfrak{b}\\) (da \\(x\\in\\mathfrak{b}\\), \\(a\\in\\mathfrak{a}\\)) und \\(xb\\) in \\(\\mathfrak{a}\\mathfrak{b}\\) (da \\(x\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\)). Also \\(x\\in\\mathfrak{a}\\mathfrak{b}\\).",
+              "Für die Familie \\((\\mathfrak{a}_i)\\) zeigt man induktiv, dass \\(\\mathfrak{a}_1\\) und \\(\\mathfrak{a}_2\\cdots\\mathfrak{a}_n\\) koprim sind: Aus \\(1=a_i+b_i\\) mit \\(a_i\\in\\mathfrak{a}_1\\), \\(b_i\\in\\mathfrak{a}_i\\) für \\(i\\geq 2\\) folgt \\(1=\\prod_{i\\geq 2}(a_i+b_i)\\in\\mathfrak{a}_1+\\mathfrak{a}_2\\cdots\\mathfrak{a}_n\\).",
+              "Mit dem ersten Teil und Induktion folgt \\(\\bigcap_i\\mathfrak{a}_i=\\prod_i\\mathfrak{a}_i\\).",
+              "Der <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> \\(\\varphi\\colon R\\to\\prod_i R/\\mathfrak{a}_i\\), \\(r\\mapsto(r+\\mathfrak{a}_i)_i\\), hat Kern \\(\\bigcap_i\\mathfrak{a}_i=\\prod_i\\mathfrak{a}_i\\). Für die Surjektivität konstruiert man Idempotente: Da \\(\\mathfrak{a}_i\\) und \\(\\prod_{j\\neq i}\\mathfrak{a}_j\\) koprim sind, gibt es \\(e_i\\) mit \\(e_i\\equiv 1\\pmod{\\mathfrak{a}_i^c}\\) und \\(e_i\\equiv 0\\pmod{\\mathfrak{a}_j}\\) für \\(j\\neq i\\); damit lässt sich jedes Tupel \\((r_i+\\mathfrak{a}_i)\\) durch \\(\\sum_i r_i e_i\\) realisieren.",
+              "Aus dem <span class=\"t\" data-ref=\"homomorphiesatz\">Homomorphiesatz</span> folgt der gewünschte Isomorphismus \\(R/(\\mathfrak{a}_1\\cdots\\mathfrak{a}_n)\\xrightarrow{\\sim}\\prod_i R/\\mathfrak{a}_i\\)."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "idealsumme",
+            "type": "see-also"
+          },
+          {
+            "id": "maximales-ideal",
+            "type": "see-also"
+          },
+          {
+            "id": "dedekindring",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "idealverband",
+      "title": "Verband aller Ideale",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Der Idealverband eines kommutativen Rings \\(R\\) ist die durch Inklusion geordnete Menge aller Ideale von \\(R\\), die mit Durchschnitt und Idealsumme einen vollständigen Verband bildet.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "idealprodukt",
+      "title": "Idealprodukt",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Ideale und Operationen",
+      "inline": "Das Idealprodukt \\(\\mathfrak{a}\\mathfrak{b}\\) zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> ist das von allen Produkten \\(ab\\) mit \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) erzeugte Ideal. Es ist stets in \\(\\mathfrak{a}\\cap\\mathfrak{b}\\) enthalten und dient unter anderem als multiplikative Struktur auf dem Verband aller <span class=\"t\" data-ref=\"ideal\">Ideale</span>.",
+      "refs": [
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "idealverband",
+          "type": "required"
+        },
+        {
+          "id": "untergruppe",
+          "type": "required"
+        },
+        {
+          "id": "idealsumme",
+          "type": "enriches"
+        },
+        {
+          "id": "idealdurchschnitt",
+          "type": "enriches"
+        },
+        {
+          "id": "primideal",
+          "type": "enriches"
+        },
+        {
+          "id": "dedekindring",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "<span class=\"t\" data-ref=\"idealsumme\">Idealsumme</span> und <span class=\"t\" data-ref=\"idealdurchschnitt\">Idealdurchschnitt</span> liefern die additive bzw. infimum-Struktur auf den Idealen eines Rings, doch viele Phänomene der Zahlentheorie und algebraischen Geometrie — etwa die eindeutige Zerlegung von Idealen in <span class=\"t\" data-ref=\"primideal\">Primideale</span> in <span class=\"t\" data-ref=\"dedekindring\">Dedekindringen</span> oder das Rechnen mit Verschwindungsmengen — erfordern eine multiplikative Verknüpfung. Das Idealprodukt erfasst genau diejenigen Elemente, die als endliche Summen von Produkten je eines Faktors aus \\(\\mathfrak{a}\\) und \\(\\mathfrak{b}\\) entstehen, und liefert so die natürliche multiplikative Struktur auf dem <span class=\"t\" data-ref=\"idealverband\">Idealverband</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span>."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring und seien \\(\\mathfrak{a},\\mathfrak{b}\\subseteq R\\) <span class=\"t\" data-ref=\"ideal\">Ideale</span>. Das Idealprodukt \\(\\mathfrak{a}\\mathfrak{b}\\) ist definiert als das von der Menge \\(\\{ab\\mid a\\in\\mathfrak{a},\\,b\\in\\mathfrak{b}\\}\\) erzeugte Ideal, also \\[ \\mathfrak{a}\\mathfrak{b}=\\Bigl\\{\\sum_{i=1}^{n} a_i b_i \\;\\Big|\\; n\\in\\mathbb{N},\\;a_i\\in\\mathfrak{a},\\;b_i\\in\\mathfrak{b}\\Bigr\\}. \\] Allgemeiner setzt man für endlich viele <span class=\"t\" data-ref=\"ideal\">Ideale</span> \\(\\mathfrak{a}_1,\\dots,\\mathfrak{a}_n\\) das Produkt \\(\\mathfrak{a}_1\\cdots\\mathfrak{a}_n\\) als das Ideal aller endlichen Summen von Produkten \\(a_1\\cdots a_n\\) mit \\(a_i\\in\\mathfrak{a}_i\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Für <span class=\"t\" data-ref=\"ideal\">Ideale</span> \\(\\mathfrak{a},\\mathfrak{b},\\mathfrak{c}\\subseteq R\\) gilt: (i) \\(\\mathfrak{a}\\mathfrak{b}\\) ist ein Ideal in \\(R\\); (ii) \\(\\mathfrak{a}\\mathfrak{b}=\\mathfrak{b}\\mathfrak{a}\\) und \\((\\mathfrak{a}\\mathfrak{b})\\mathfrak{c}=\\mathfrak{a}(\\mathfrak{b}\\mathfrak{c})\\); (iii) \\(\\mathfrak{a}\\mathfrak{b}\\subseteq\\mathfrak{a}\\cap\\mathfrak{b}\\); (iv) \\(\\mathfrak{a}(\\mathfrak{b}+\\mathfrak{c})=\\mathfrak{a}\\mathfrak{b}+\\mathfrak{a}\\mathfrak{c}\\)."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Zu (i): Die Menge \\(M=\\{ab\\mid a\\in\\mathfrak{a},b\\in\\mathfrak{b}\\}\\) ist nichtleer (sie enthält \\(0\\)). Endliche Summen \\(\\sum a_i b_i\\) bilden eine <span class=\"t\" data-ref=\"untergruppe\">Untergruppe</span> von \\((R,+)\\). Für \\(r\\in R\\) ist \\(r\\sum a_i b_i=\\sum (ra_i)b_i\\) wieder eine solche Summe, da \\(ra_i\\in\\mathfrak{a}\\). Also ist \\(\\mathfrak{a}\\mathfrak{b}\\) ein Ideal.",
+              "Zu (ii): Kommutativität folgt unmittelbar aus \\(ab=ba\\) in \\(R\\). Für die Assoziativität rechnet man nach, dass beide Seiten genau das von \\(\\{abc\\mid a\\in\\mathfrak{a},b\\in\\mathfrak{b},c\\in\\mathfrak{c}\\}\\) erzeugte Ideal sind.",
+              "Zu (iii): Für \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) ist \\(ab\\in\\mathfrak{a}\\) (weil \\(\\mathfrak{a}\\) Ideal und \\(b\\in R\\)) und ebenso \\(ab\\in\\mathfrak{b}\\), also \\(ab\\in\\mathfrak{a}\\cap\\mathfrak{b}\\). Da \\(\\mathfrak{a}\\cap\\mathfrak{b}\\) ein Ideal ist, folgt \\(\\mathfrak{a}\\mathfrak{b}\\subseteq\\mathfrak{a}\\cap\\mathfrak{b}\\).",
+              "Zu (iv): Die Inklusion \\(\\supseteq\\) ist klar, da \\(\\mathfrak{a}\\mathfrak{b},\\mathfrak{a}\\mathfrak{c}\\subseteq\\mathfrak{a}(\\mathfrak{b}+\\mathfrak{c})\\). Umgekehrt sei \\(a\\in\\mathfrak{a}\\) und \\(b+c\\in\\mathfrak{b}+\\mathfrak{c}\\); dann ist \\(a(b+c)=ab+ac\\in\\mathfrak{a}\\mathfrak{b}+\\mathfrak{a}\\mathfrak{c}\\). Da diese Erzeuger \\(\\mathfrak{a}(\\mathfrak{b}+\\mathfrak{c})\\) ausmachen, folgt die Gleichheit."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "koprime-ideale",
+            "type": "see-also"
+          },
+          {
+            "id": "primaerzerlegung",
+            "type": "see-also"
+          },
+          {
+            "id": "chinesischer-restsatz",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "idealdurchschnitt",
+      "title": "Idealdurchschnitt",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Der Idealdurchschnitt zweier Ideale \\(\\mathfrak{a},\\mathfrak{b}\\) eines Rings ist der mengentheoretische Schnitt \\(\\mathfrak{a}\\cap\\mathfrak{b}\\), der wieder ein Ideal ist.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "dedekindring",
+      "title": "Dedekindringen",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Dedekindring ist ein noetherscher, ganzabgeschlossener Integritätsbereich der Krulldimension höchstens \\(1\\), in dem jedes Ideal eindeutig in ein Produkt von Primidealen zerfällt.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "idealschnitt",
+      "title": "Idealschnitt",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Idealoperationen",
+      "inline": "Der Schnitt einer Familie von Idealen \\(\\{\\mathfrak{a}_\\lambda\\}_{\\lambda\\in\\Lambda}\\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist die Menge \\(\\bigcap_{\\lambda}\\mathfrak{a}_\\lambda\\), und sie ist wieder ein Ideal. Der Idealschnitt ist die größte untere Schranke der Familie im <span class=\"t\" data-ref=\"idealverband\">Verband aller Ideale</span>.",
+      "refs": [
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "kommutativer-ring",
+          "type": "required"
+        },
+        {
+          "id": "untergruppe",
+          "type": "required"
+        },
+        {
+          "id": "idealverband",
+          "type": "required"
+        },
+        {
+          "id": "primaerzerlegung",
+          "type": "enriches"
+        },
+        {
+          "id": "idealprodukt",
+          "type": "enriches"
+        },
+        {
+          "id": "koprime-ideale",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Während die Vereinigung zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> im Allgemeinen kein Ideal ist, bleibt der mengentheoretische Durchschnitt stets ein Ideal. Diese Operation ist grundlegend, um den Verband der <span class=\"t\" data-ref=\"ideal\">Ideale</span> zu studieren, <span class=\"t\" data-ref=\"primaerzerlegung\">Primärzerlegungen</span> zu formulieren und das Verhältnis zum <span class=\"t\" data-ref=\"idealprodukt\">Idealprodukt</span> zu verstehen, denn es gilt stets \\(\\mathfrak{a}\\mathfrak{b}\\subseteq\\mathfrak{a}\\cap\\mathfrak{b}\\), mit Gleichheit für <span class=\"t\" data-ref=\"koprime-ideale\">koprime Ideale</span>."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(R\\) ein kommutativer Ring und \\(\\{\\mathfrak{a}_\\lambda\\}_{\\lambda\\in\\Lambda}\\) eine beliebige Familie von Idealen in \\(R\\). Der Idealschnitt ist definiert durch \\[\\bigcap_{\\lambda\\in\\Lambda}\\mathfrak{a}_\\lambda\\;=\\;\\{x\\in R\\mid x\\in\\mathfrak{a}_\\lambda\\text{ für alle }\\lambda\\in\\Lambda\\}.\\] Für \\(\\Lambda=\\emptyset\\) setzt man \\(\\bigcap_{\\lambda\\in\\emptyset}\\mathfrak{a}_\\lambda := R\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Für jede Familie \\(\\{\\mathfrak{a}_\\lambda\\}_{\\lambda\\in\\Lambda}\\) von Idealen in \\(R\\) ist \\(\\mathfrak{a}:=\\bigcap_{\\lambda}\\mathfrak{a}_\\lambda\\) ein Ideal in \\(R\\), und es gilt: (i) \\(\\mathfrak{a}\\subseteq\\mathfrak{a}_\\mu\\) für jedes \\(\\mu\\in\\Lambda\\); (ii) ist \\(\\mathfrak{b}\\) ein Ideal mit \\(\\mathfrak{b}\\subseteq\\mathfrak{a}_\\mu\\) für alle \\(\\mu\\), so folgt \\(\\mathfrak{b}\\subseteq\\mathfrak{a}\\). Insbesondere ist \\(\\mathfrak{a}\\) die größte untere Schranke der Familie im Idealverband."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Da \\(0\\in\\mathfrak{a}_\\lambda\\) für jedes \\(\\lambda\\), liegt \\(0\\) im Schnitt; somit ist \\(\\mathfrak{a}\\) nichtleer.",
+              "Seien \\(x,y\\in\\mathfrak{a}\\). Für jedes \\(\\lambda\\) gilt \\(x,y\\in\\mathfrak{a}_\\lambda\\), und da \\(\\mathfrak{a}_\\lambda\\) eine <span class=\"t\" data-ref=\"untergruppe\">Untergruppe</span> ist, folgt \\(x-y\\in\\mathfrak{a}_\\lambda\\). Also liegt \\(x-y\\) in jedem \\(\\mathfrak{a}_\\lambda\\) und damit in \\(\\mathfrak{a}\\).",
+              "Sei \\(r\\in R\\) und \\(x\\in\\mathfrak{a}\\). Aus \\(x\\in\\mathfrak{a}_\\lambda\\) folgt \\(rx\\in\\mathfrak{a}_\\lambda\\) wegen der Absorptionseigenschaft eines Ideals; somit \\(rx\\in\\mathfrak{a}\\). Damit ist \\(\\mathfrak{a}\\) ein Ideal.",
+              "Eigenschaft (i) ist unmittelbar aus der Definition des Durchschnitts.",
+              "Für (ii) sei \\(\\mathfrak{b}\\subseteq\\mathfrak{a}_\\mu\\) für alle \\(\\mu\\). Ist \\(b\\in\\mathfrak{b}\\), so liegt \\(b\\) in jedem \\(\\mathfrak{a}_\\mu\\), also \\(b\\in\\mathfrak{a}\\). Folglich \\(\\mathfrak{b}\\subseteq\\mathfrak{a}\\), und \\(\\mathfrak{a}\\) ist die größte untere Schranke."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "idealsumme",
+            "type": "see-also"
+          },
+          {
+            "id": "chinesischer-restsatz",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "id": "erweiterung-von-idealen",
+      "title": "Erweiterung von Idealen",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Ideale unter Ringhomomorphismen",
+      "inline": "Ist \\(\\varphi\\colon R \\to R'\\) ein <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> und \\(\\mathfrak{a} \\subseteq R\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>, so ist die Erweiterung \\(\\mathfrak{a}^{e} := \\varphi(\\mathfrak{a})\\,R'\\) das von \\(\\varphi(\\mathfrak{a})\\) in \\(R'\\) erzeugte <span class=\"t\" data-ref=\"ideal\">Ideal</span>. Sie überführt Ideale des Quellrings in Ideale des Zielrings.",
+      "refs": [
+        {
+          "id": "ringhomomorphismus",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "kontraktion-von-idealen",
+          "type": "required"
+        },
+        {
+          "id": "idealsumme",
+          "type": "enriches"
+        },
+        {
+          "id": "lokalisierung",
+          "type": "enriches"
+        },
+        {
+          "id": "quotientenring",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Ringhomomorphismen \\(\\varphi\\colon R \\to R'\\) bilden im Allgemeinen Ideale nicht auf Ideale ab: Das Bild \\(\\varphi(\\mathfrak{a})\\) eines Ideals \\(\\mathfrak{a} \\subseteq R\\) ist nur dann automatisch ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> in \\(R'\\), wenn \\(\\varphi\\) surjektiv ist. Um dennoch eine kanonische Übertragung von Idealen längs \\(\\varphi\\) zu erhalten, definiert man die Erweiterung als das von \\(\\varphi(\\mathfrak{a})\\) in \\(R'\\) erzeugte <span class=\"t\" data-ref=\"ideal\">Ideal</span>. Diese Konstruktion ist fundamental für das Studium von Faserringen, <span class=\"t\" data-ref=\"lokalisierung\">Lokalisierungen</span>, <span class=\"t\" data-ref=\"quotientenring\">Quotienten</span> und das Wechselspiel mit der <span class=\"t\" data-ref=\"kontraktion-von-idealen\">Kontraktion</span> \\(\\mathfrak{b}^{c} = \\varphi^{-1}(\\mathfrak{b})\\)."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(\\varphi\\colon R \\to R'\\) ein <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> und \\(\\mathfrak{a} \\subseteq R\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>. Die Erweiterung von \\(\\mathfrak{a}\\) längs \\(\\varphi\\) ist das <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\[ \\mathfrak{a}^{e} := \\varphi(\\mathfrak{a})\\,R' = \\Bigl\\{ \\sum_{i=1}^{n} \\varphi(a_i)\\,x_i \\;\\Big|\\; n \\in \\mathbb{N},\\; a_i \\in \\mathfrak{a},\\; x_i \\in R' \\Bigr\\} \\subseteq R'. \\] Wird \\(\\mathfrak{a}\\) von einer Familie \\((a_\\lambda)_{\\lambda \\in \\Lambda}\\) erzeugt, so wird \\(\\mathfrak{a}^{e}\\) von \\((\\varphi(a_\\lambda))_{\\lambda \\in \\Lambda}\\) erzeugt."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Für Ideale \\(\\mathfrak{a},\\mathfrak{b} \\subseteq R\\) gelten: (i) \\((\\mathfrak{a}+\\mathfrak{b})^{e} = \\mathfrak{a}^{e} + \\mathfrak{b}^{e}\\); (ii) \\((\\mathfrak{a}\\mathfrak{b})^{e} = \\mathfrak{a}^{e}\\mathfrak{b}^{e}\\); (iii) \\((\\mathfrak{a} \\cap \\mathfrak{b})^{e} \\subseteq \\mathfrak{a}^{e} \\cap \\mathfrak{b}^{e}\\), wobei die Inklusion im Allgemeinen echt ist; (iv) ist \\(\\mathfrak{b} \\subseteq R'\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> mit <span class=\"t\" data-ref=\"kontraktion-von-idealen\">Kontraktion</span> \\(\\mathfrak{b}^{c} = \\varphi^{-1}(\\mathfrak{b})\\), so gilt \\(\\mathfrak{a} \\subseteq \\mathfrak{a}^{ec}\\) und \\(\\mathfrak{b}^{ce} \\subseteq \\mathfrak{b}\\), sowie \\(\\mathfrak{a}^{e} = \\mathfrak{a}^{ece}\\) und \\(\\mathfrak{b}^{c} = \\mathfrak{b}^{cec}\\)."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "Zu (i): Da \\(\\varphi(\\mathfrak{a}+\\mathfrak{b}) = \\varphi(\\mathfrak{a}) + \\varphi(\\mathfrak{b})\\) gilt und das von einer Vereinigung erzeugte <span class=\"t\" data-ref=\"ideal\">Ideal</span> mit der <span class=\"t\" data-ref=\"idealsumme\">Idealsumme</span> der einzelnen Erzeugnisse übereinstimmt, folgt \\((\\mathfrak{a}+\\mathfrak{b})^{e} = (\\varphi(\\mathfrak{a}) \\cup \\varphi(\\mathfrak{b}))R' = \\varphi(\\mathfrak{a})R' + \\varphi(\\mathfrak{b})R' = \\mathfrak{a}^{e} + \\mathfrak{b}^{e}\\).",
+              "Zu (ii): Wegen \\(\\varphi(ab) = \\varphi(a)\\varphi(b)\\) liegt \\(\\varphi(\\mathfrak{a}\\mathfrak{b})\\) in \\(\\mathfrak{a}^{e}\\mathfrak{b}^{e}\\), also \\((\\mathfrak{a}\\mathfrak{b})^{e} \\subseteq \\mathfrak{a}^{e}\\mathfrak{b}^{e}\\). Umgekehrt ist jedes Erzeugendenprodukt \\(\\varphi(a)\\varphi(b) = \\varphi(ab)\\) mit \\(ab \\in \\mathfrak{a}\\mathfrak{b}\\) im <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\((\\mathfrak{a}\\mathfrak{b})^{e}\\) enthalten; daraus folgt die Gleichheit.",
+              "Zu (iii): Aus \\(\\mathfrak{a} \\cap \\mathfrak{b} \\subseteq \\mathfrak{a}\\) bzw. \\(\\subseteq \\mathfrak{b}\\) folgt \\((\\mathfrak{a} \\cap \\mathfrak{b})^{e} \\subseteq \\mathfrak{a}^{e}\\) und \\((\\mathfrak{a} \\cap \\mathfrak{b})^{e} \\subseteq \\mathfrak{b}^{e}\\), also \\((\\mathfrak{a} \\cap \\mathfrak{b})^{e} \\subseteq \\mathfrak{a}^{e} \\cap \\mathfrak{b}^{e}\\). Ein Beispiel für strikte Inklusion liefert die Inklusion \\(\\mathbb{Z} \\hookrightarrow \\mathbb{Q}\\) mit \\(\\mathfrak{a} = (2)\\), \\(\\mathfrak{b} = (3)\\): Hier ist \\((\\mathfrak{a}\\cap \\mathfrak{b})^{e} = (6)^{e} = \\mathbb{Q} = \\mathfrak{a}^{e} \\cap \\mathfrak{b}^{e}\\), während im Beispiel \\(\\mathbb{Z}[X] \\to \\mathbb{Z}[X]/(X^2)\\) Ungleichheit eintreten kann.",
+              "Zu (iv): \\(\\mathfrak{a} \\subseteq \\mathfrak{a}^{ec}\\) folgt aus \\(\\varphi(\\mathfrak{a}) \\subseteq \\mathfrak{a}^{e}\\), also \\(\\mathfrak{a} \\subseteq \\varphi^{-1}(\\mathfrak{a}^{e}) = \\mathfrak{a}^{ec}\\). Ebenso liefert \\(\\varphi(\\varphi^{-1}(\\mathfrak{b})) \\subseteq \\mathfrak{b}\\) sofort \\(\\mathfrak{b}^{ce} \\subseteq \\mathfrak{b}\\). Anwenden der Erweiterung auf \\(\\mathfrak{a} \\subseteq \\mathfrak{a}^{ec}\\) gibt \\(\\mathfrak{a}^{e} \\subseteq \\mathfrak{a}^{ece}\\); andererseits liefert \\(\\mathfrak{b}^{ce} \\subseteq \\mathfrak{b}\\) angewandt auf \\(\\mathfrak{b} := \\mathfrak{a}^{e}\\) die umgekehrte Inklusion \\(\\mathfrak{a}^{ece} \\subseteq \\mathfrak{a}^{e}\\). Analog folgt \\(\\mathfrak{b}^{c} = \\mathfrak{b}^{cec}\\)."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "idealprodukt",
+            "type": "see-also"
+          },
+          {
+            "id": "idealschnitt",
+            "type": "see-also"
+          },
+          {
+            "id": "spektrum-eines-rings",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "id": "kontraktion-von-idealen",
+      "title": "Kontraktion von Idealen",
+      "subtitle": "Kapitel 1 · Altman–Kleiman · Ideale und Ringhomomorphismen",
+      "inline": "Die Kontraktion eines Ideals \\(\\mathfrak{b} \\subseteq R'\\) längs eines <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> \\(\\varphi\\colon R \\to R'\\) ist das Urbild \\(\\varphi^{-1}(\\mathfrak{b})\\). Sie ist stets ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> in \\(R\\) und liefert das Gegenstück zur <span class=\"t\" data-ref=\"erweiterung-von-idealen\">Erweiterung von Idealen</span>.",
+      "refs": [
+        {
+          "id": "ringhomomorphismus",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "primideal",
+          "type": "required"
+        },
+        {
+          "id": "integritaetsbereich",
+          "type": "required"
+        },
+        {
+          "id": "homomorphiesatz",
+          "type": "required"
+        },
+        {
+          "id": "teilring",
+          "type": "required"
+        },
+        {
+          "id": "erweiterung-von-idealen",
+          "type": "enriches"
+        },
+        {
+          "id": "spektrum-eines-rings",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Ringhomomorphismen sollen Ideale auf beiden Seiten miteinander vergleichbar machen. Während sich Ideale nicht direkt vorwärts transportieren lassen (das Bild \\(\\varphi(\\mathfrak{a})\\) ist im Allgemeinen kein <span class=\"t\" data-ref=\"ideal\">Ideal</span> in \\(R'\\)), funktioniert das Zurückziehen problemlos: Die Kontraktion ordnet jedem <span class=\"t\" data-ref=\"ideal\">Ideal</span> des Zielrings ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> des Quellrings zu und ist das natürliche Werkzeug, um etwa Primideale zwischen Ringen zu vergleichen, die Faserstruktur eines Morphismus zu beschreiben oder <span class=\"t\" data-ref=\"spektrum-eines-rings\">Spektren</span> als Funktoren aufzufassen."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Sei \\(\\varphi\\colon R \\to R'\\) ein <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> und \\(\\mathfrak{b} \\subseteq R'\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>. Die Kontraktion von \\(\\mathfrak{b}\\) längs \\(\\varphi\\) ist definiert als \\[ \\mathfrak{b}^{c} := \\varphi^{-1}(\\mathfrak{b}) = \\{\\, x \\in R \\mid \\varphi(x) \\in \\mathfrak{b} \\,\\}. \\] Ist \\(R \\subseteq R'\\) ein <span class=\"t\" data-ref=\"teilring\">Teilring</span> und \\(\\varphi\\) die Inklusion, so schreibt man auch \\(\\mathfrak{b}^{c} = \\mathfrak{b} \\cap R\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Sei \\(\\varphi\\colon R \\to R'\\) ein <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span>. Dann gilt: (i) Für jedes <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{b} \\subseteq R'\\) ist \\(\\mathfrak{b}^{c}\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> in \\(R\\). (ii) Ist \\(\\mathfrak{q} \\subseteq R'\\) ein <span class=\"t\" data-ref=\"primideal\">Primideal</span>, so ist auch \\(\\mathfrak{q}^{c} \\subseteq R\\) ein <span class=\"t\" data-ref=\"primideal\">Primideal</span>. (iii) Die Kontraktion ist inklusionserhaltend, und es gelten \\((\\mathfrak{b}_1 \\cap \\mathfrak{b}_2)^{c} = \\mathfrak{b}_1^{c} \\cap \\mathfrak{b}_2^{c}\\) sowie \\(\\sqrt{\\mathfrak{b}}^{\\,c} = \\sqrt{\\mathfrak{b}^{c}}\\)."
+          },
+          {
+            "type": "proof",
+            "label": "Beweis",
+            "steps": [
+              "(i) Da \\(\\varphi(0) = 0 \\in \\mathfrak{b}\\), ist \\(0 \\in \\mathfrak{b}^{c}\\). Sind \\(x,y \\in \\mathfrak{b}^{c}\\), so liegen \\(\\varphi(x), \\varphi(y)\\) in \\(\\mathfrak{b}\\), also auch \\(\\varphi(x-y) = \\varphi(x) - \\varphi(y) \\in \\mathfrak{b}\\), folglich \\(x - y \\in \\mathfrak{b}^{c}\\). Für \\(r \\in R\\) und \\(x \\in \\mathfrak{b}^{c}\\) ist \\(\\varphi(rx) = \\varphi(r)\\varphi(x) \\in \\mathfrak{b}\\), also \\(rx \\in \\mathfrak{b}^{c}\\).",
+              "(ii) Sei \\(\\mathfrak{q}\\) prim. Dann ist \\(R'/\\mathfrak{q}\\) ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>. Der induzierte Homomorphismus \\(\\bar\\varphi\\colon R \\to R'/\\mathfrak{q}\\), \\(x \\mapsto \\varphi(x) + \\mathfrak{q}\\), hat als Kern genau \\(\\mathfrak{q}^{c}\\). Damit liefert der <span class=\"t\" data-ref=\"homomorphiesatz\">Homomorphiesatz</span> eine Einbettung \\(R/\\mathfrak{q}^{c} \\hookrightarrow R'/\\mathfrak{q}\\). Als <span class=\"t\" data-ref=\"teilring\">Teilring</span> eines Integritätsbereichs ist \\(R/\\mathfrak{q}^{c}\\) selbst ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>, also \\(\\mathfrak{q}^{c}\\) prim. Insbesondere ist \\(1 \\notin \\mathfrak{q}^{c}\\), da \\(\\varphi(1) = 1 \\notin \\mathfrak{q}\\).",
+              "(iii) Aus \\(\\mathfrak{b}_1 \\subseteq \\mathfrak{b}_2\\) folgt unmittelbar \\(\\varphi^{-1}(\\mathfrak{b}_1) \\subseteq \\varphi^{-1}(\\mathfrak{b}_2)\\). Für den Schnitt gilt \\(x \\in (\\mathfrak{b}_1 \\cap \\mathfrak{b}_2)^{c} \\iff \\varphi(x) \\in \\mathfrak{b}_1 \\cap \\mathfrak{b}_2 \\iff x \\in \\mathfrak{b}_1^{c} \\cap \\mathfrak{b}_2^{c}\\).",
+              "Für die Wurzel: \\(x \\in \\sqrt{\\mathfrak{b}}^{\\,c} \\iff \\varphi(x)^n \\in \\mathfrak{b}\\) für ein \\(n \\geq 1\\) \\(\\iff \\varphi(x^n) \\in \\mathfrak{b} \\iff x^n \\in \\mathfrak{b}^{c} \\iff x \\in \\sqrt{\\mathfrak{b}^{c}}\\)."
+            ]
+          }
+        ],
+        "related": [
+          {
+            "id": "lokalisierung",
+            "type": "see-also"
+          },
+          {
+            "id": "primaerzerlegung",
+            "type": "see-also"
+          }
+        ]
+      }
+    },
+    {
+      "stub": true,
+      "id": "teilring",
+      "title": "Teilring",
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Teilring eines Rings \\(R'\\) ist eine Teilmenge \\(R \\subseteq R'\\), die mit den eingeschränkten Operationen selbst ein Ring ist und die Eins von \\(R'\\) enthält.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    }
+  ]
+}

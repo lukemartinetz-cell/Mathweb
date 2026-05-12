@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernpfad · Commutative Algebra</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0 24px;background:#fff;color:#1a1a1a}
+.entry-block{border:0.5px solid #ddd;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;background:#fff}
+.block-label{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.label-def{color:#534AB7}.label-prop{color:#0F6E56}.label-proof{color:#854F0B}.label-why{color:#993C1D}
+.block-body{font-size:15px;color:#1a1a1a;line-height:1.85}
+.t{border-bottom:1px dashed #bbb;cursor:pointer;border-radius:2px;padding:0 1px;transition:background .12s}
+.t:hover{background:#f5f5f5}
+.t.open{border-bottom-style:solid;border-bottom-color:#555}
+.t.pending{border-bottom-style:dotted;border-bottom-color:#ccc}
+.t.pending.open{border-bottom-style:dotted;border-bottom-color:#999}
+.exp{display:none;border-left:1.5px solid #ddd;margin:5px 0 5px 2px;padding:2px 0 2px 12px;font-size:15px;color:#1a1a1a;line-height:1.85}
+.proof-step{margin:8px 0;padding-left:22px;position:relative}
+.step-num{position:absolute;left:0;top:2px;font-size:11px;font-weight:500;color:#999}
+.related-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pill{font-size:12px;padding:3px 12px;border-radius:99px;border:0.5px solid #ddd;color:#666;cursor:pointer;background:#fafafa}
+.pill:hover{border-color:#555;color:#1a1a1a}
+.pill-pending{border-style:dashed;color:#aaa}
+.pill-pending:hover{border-color:#aaa;color:#888}
+.nav-item{font-size:12px;padding:4px 14px;border-radius:99px;border:0.5px solid #ddd;color:#666;cursor:pointer;background:#fafafa;user-select:none}
+.nav-item:hover{border-color:#555;color:#1a1a1a}
+.nav-item.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.nav-item.stub{border-style:dashed;color:#aaa}
+.nav-item.stub:hover{border-color:#aaa;color:#888}
+#viewnav{position:fixed;top:14px;right:16px;z-index:20;display:flex;gap:7px}
+.vnav{font-size:12px;padding:4px 13px;border-radius:99px;border:0.5px solid #ddd;color:#666;background:rgba(255,255,255,0.92);backdrop-filter:blur(4px);text-decoration:none;user-select:none}
+.vnav:hover{border-color:#555;color:#1a1a1a}
+
+/* ── Phase containers ── */
+.phase{padding-top:3.5rem}
+
+/* ── Select phase ── */
+.phase-heading{font-size:22px;font-weight:500;margin:0 0 6px}
+.phase-sub{font-size:13px;color:#888;margin:0 0 2rem;line-height:1.6}
+#concept-list{display:flex;flex-wrap:wrap;gap:6px}
+
+/* ── Quiz phase ── */
+.quiz-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.quiz-target{font-size:12px;color:#888}
+.quiz-target strong{color:#1a1a1a;font-weight:500}
+.ghost-btn{font-size:12px;padding:4px 13px;border-radius:99px;border:0.5px solid #ddd;color:#666;cursor:pointer;background:#fafafa;font-family:inherit}
+.ghost-btn:hover{border-color:#555;color:#1a1a1a}
+.quiz-card{border:0.5px solid #ddd;border-radius:10px;padding:1.5rem 1.5rem 1.25rem;margin-bottom:1.5rem}
+.quiz-card-title{font-size:20px;font-weight:500;margin:0 0 3px}
+.quiz-card-subtitle{font-size:12px;color:#888;margin:0 0 1rem}
+.quiz-card-inline{font-size:14px;color:#444;line-height:1.75;border-left:1.5px solid #eee;padding-left:12px;margin-bottom:1.5rem}
+.quiz-buttons{display:flex;gap:8px}
+.quiz-btn{font-size:13px;padding:7px 20px;border-radius:99px;border:0.5px solid #ddd;cursor:pointer;background:#fafafa;color:#444;font-family:inherit;transition:background .1s,border-color .1s}
+.quiz-btn:hover{border-color:#555;color:#1a1a1a}
+.quiz-btn-no{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.quiz-btn-no:hover{background:#333;border-color:#333;color:#fff}
+.quiz-status{margin-top:2rem}
+.status-block{margin-bottom:1.25rem}
+.status-label{font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#888;display:block;margin-bottom:8px}
+.status-pills{display:flex;flex-wrap:wrap;gap:6px}
+.spill{font-size:12px;padding:3px 10px;border-radius:99px;border:0.5px solid #ddd;background:#fafafa}
+.spill-unknown{color:#1a1a1a}
+.spill-known{color:#bbb;border-color:#eee}
+
+/* ── Read phase ── */
+.read-meta{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.read-meta h2{font-size:22px;font-weight:500;margin:0}
+.read-count{font-size:13px;color:#888}
+.read-sub{font-size:13px;color:#888;margin:0 0 2rem}
+#overview-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:0.5px solid #eee}
+.concept-entry{padding-bottom:2.5rem;margin-bottom:2.5rem;border-bottom:0.5px solid #eee;scroll-margin-top:1rem}
+.concept-entry:last-child{border-bottom:none;margin-bottom:4rem}
+.concept-entry h2{font-size:22px;font-weight:500;margin:0 0 4px}
+.concept-entry .entry-sub{font-size:13px;color:#888;margin:0 0 1.5rem}
+</style>
+</head>
+<body>
+
+<div id="viewnav">
+  <a id="nav-app"      class="vnav" href="index.html"    target="_blank">App</a>
+  <a class="vnav"      href="graph.html"    target="_blank">Graph</a>
+  <a id="nav-tree" class="vnav" href="tree.html" target="_blank">Tree</a>
+</div>
+
+<!-- ── Phase 1: select target ── -->
+<div id="phase-select" class="phase">
+  <p class="phase-heading">Was möchtest du lernen?</p>
+  <p class="phase-sub">Wähle einen Begriff aus. Die Seite findet dann alle Vorkenntnisse, die du noch nicht kennst, und erstellt dir einen persönlichen Leseplan.</p>
+  <div id="concept-list"></div>
+</div>
+
+<!-- ── Phase 2: quiz ── -->
+<div id="phase-quiz" class="phase" style="display:none">
+  <div class="quiz-meta">
+    <span class="quiz-target">Lernziel: <strong id="quiz-target-title"></strong></span>
+    <button class="ghost-btn" id="btn-restart">← Neu starten</button>
+  </div>
+  <div class="quiz-card">
+    <div class="quiz-card-title"   id="quiz-title"></div>
+    <div class="quiz-card-subtitle" id="quiz-sub"></div>
+    <div class="quiz-card-inline"  id="quiz-inline"></div>
+    <div class="quiz-buttons">
+      <button class="quiz-btn"             id="btn-know">Kenne ich</button>
+      <button class="quiz-btn quiz-btn-no" id="btn-unknown">Kenne ich nicht</button>
+    </div>
+    <p style="font-size:11px;color:#bbb;margin-top:10px">← → Pfeiltasten</p>
+  </div>
+  <div class="quiz-status" id="quiz-status"></div>
+</div>
+
+<!-- ── Phase 3: reading list ── -->
+<div id="phase-read" class="phase" style="display:none">
+  <div class="read-meta">
+    <h2 id="read-title"></h2>
+    <span class="read-count" id="read-count"></span>
+  </div>
+  <p class="read-sub" id="read-sub"></p>
+  <div id="overview-row"></div>
+  <div id="read-list"></div>
+</div>
+
+<script>
+// ── Shared rendering (mirrors index.html) ────────────────────────────────
+
+let conceptIndex = {};
+let allConcepts  = [];
+
+const STEP_NUMS  = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨'];
+const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:'label-proof' };
+
+function typeset(el) {
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
+}
+
+function isFullConcept(c) {
+  return !!(c.page && Array.isArray(c.page.blocks) && c.page.blocks.length > 0 && !c.stub);
+}
+
+function processRefs(container) {
+  container.querySelectorAll('.t[data-ref]:not([data-exp])').forEach(span => {
+    const refId = span.getAttribute('data-ref');
+    const uid   = 'r' + Math.random().toString(36).slice(2, 9);
+    const div   = document.createElement('div');
+    div.id      = uid;
+    div.className = 'exp';
+    span.setAttribute('data-exp', uid);
+    if (!conceptIndex[refId]) span.classList.add('pending');
+    span.after(div);
+    span.addEventListener('click', e => { e.stopPropagation(); handleRefClick(span); });
+  });
+}
+
+function handleRefClick(span) {
+  const expEl = document.getElementById(span.getAttribute('data-exp'));
+  if (!expEl) return;
+  const isOpen = expEl.style.display === 'block';
+  if (isOpen) {
+    expEl.style.display = 'none';
+    span.classList.remove('open');
+  } else {
+    if (!expEl.dataset.rendered) {
+      const concept = conceptIndex[span.getAttribute('data-ref')];
+      if (concept && concept.alias_of) {
+        const target = conceptIndex[concept.alias_of];
+        const nav = target && isFullConcept(target)
+          ? `<br><span data-alias-nav="${concept.alias_of}" style="font-size:11px;color:#888;cursor:pointer;border-bottom:1px dashed #bbb">→ ${target.title}</span>`
+          : '';
+        expEl.innerHTML = concept.inline + nav;
+        typeset(expEl);
+      } else if (concept) {
+        expEl.innerHTML = concept.inline;
+        processRefs(expEl);
+        typeset(expEl);
+      } else {
+        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition noch nicht vorhanden.</em>';
+      }
+      expEl.dataset.rendered = '1';
+    }
+    expEl.style.display = 'block';
+    span.classList.add('open');
+  }
+}
+
+function renderBlock(block) {
+  const cls  = TYPE_CLASS[block.type] || 'label-def';
+  const body = block.type === 'proof'
+    ? block.steps.map((s, i) => `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`).join('')
+    : block.body;
+  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
+}
+
+function renderConceptBody(c) {
+  if (!isFullConcept(c)) {
+    return `<div class="entry-block"><div class="block-body">${c.inline || ''}</div></div>
+            <p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
+  }
+  const related = (c.page.related || []).map(entry => {
+    const id    = typeof entry === 'string' ? entry : entry.id;
+    const rc    = conceptIndex[id];
+    const label = rc ? rc.title : id;
+    const cls   = rc ? 'pill' : 'pill pill-pending';
+    return `<span class="${cls}" data-nav="${id}">${label}</span>`;
+  }).join('');
+  return c.page.blocks.map(renderBlock).join('');
+}
+
+// ── Quiz state ────────────────────────────────────────────────────────────
+
+let targetId    = null;
+let knownSet    = new Set();
+let unknownSet  = new Set();
+let askedSet    = new Set();
+let quizQueue   = [];
+let questionNum = 0;
+
+function resolveAlias(id) {
+  let cur = id, hops = 0;
+  while (conceptIndex[cur]?.alias_of && hops++ < 10) cur = conceptIndex[cur].alias_of;
+  return cur;
+}
+
+function getRequiredParents(id) {
+  const c = conceptIndex[id];
+  if (!c || !c.refs) return [];
+  return [...new Set(
+    c.refs
+      .filter(r => r.type === 'required')
+      .map(r => resolveAlias(r.id))
+      .filter(pid => pid !== id && conceptIndex[pid] && !conceptIndex[pid].alias_of && isFullConcept(conceptIndex[pid]))
+  )];
+}
+
+function topoSort(ids) {
+  const idSet    = new Set(ids);
+  const inDeg    = Object.fromEntries(ids.map(id => [id, 0]));
+  const children = Object.fromEntries(ids.map(id => [id, []]));
+
+  for (const id of ids) {
+    for (const pid of getRequiredParents(id)) {
+      if (idSet.has(pid)) {
+        inDeg[id]++;
+        children[pid].push(id);
+      }
+    }
+  }
+
+  const sorted = [];
+  const q = ids.filter(id => inDeg[id] === 0);
+  while (q.length) {
+    const id = q.shift();
+    sorted.push(id);
+    for (const dep of children[id]) {
+      if (--inDeg[dep] === 0) q.push(dep);
+    }
+  }
+  // append any remaining (cycles shouldn't exist, but just in case)
+  for (const id of ids) if (!sorted.includes(id)) sorted.push(id);
+  return sorted;
+}
+
+// ── Phase management ──────────────────────────────────────────────────────
+
+function showPhase(name) {
+  ['select', 'quiz', 'read'].forEach(p =>
+    document.getElementById('phase-' + p).style.display = (p === name ? '' : 'none')
+  );
+  window.scrollTo(0, 0);
+}
+
+function restart() {
+  targetId = null;
+  knownSet = new Set(); unknownSet = new Set();
+  askedSet = new Set(); quizQueue  = [];
+  questionNum = 0;
+  showPhase('select');
+}
+
+// ── Phase 1: concept selection ────────────────────────────────────────────
+
+function buildSelectPhase() {
+  const el = document.getElementById('concept-list');
+  el.innerHTML = allConcepts
+    .filter(c => !c.alias_of && isFullConcept(c))
+    .map(c => `<span class="nav-item" data-id="${c.id}">${c.title}</span>`)
+    .join('');
+  el.querySelectorAll('.nav-item').forEach(item =>
+    item.addEventListener('click', function() { selectTarget(this.dataset.id); })
+  );
+}
+
+function selectTarget(id) {
+  targetId = resolveAlias(id);
+  const c  = conceptIndex[targetId];
+  if (!c) return;
+
+  unknownSet.add(targetId);
+  askedSet.add(targetId);
+  document.getElementById('quiz-target-title').textContent = c.title;
+  updateNavLinks(targetId);
+
+  for (const pid of getRequiredParents(targetId)) {
+    if (!askedSet.has(pid)) { quizQueue.push(pid); askedSet.add(pid); }
+  }
+
+  questionNum = 0;
+  showPhase('quiz');
+  nextQuestion();
+}
+
+// ── Phase 2: quiz ─────────────────────────────────────────────────────────
+
+function nextQuestion() {
+  renderQuizStatus();
+  if (!quizQueue.length) { finishQuiz(); return; }
+  showQuestion(quizQueue.shift());
+}
+
+function showQuestion(id) {
+  questionNum++;
+  const c = conceptIndex[id];
+  document.getElementById('quiz-title').textContent = c?.title || id;
+  document.getElementById('quiz-sub').textContent   = c?.subtitle || '';
+
+  const inlineEl = document.getElementById('quiz-inline');
+  inlineEl.innerHTML = c?.inline || '';
+  inlineEl.style.display = c?.inline ? '' : 'none';
+  typeset(inlineEl);
+
+  document.getElementById('btn-know').onclick    = () => answer(id, true);
+  document.getElementById('btn-unknown').onclick = () => answer(id, false);
+}
+
+function answer(id, isKnown) {
+  if (isKnown) {
+    knownSet.add(id);
+  } else {
+    unknownSet.add(id);
+    for (const pid of getRequiredParents(id)) {
+      if (!askedSet.has(pid)) { quizQueue.push(pid); askedSet.add(pid); }
+    }
+  }
+  nextQuestion();
+}
+
+function renderQuizStatus() {
+  const el       = document.getElementById('quiz-status');
+  const unkTitles = [...unknownSet].map(id => conceptIndex[id]?.title || id);
+  const knTitles  = [...knownSet].map(id => conceptIndex[id]?.title || id);
+  let html = '';
+  if (unkTitles.length)
+    html += `<div class="status-block"><span class="status-label">Noch zu lernen (${unkTitles.length})</span><div class="status-pills">${unkTitles.map(t => `<span class="spill spill-unknown">${t}</span>`).join('')}</div></div>`;
+  if (knTitles.length)
+    html += `<div class="status-block"><span class="status-label">Bereits bekannt (${knTitles.length})</span><div class="status-pills">${knTitles.map(t => `<span class="spill spill-known">${t}</span>`).join('')}</div></div>`;
+  el.innerHTML = html;
+}
+
+// ── Phase 3: reading list ─────────────────────────────────────────────────
+
+function finishQuiz() {
+  const sorted = topoSort([...unknownSet].filter(id => isFullConcept(conceptIndex[id])));
+  buildReadingList(sorted);
+  showPhase('read');
+}
+
+function buildReadingList(sortedIds) {
+  const target = conceptIndex[targetId];
+
+  document.getElementById('read-title').textContent = target?.title || targetId;
+  document.getElementById('read-count').textContent = `${sortedIds.length} Begriff${sortedIds.length !== 1 ? 'e' : ''}`;
+  document.getElementById('read-sub').textContent   = 'Sortiert von den Grundlagen zum Lernziel — kein Begriff setzt ein unbekanntes Vorwissen voraus.';
+
+  // Overview pills
+  const overviewEl = document.getElementById('overview-row');
+  overviewEl.innerHTML = sortedIds.map(id => {
+    const c = conceptIndex[id];
+    return `<span class="nav-item${id === targetId ? ' active' : ''}" data-anchor="${id}">${c?.title || id}</span>`;
+  }).join('');
+  overviewEl.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function() {
+      document.getElementById('entry-' + this.dataset.anchor)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      overviewEl.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Full concept entries
+  const listEl = document.getElementById('read-list');
+  listEl.innerHTML = sortedIds.map(id => {
+    const c = conceptIndex[id];
+    if (!c) return '';
+    return `<div class="concept-entry" id="entry-${id}">
+      <h2>${c.title}</h2>
+      <p class="entry-sub">${c.subtitle || ''}</p>
+      ${renderConceptBody(c)}
+    </div>`;
+  }).join('');
+
+  // Related pills: scroll within the page if target entry exists, otherwise link to app
+  listEl.querySelectorAll('.pill[data-nav]').forEach(pill => {
+    pill.addEventListener('click', function() {
+      const anchor = document.getElementById('entry-' + this.dataset.nav);
+      if (anchor) {
+        anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        const tid = conceptIndex[this.dataset.nav];
+        if (tid) window.open(`index.html?c=${encodeURIComponent(this.dataset.nav)}`, '_blank');
+      }
+    });
+  });
+
+  // Intersection observer: sync the active pill in overview as user scrolls
+  const entries = listEl.querySelectorAll('.concept-entry');
+  const obs = new IntersectionObserver(changes => {
+    for (const ch of changes) {
+      if (ch.isIntersecting) {
+        const id = ch.target.id.replace('entry-', '');
+        overviewEl.querySelectorAll('.nav-item').forEach(n =>
+          n.classList.toggle('active', n.dataset.anchor === id)
+        );
+      }
+    }
+  }, { threshold: 0.25 });
+  entries.forEach(e => obs.observe(e));
+
+  processRefs(listEl);
+  typeset(listEl);
+}
+
+// ── Nav links ─────────────────────────────────────────────────────────────
+
+function updateNavLinks(id) {
+  const c = encodeURIComponent(id);
+  document.getElementById('nav-app').href      = `index.html?c=${c}`;
+  document.getElementById('nav-tree').href = `tree.html?c=${c}`;
+}
+
+// ── Restart buttons ───────────────────────────────────────────────────────
+
+document.getElementById('btn-restart').addEventListener('click', restart);
+
+// ── Keyboard shortcuts (quiz phase only) ─────────────────────────────────
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('phase-quiz').style.display === 'none') return;
+  if (e.key === 'ArrowLeft')  document.getElementById('btn-know').click();
+  if (e.key === 'ArrowRight') document.getElementById('btn-unknown').click();
+});
+
+// ── Load ─────────────────────────────────────────────────────────────────
+
+fetch('concepts.json')
+  .then(r => r.json())
+  .then(data => {
+    allConcepts = data.concepts;
+    allConcepts.forEach(c => conceptIndex[c.id] = c);
+    buildSelectPhase();
+    const startId = new URLSearchParams(location.search).get('c');
+    if (startId && conceptIndex[startId]) selectTarget(startId);
+    else showPhase('select');
+  })
+  .catch(err => {
+    document.getElementById('concept-list').innerHTML =
+      `<p style="color:#c00;font-size:14px">Error loading concepts.json: ${err.message}</p>`;
+  });
+
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, startup: { ready() { MathJax.startup.defaultReady(); } } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+</body>
+</html>

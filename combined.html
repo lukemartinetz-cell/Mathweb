@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commutative Algebra · Combined</title>
+<style>
+/* ── Reset & split layout ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; }
+
+#split { display: flex; width: 100%; height: 100%; }
+
+#explorer-panel {
+  flex: 0 0 40%;
+  min-width: 380px;
+  position: relative;
+  background: #d0d0d0;
+  overflow: hidden;
+}
+
+#app-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+  border-left: 0.5px solid #bbb;
+}
+
+.app-content {
+  max-width: 780px;
+  margin: 40px auto;
+  padding: 0 24px 60px;
+  color: #1a1a1a;
+}
+
+/* ── App content styles (identical to index.html) ── */
+.entry-block { border: 0.5px solid #ddd; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; background: #fff; }
+.block-label { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+.label-def  { color: #534AB7; }
+.label-prop { color: #0F6E56; }
+.label-proof{ color: #854F0B; }
+.label-why  { color: #993C1D; }
+.block-body { font-size: 15px; color: #1a1a1a; line-height: 1.85; }
+.t { border-bottom: 1px dashed #bbb; cursor: pointer; border-radius: 2px; padding: 0 1px; transition: background .12s; }
+.t:hover { background: #f5f5f5; }
+.t.open { border-bottom-style: solid; border-bottom-color: #555; }
+.t.pending { border-bottom-style: dotted; border-bottom-color: #ccc; }
+.t.pending.open { border-bottom-style: dotted; border-bottom-color: #999; }
+.exp { display: none; border-left: 1.5px solid #ddd; margin: 5px 0 5px 2px; padding: 2px 0 2px 12px; font-size: 15px; color: #1a1a1a; line-height: 1.85; }
+.proof-step { margin: 8px 0; padding-left: 22px; position: relative; }
+.step-num { position: absolute; left: 0; top: 2px; font-size: 11px; font-weight: 500; color: #999; }
+.related-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.pill { font-size: 12px; padding: 3px 12px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; cursor: pointer; background: #fafafa; }
+.pill:hover { border-color: #555; color: #1a1a1a; }
+.pill-pending { border-style: dashed; color: #aaa; }
+.pill-pending:hover { border-color: #aaa; color: #888; }
+
+/* ── Explorer canvas ── */
+#canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+#canvas:active { cursor: grabbing; }
+
+#fog {
+  position: absolute; inset: 0; pointer-events: none; z-index: 4;
+  background: radial-gradient(ellipse at center,
+    transparent 22%, rgba(208,208,208,0.32) 55%, rgba(208,208,208,0.91) 100%);
+}
+
+.orbit-ring { fill: none; stroke: #ccc; stroke-width: 0.5; }
+
+.conn          { fill: none; }
+.conn-required { stroke: #555; stroke-width: 1; opacity: 0.45; }
+.conn-back     { stroke: #bbb; stroke-width: 0.5; opacity: 0.35; stroke-dasharray: 4 4; }
+
+.node { cursor: pointer; }
+.node:hover circle.body { stroke: #534AB7 !important; stroke-width: 2.5 !important; }
+
+.node-center   circle.body { fill: #1a1a1a; stroke: none; }
+.node-required circle.body { fill: #1a1a1a; stroke: none; }
+.node-back     circle.body { fill: #b8b8b8; stroke: #333; stroke-width: 2.5; }
+.node-stub { opacity: 0.45; }
+
+text.lbl {
+  text-anchor: middle; pointer-events: none;
+  font-family: system-ui, sans-serif; font-size: 10px; fill: #1a1a1a;
+  paint-order: stroke; stroke: rgba(208,208,208,0.9); stroke-width: 4px; stroke-linejoin: round;
+}
+.node-back text.lbl { font-size: 10px; fill: #444; }
+
+/* ── Explorer legend ── */
+#exp-legend {
+  position: absolute; bottom: 20px; left: 20px; z-index: 10;
+  background: rgba(255,255,255,0.93); border: 0.5px solid #ddd; border-radius: 10px;
+  padding: 12px 16px; font-size: 12px; color: #1a1a1a; line-height: 1;
+  backdrop-filter: blur(6px); user-select: none;
+}
+.ltitle { font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+.lr { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.lr:last-child { margin-bottom: 0; }
+.lc { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+.lc-ctr { background: #1a1a1a; }
+.lc-req { background: #1a1a1a; }
+
+/* ── View nav (top-right of app panel) ── */
+#viewnav {
+  position: fixed; top: 14px; right: 16px; z-index: 20;
+  display: flex; gap: 7px;
+}
+.vnav {
+  font-size: 12px; padding: 4px 13px; border-radius: 99px;
+  border: 0.5px solid #ddd; color: #666;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(4px);
+  text-decoration: none; user-select: none;
+}
+.vnav:hover { border-color: #555; color: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<div id="split">
+
+  <!-- ── Explorer (left 40%) ── -->
+  <div id="explorer-panel">
+    <svg id="canvas"></svg>
+    <div id="fog"></div>
+    <div id="exp-legend">
+      <div class="ltitle">Legende</div>
+      <div class="lr"><div class="lc lc-ctr"></div><span>Zentrum</span></div>
+      <div class="lr"><div class="lc lc-req"></div><span>Voraussetzung</span></div>
+    </div>
+  </div>
+
+  <!-- ── App content (right 60%) ── -->
+  <div id="app-panel">
+    <div class="app-content">
+      <div id="app"></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="viewnav">
+  <a id="nav-app"      class="vnav" href="index.html"   target="_blank">App</a>
+  <a class="vnav"      href="graph.html"   target="_blank">Graph</a>
+  <a id="nav-explorer" class="vnav" href="explore.html" target="_blank">Explorer</a>
+  <a id="nav-tree"     class="vnav" href="tree.html"    target="_blank">Tree</a>
+  <a id="nav-learn"    class="vnav" href="learn.html"   target="_blank">Learn</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+// ── Shared ───────────────────────────────────────────────────────────────────
+let conceptIndex = {};
+let allConcepts  = [];
+
+// ── Explorer constants ────────────────────────────────────────────────────────
+const R          = { center: 40, required: 22, enriches: 18, seealso: 13, back: 24 };
+const ORBIT      = { required: 165, enriches: 285, seealso: 400 };
+const BACK_ORBIT = 340;
+const DUR        = 800;
+
+let currentId       = null;
+let centerX         = 0, centerY = 0;
+let currentCameFrom = null;
+let backStack       = [];
+let busy            = false;
+
+// ── Explorer init ─────────────────────────────────────────────────────────────
+const expPanel = document.getElementById('explorer-panel');
+const EW = expPanel.clientWidth;
+const EH = expPanel.clientHeight;
+
+const svg  = d3.select('#canvas').attr('width', EW).attr('height', EH);
+const root = svg.append('g');
+
+// Scale so required orbit + back node both fit, with room to breathe
+const MAX_EXTENT = Math.max(ORBIT.required + R.required, BACK_ORBIT + R.back) + 50;
+const initScale  = Math.min(EW, EH) * 0.62 / MAX_EXTENT;
+
+const zoom = d3.zoom()
+  .scaleExtent([0.08, 6])
+  .on('zoom', e => root.attr('transform', e.transform));
+svg.call(zoom);
+svg.call(zoom.transform, d3.zoomIdentity.translate(EW / 2, EH / 2).scale(initScale));
+
+const orbitLayer = root.append('g');
+const lineLayer  = root.append('g');
+const nodeLayer  = root.append('g');
+
+// Arrow markers
+const defs = svg.append('defs');
+for (const [id, color] of [['arr-required','#555']]) {
+  defs.append('marker')
+    .attr('id', id).attr('viewBox', '0 -4 9 8')
+    .attr('refX', 9).attr('refY', 0)
+    .attr('markerWidth', 5).attr('markerHeight', 5).attr('orient', 'auto')
+    .append('path').attr('d', 'M0,-4L9,0L0,4').attr('fill', color);
+}
+
+// ── Explorer helpers ──────────────────────────────────────────────────────────
+function isFullConcept(c) {
+  return !!(c && c.page && Array.isArray(c.page.blocks) && c.page.blocks.length > 0 && !c.stub);
+}
+function resolveAlias(id) {
+  const c = conceptIndex[id];
+  return (c && c.alias_of) ? c.alias_of : id;
+}
+function nodeR(role) { return R[role] ?? R.seealso; }
+function nodeClass(d) {
+  if (d.id === '__back__') return 'node node-back';
+  const stub = d.role !== 'center' && !isFullConcept(d.concept);
+  return `node node-${d.role}${stub ? ' node-stub' : ''}`;
+}
+
+// ── Layout ────────────────────────────────────────────────────────────────────
+function computeLayout(conceptId, cx, cy) {
+  const concept = conceptIndex[conceptId];
+  if (!concept) return [];
+  const required = (concept.refs ?? []).filter(r => r.type === 'required');
+
+  const nodes = [{ id: conceptId, role: 'center', concept, x: cx, y: cy }];
+
+  required.forEach((item, i, arr) => {
+    const id = typeof item === 'string' ? item : item.id;
+    const a  = -Math.PI / 2 + (arr.length > 1 ? 2 * Math.PI * i / arr.length : 0);
+    nodes.push({ id, role: 'required', concept: conceptIndex[id] || null,
+      x: cx + Math.round(Math.cos(a) * ORBIT.required),
+      y: cy + Math.round(Math.sin(a) * ORBIT.required) });
+  });
+
+  if (backStack.length > 0 && currentCameFrom) {
+    const backId = backStack[backStack.length - 1].id;
+    nodes.push({ id: '__back__', backTargetId: backId, role: 'back',
+      concept: conceptIndex[backId] || null,
+      x: cx + Math.round(currentCameFrom.x * BACK_ORBIT),
+      y: cy + Math.round(currentCameFrom.y * BACK_ORBIT) });
+  }
+  return nodes;
+}
+
+// ── Label helpers ─────────────────────────────────────────────────────────────
+function wrapTitle(title, maxC) {
+  if (!title || title.length <= maxC) return [title || ''];
+  const mid = Math.floor(title.length / 2);
+  let cut = title.lastIndexOf(' ', mid + 5);
+  if (cut < 2) cut = title.indexOf(' ', mid - 5);
+  if (cut < 2) cut = maxC;
+  const l2 = title.slice(cut).trim();
+  return [title.slice(0, cut).trim(), l2.length > maxC ? l2.slice(0, maxC - 1) + '…' : l2];
+}
+
+function applyLabel(sel, d) {
+  sel.selectAll('tspan').remove();
+  const r = nodeR(d.role);
+  if (d.id === '__back__') {
+    const t = d.concept?.title || d.backTargetId || '';
+    sel.append('tspan').attr('x', 0).attr('dy', r + 14)
+      .text('↩ ' + (t.length > 13 ? t.slice(0, 12) + '…' : t));
+    return;
+  }
+  const lineH = 15;
+  const lines = wrapTitle(d.concept?.title || d.id, d.role === 'center' ? 14 : 13);
+  const base  = r + (d.role === 'center' ? 16 : 14);
+  const dy0   = lines.length > 1 ? base - lineH * 0.45 : base;
+  lines.forEach((line, i) =>
+    sel.append('tspan').attr('x', 0).attr('dy', i === 0 ? dy0 : lineH).text(line));
+}
+
+// ── Apply layout ──────────────────────────────────────────────────────────────
+function applyLayout(layout, t) {
+  const cx = layout[0]?.x ?? 0;
+  const cy = layout[0]?.y ?? 0;
+
+  const regular = layout.filter(d => d.id !== '__back__' && d.role !== 'center');
+  const radii = regular.some(d => d.role === 'required') ? [ORBIT.required] : [];
+
+  orbitLayer.selectAll('circle.orbit-ring').data(radii).join(
+    e => e.append('circle').attr('class', 'orbit-ring')
+           .attr('cx', cx).attr('cy', cy).attr('r', 0)
+           .call(s => s.transition(t).attr('r', d => d)),
+    u => u.call(s => s.transition(t).attr('cx', cx).attr('cy', cy).attr('r', d => d)),
+    x => x.call(s => s.transition(t).attr('r', 0).remove())
+  );
+
+  const sats = layout.filter(d => d.role !== 'center');
+  function connMarker(d) {
+    if (d.id === '__back__') return null;
+    return 'url(#arr-required)';
+  }
+  function ex2(d) {
+    const dx = d.x - cx, dy = d.y - cy, len = Math.hypot(dx, dy) || 1;
+    return d.x - (dx / len) * (nodeR(d.role) + 3);
+  }
+  function ey2(d) {
+    const dx = d.x - cx, dy = d.y - cy, len = Math.hypot(dx, dy) || 1;
+    return d.y - (dy / len) * (nodeR(d.role) + 3);
+  }
+
+  lineLayer.selectAll('line.conn').data(sats, d => d.id).join(
+    e => {
+      const l = e.append('line')
+        .attr('class', d => `conn conn-${d.id === '__back__' ? 'back' : d.role}`)
+        .attr('marker-end', d => connMarker(d))
+        .attr('x1', cx).attr('y1', cy).attr('x2', cx).attr('y2', cy).style('opacity', 0);
+      l.transition(t).style('opacity', 1)
+        .attr('x1', cx).attr('y1', cy).attr('x2', d => ex2(d)).attr('y2', d => ey2(d));
+      return l;
+    },
+    u => {
+      u.attr('class', d => `conn conn-${d.id === '__back__' ? 'back' : d.role}`)
+       .attr('marker-end', d => connMarker(d));
+      u.transition(t)
+        .attr('x1', cx).attr('y1', cy).attr('x2', d => ex2(d)).attr('y2', d => ey2(d));
+      return u;
+    },
+    x => x.transition(t).attr('x2', cx).attr('y2', cy).style('opacity', 0).remove()
+  );
+
+  nodeLayer.selectAll('g.node').data(layout, d => d.id).join(
+    enter => {
+      const g = enter.append('g')
+        .attr('class', d => nodeClass(d))
+        .attr('transform', d => `translate(${d.x},${d.y})`).style('opacity', 0);
+      g.append('circle').attr('class', 'body').attr('r', d => nodeR(d.role));
+      g.append('text').attr('class', 'lbl').each(function(d) { applyLabel(d3.select(this), d); });
+      g.on('click', onNodeClick);
+      g.transition(t).style('opacity', 1);
+      return g;
+    },
+    update => {
+      update.attr('class', d => nodeClass(d));
+      update.select('circle.body').transition(t).attr('r', d => nodeR(d.role));
+      update.select('text.lbl').each(function(d) { applyLabel(d3.select(this), d); });
+      update.transition(t).attr('transform', d => `translate(${d.x},${d.y})`).style('opacity', 1);
+      return update;
+    },
+    exit => exit.each(function(d) {
+      const dx = d.x - cx, dy = d.y - cy, len = Math.hypot(dx, dy) || 1;
+      d3.select(this).transition(t)
+        .attr('transform', `translate(${d.x + dx/len*55},${d.y + dy/len*55})`)
+        .style('opacity', 0).remove();
+    })
+  );
+
+  requestAnimationFrame(() => {
+    nodeLayer.selectAll('.node-back').raise();
+    nodeLayer.selectAll('.node-center').raise();
+  });
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function onNodeClick(_ev, d) {
+  if (d.role === 'center') return;
+  if (d.id === '__back__') navigateTo(resolveAlias(d.backTargetId), d.x, d.y, true);
+  else navigateTo(resolveAlias(d.id));
+}
+
+function navigateTo(targetId, forceX, forceY, isBack = false) {
+  if (busy || !conceptIndex[targetId] || targetId === currentId) return;
+  busy = true;
+
+  let tx, ty;
+  if (forceX !== undefined) {
+    tx = forceX; ty = forceY;
+  } else {
+    const target = nodeLayer.selectAll('g.node').data().find(d => d.id === targetId);
+    if (!target) { busy = false; return; }
+    tx = target.x; ty = target.y;
+  }
+
+  if (isBack) {
+    const entry = backStack.pop();
+    currentCameFrom = entry ? entry.cameFrom : null;
+  } else {
+    backStack.push({ id: currentId, cameFrom: currentCameFrom });
+    const dx = centerX - tx, dy = centerY - ty, len = Math.hypot(dx, dy) || 1;
+    currentCameFrom = { x: dx / len, y: dy / len };
+  }
+
+  currentId = targetId;
+  centerX = tx; centerY = ty;
+
+  const newLayout = computeLayout(targetId, tx, ty);
+  const tr = d3.transition().duration(DUR).ease(d3.easeCubicInOut);
+  const k  = d3.zoomTransform(svg.node()).k;
+  svg.transition(tr).call(zoom.transform,
+    d3.zoomIdentity.translate(EW / 2 - tx * k, EH / 2 - ty * k).scale(k));
+  applyLayout(newLayout, tr);
+  syncNavLinks(targetId);
+
+  const concept = conceptIndex[targetId];
+  if (concept) renderConcept(concept);
+
+  setTimeout(() => { busy = false; }, DUR + 50);
+}
+
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Backspace' || e.key === 'Escape') && backStack.length > 0) {
+    const backNode = nodeLayer.selectAll('g.node').data().find(d => d.id === '__back__');
+    if (backNode) navigateTo(backStack[backStack.length - 1].id, backNode.x, backNode.y, true);
+  }
+});
+
+function syncNavLinks(id) {
+  const c = encodeURIComponent(id);
+  document.getElementById('nav-app').href      = `index.html?c=${c}`;
+  document.getElementById('nav-explorer').href = `explore.html?c=${c}`;
+  document.getElementById('nav-tree').href     = `tree.html?c=${c}`;
+  document.getElementById('nav-learn').href    = `learn.html?c=${c}`;
+}
+
+// ── App panel (identical logic to index.html, minus the top nav) ──────────────
+const STEP_NUMS = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨'];
+const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:'label-proof' };
+
+function typeset(el) {
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
+}
+
+function processRefs(container) {
+  container.querySelectorAll('.t[data-ref]:not([data-exp])').forEach(span => {
+    const refId = span.getAttribute('data-ref');
+    const uid = 'r' + Math.random().toString(36).slice(2, 9);
+    const div = document.createElement('div');
+    div.id = uid; div.className = 'exp';
+    span.setAttribute('data-exp', uid);
+    if (!conceptIndex[refId]) span.classList.add('pending');
+    span.after(div);
+    span.addEventListener('click', e => { e.stopPropagation(); handleRefClick(span); });
+  });
+}
+
+function handleRefClick(span) {
+  const expEl = document.getElementById(span.getAttribute('data-exp'));
+  if (!expEl) return;
+  const isOpen = expEl.style.display === 'block';
+  if (isOpen) {
+    expEl.style.display = 'none'; span.classList.remove('open');
+  } else {
+    if (!expEl.dataset.rendered) {
+      const concept = conceptIndex[span.getAttribute('data-ref')];
+      if (concept && concept.alias_of) {
+        const target = conceptIndex[concept.alias_of];
+        const nav = target && isFullConcept(target)
+          ? `<br><span data-alias-nav="${concept.alias_of}" style="font-size:11px;color:#888;cursor:pointer;border-bottom:1px dashed #bbb">→ ${target.title}</span>`
+          : '';
+        expEl.innerHTML = concept.inline + nav;
+        expEl.querySelectorAll('[data-alias-nav]').forEach(el =>
+          el.addEventListener('click', () => {
+            const t = conceptIndex[el.dataset.aliasNav];
+            if (t) navigateTo(t.id);
+          })
+        );
+        typeset(expEl);
+      } else if (concept) {
+        expEl.innerHTML = concept.inline;
+        processRefs(expEl); typeset(expEl);
+      } else {
+        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition noch nicht vorhanden.</em>';
+      }
+      expEl.dataset.rendered = '1';
+    }
+    expEl.style.display = 'block'; span.classList.add('open');
+  }
+}
+
+function renderBlock(block) {
+  const cls  = TYPE_CLASS[block.type] || 'label-def';
+  const body = block.type === 'proof'
+    ? block.steps.map((s, i) =>
+        `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`
+      ).join('')
+    : block.body;
+  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
+}
+
+function renderConcept(concept) {
+  const app = document.getElementById('app');
+
+  if (!isFullConcept(concept)) {
+    app.innerHTML =
+      `<h2 style="font-size:22px;font-weight:500;margin:0 0 4px">${concept.title}</h2>` +
+      `<p style="font-size:13px;color:#888;margin:0 0 1.5rem">${concept.subtitle}</p>` +
+      `<div class="entry-block"><div class="block-body">${concept.inline}</div></div>` +
+      `<p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
+    processRefs(app); typeset(app);
+    return;
+  }
+
+  const related = (concept.page.related || []).map(entry => {
+    const id = typeof entry === 'string' ? entry : entry.id;
+    const c  = conceptIndex[id];
+    return `<span class="${c ? 'pill' : 'pill pill-pending'}" data-nav="${id}">${c ? c.title : id}</span>`;
+  }).join('');
+
+  app.innerHTML =
+    `<h2 style="font-size:22px;font-weight:500;margin:0 0 4px">${concept.title}</h2>` +
+    `<p style="font-size:13px;color:#888;margin:0 0 1.5rem">${concept.subtitle}</p>` +
+    concept.page.blocks.map(renderBlock).join('');
+
+  processRefs(app);
+  app.querySelectorAll('.pill[data-nav]').forEach(pill =>
+    pill.addEventListener('click', function() {
+      navigateTo(resolveAlias(this.getAttribute('data-nav')));
+    })
+  );
+  document.getElementById('app-panel').scrollTop = 0;
+  typeset(app);
+}
+
+// ── Bootstrap ─────────────────────────────────────────────────────────────────
+fetch('concepts.json')
+  .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+  .then(data => {
+    allConcepts = data.concepts;
+    allConcepts.forEach(c => conceptIndex[c.id] = c);
+    const startId = new URLSearchParams(location.search).get('c');
+    const first   = (startId && conceptIndex[startId]) || allConcepts.find(isFullConcept) || allConcepts[0];
+    currentId = first.id;
+    const tIn = d3.transition().duration(Math.round(DUR * 0.65)).ease(d3.easeCubicOut);
+    applyLayout(computeLayout(currentId, 0, 0), tIn);
+    syncNavLinks(currentId);
+    renderConcept(first);
+  })
+  .catch(err => { document.getElementById('app').textContent = 'Error: ' + err.message; });
+</script>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  startup: { ready() { MathJax.startup.defaultReady(); } }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+</body>
+</html>

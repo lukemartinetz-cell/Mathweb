@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commutative Algebra · Tree</title>
+<style>
+/* ── Reset & layout ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; background: #fff; }
+
+#split { display: flex; width: 100%; height: 100%; }
+
+#tree-panel {
+  flex: 0 0 38%;
+  min-width: 280px;
+  position: relative;
+  background: #fff;
+  overflow: hidden;
+}
+
+#app-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+}
+
+.app-content {
+  max-width: 780px;
+  margin: 40px auto;
+  padding: 0 24px 60px;
+  color: #1a1a1a;
+}
+
+/* ── Tree ── */
+#canvas { display: block; width: 100%; height: 100%; cursor: default; user-select: none; }
+
+.tree-edge { stroke: #bbb; stroke-width: 1.5; fill: none; }
+
+.tree-node { cursor: pointer; }
+.tree-node.is-center { cursor: default; }
+.tree-node circle { fill: #1a1a1a; }
+.tree-node:not(.is-center):hover circle { stroke: #555; stroke-width: 2.5; }
+
+text.lbl {
+  text-anchor: middle;
+  pointer-events: none;
+  font-family: system-ui, sans-serif;
+  font-size: 12px;
+  fill: #1a1a1a;
+  paint-order: stroke;
+  stroke: rgba(255,255,255,0.92);
+  stroke-width: 4.5px;
+  stroke-linejoin: round;
+}
+
+/* ── App styles (identical to index.html) ── */
+.entry-block { border: 0.5px solid #ddd; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; background: #fff; }
+.block-label { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+.label-def  { color: #534AB7; }
+.label-prop { color: #0F6E56; }
+.label-proof{ color: #854F0B; }
+.label-why  { color: #993C1D; }
+.block-body { font-size: 15px; color: #1a1a1a; line-height: 1.85; }
+.t { border-bottom: 1px dashed #bbb; cursor: pointer; border-radius: 2px; padding: 0 1px; transition: background .12s; }
+.t:hover { background: #f5f5f5; }
+.t.open { border-bottom-style: solid; border-bottom-color: #555; }
+.t.pending { border-bottom-style: dotted; border-bottom-color: #ccc; }
+.t.pending.open { border-bottom-style: dotted; border-bottom-color: #999; }
+.exp { display: none; border-left: 1.5px solid #ddd; margin: 5px 0 5px 2px; padding: 2px 0 2px 12px; font-size: 15px; color: #1a1a1a; line-height: 1.85; }
+.proof-step { margin: 8px 0; padding-left: 22px; position: relative; }
+.step-num { position: absolute; left: 0; top: 2px; font-size: 11px; font-weight: 500; color: #999; }
+.related-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.pill { font-size: 12px; padding: 3px 12px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; cursor: pointer; background: #fafafa; }
+.pill:hover { border-color: #555; color: #1a1a1a; }
+.pill-pending { border-style: dashed; color: #aaa; }
+
+/* ── Viewnav ── */
+#viewnav { position: fixed; top: 14px; right: 16px; z-index: 20; display: flex; gap: 7px; }
+.vnav {
+  font-size: 12px; padding: 4px 13px; border-radius: 99px;
+  border: 0.5px solid #ddd; color: #666;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(4px);
+  text-decoration: none; user-select: none;
+}
+.vnav:hover { border-color: #555; color: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<div id="split">
+  <div id="tree-panel"><svg id="canvas"></svg></div>
+  <div id="app-panel">
+    <div class="app-content"><div id="app"></div></div>
+  </div>
+</div>
+
+<div id="viewnav">
+  <a id="nav-app"      class="vnav" href="index.html"    target="_blank">App</a>
+  <a class="vnav"      href="graph.html"    target="_blank">Graph</a>
+  <a id="nav-learn" class="vnav" href="learn.html" target="_blank">Learn</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+// ── Constants ─────────────────────────────────────────────────────────────────
+const R_CENTER  = 22;    // center node radius
+const R_NODE    = 14;    // parent/child node radius
+const DUR       = 950;   // animation duration ms
+const VERT_GAP  = 130;   // vertical distance between rows
+const MAX_HORIZ = 130;   // max horizontal spacing between node centres
+const SIDE_PAD  = 72;    // panel edge clearance + half of max label width
+const LBL_DY    = 17;    // label baseline offset below node edge
+const LABEL_MAX_C = 20;  // truncation for center node label
+const LABEL_MAX   = 16;  // truncation for parent/child labels
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let conceptIndex = {};
+let allConcepts  = [];
+let currentId    = null;
+let TW = 0, TH = 0;
+
+// ── SVG setup (dimensions set after fetch when layout is applied) ─────────────
+const treePanel = document.getElementById('tree-panel');
+const svg       = d3.select('#canvas');
+const root      = svg.append('g');
+const edgeLayer = root.append('g');
+const nodeLayer = root.append('g');
+
+// Block all pointer-driven panning/zooming on the SVG element itself
+svg.on('wheel.zoom',      null)
+   .on('mousedown.zoom',  null)
+   .on('touchstart.zoom', null);
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function trunc(s, n) { return s && s.length > n ? s.slice(0, n - 1) + '…' : (s || ''); }
+
+function isFullConcept(c) {
+  return !!(c && c.page && Array.isArray(c.page.blocks) && c.page.blocks.length > 0 && !c.stub);
+}
+
+function resolveAlias(id) {
+  const c = conceptIndex[id];
+  return (c && c.alias_of) ? c.alias_of : id;
+}
+
+function chunk(arr, size) {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+
+// ── Layout ────────────────────────────────────────────────────────────────────
+function computeLayout(conceptId) {
+  const concept = conceptIndex[conceptId];
+  if (!concept) return { nodes: [], links: [] };
+
+  const parentIds = (concept.refs ?? [])
+    .filter(r => r.type === 'required')
+    .map(r => resolveAlias(r.id))
+    .filter(id => id !== conceptId && conceptIndex[id]);
+
+  const childIds = allConcepts
+    .filter(c => !c.alias_of &&
+      (c.refs ?? []).some(r => r.type === 'required' && resolveAlias(r.id) === conceptId))
+    .map(c => c.id);
+
+  // Maximum nodes that fit side-by-side without label overlap (at least 2)
+  const minSpacing = 115;
+  const maxPerRow  = Math.max(2, Math.floor((TW - 2 * SIDE_PAD) / minSpacing) + 1);
+
+  const parentChunks = chunk(parentIds, maxPerRow);
+  const childChunks  = chunk(childIds,  maxPerRow);
+
+  // Shift the center node so the full tree is vertically centred in the panel:
+  // midpoint of [top row, bottom row] lands at y=0 (the panel centre).
+  const cy = (parentChunks.length - childChunks.length) * VERT_GAP / 2;
+
+  const nodes = [{ id: conceptId, role: 'center', x: 0, y: cy, r: R_CENTER }];
+  const links = [];
+
+  // Evenly space a row; horiz = gap between adjacent centres, capped at MAX_HORIZ
+  function placeRow(ids, y) {
+    const n = ids.length;
+    const h = n > 1 ? Math.min(MAX_HORIZ, (TW - 2 * SIDE_PAD) / (n - 1)) : 0;
+    return ids.map((id, i) => ({ id, x: n > 1 ? h * (i - (n - 1) / 2) : 0, y }));
+  }
+
+  // Parent rows — row 0 directly above center, row 1 further up, etc.
+  parentChunks.forEach((row, ri) => {
+    const y = cy - (ri + 1) * VERT_GAP;
+    placeRow(row, y).forEach(n => {
+      nodes.push({ ...n, role: 'parent', r: R_NODE });
+      links.push({ key: `${n.id}|${conceptId}`, x1: n.x, y1: y, x2: 0, y2: cy });
+    });
+  });
+
+  // Child rows — row 0 directly below center
+  childChunks.forEach((row, ri) => {
+    const y = cy + (ri + 1) * VERT_GAP;
+    placeRow(row, y).forEach(n => {
+      nodes.push({ ...n, role: 'child', r: R_NODE });
+      links.push({ key: `${conceptId}|${n.id}`, x1: 0, y1: cy, x2: n.x, y2: y });
+    });
+  });
+
+  return { nodes, links };
+}
+
+// ── Navigate ──────────────────────────────────────────────────────────────────
+function navigateTo(targetId, animate = true) {
+  if (!conceptIndex[targetId]) return;
+  if (targetId === currentId && animate) return;
+  currentId = targetId;
+
+  const layout  = computeLayout(targetId);
+  const dur     = animate ? DUR : 300;
+  const delayIn = animate ? Math.round(dur * 0.42) : 0;
+  const t       = d3.transition().duration(dur).ease(d3.easeCubicInOut);
+
+  // ── Edges ──
+  edgeLayer.selectAll('line.tree-edge').data(layout.links, d => d.key).join(
+    enter => enter.append('line').attr('class', 'tree-edge')
+      .attr('x1', d => d.x1).attr('y1', d => d.y1)
+      .attr('x2', d => d.x2).attr('y2', d => d.y2)
+      .style('opacity', 0)
+      .call(s => s.transition(t).delay(delayIn).style('opacity', 1)),
+    update => update.transition(t)
+      .attr('x1', d => d.x1).attr('y1', d => d.y1)
+      .attr('x2', d => d.x2).attr('y2', d => d.y2)
+      .style('opacity', 1),
+    exit => exit.transition(t).duration(Math.round(dur * 0.38)).style('opacity', 0).remove()
+  );
+
+  // ── Nodes ──
+  nodeLayer.selectAll('g.tree-node').data(layout.nodes, d => d.id).join(
+    enter => {
+      const g = enter.append('g')
+        .attr('class', d => `tree-node${d.role === 'center' ? ' is-center' : ''}`)
+        .attr('transform', d => `translate(${d.x},${d.y})`)
+        .style('opacity', 0)
+        .on('click', (_ev, d) => { if (d.role !== 'center') navigateTo(d.id); });
+      g.append('circle').attr('r', d => d.r);
+      g.append('text').attr('class', 'lbl')
+        .attr('dy', d => d.r + LBL_DY)
+        .text(d => trunc(conceptIndex[d.id]?.title || d.id,
+                         d.role === 'center' ? LABEL_MAX_C : LABEL_MAX));
+      g.transition(t).delay(delayIn).style('opacity', 1);
+      return g;
+    },
+    update => {
+      update.attr('class', d => `tree-node${d.role === 'center' ? ' is-center' : ''}`)
+        .on('click', (_ev, d) => { if (d.role !== 'center') navigateTo(d.id); });
+      update.select('circle').transition(t).attr('r', d => d.r);
+      update.select('text.lbl')
+        .attr('dy', d => d.r + LBL_DY)
+        .text(d => trunc(conceptIndex[d.id]?.title || d.id,
+                         d.role === 'center' ? LABEL_MAX_C : LABEL_MAX));
+      update.transition(t)
+        .attr('transform', d => `translate(${d.x},${d.y})`)
+        .style('opacity', 1);
+      return update;
+    },
+    exit => exit.transition(t).duration(Math.round(dur * 0.38)).style('opacity', 0).remove()
+  );
+
+  requestAnimationFrame(() => nodeLayer.selectAll('.is-center').raise());
+
+  const concept = conceptIndex[targetId];
+  if (concept) renderConcept(concept);
+  syncNavLinks(targetId);
+}
+
+// ── Nav link sync ─────────────────────────────────────────────────────────────
+function syncNavLinks(id) {
+  const c = encodeURIComponent(id);
+  document.getElementById('nav-app').href      = `index.html?c=${c}`;
+  document.getElementById('nav-learn').href = `learn.html?c=${c}`;
+}
+
+// ── App panel (identical to index.html) ───────────────────────────────────────
+const STEP_NUMS  = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨'];
+const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:'label-proof' };
+
+function typeset(el) {
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
+}
+
+function processRefs(container) {
+  container.querySelectorAll('.t[data-ref]:not([data-exp])').forEach(span => {
+    const refId = span.getAttribute('data-ref');
+    const uid   = 'r' + Math.random().toString(36).slice(2, 9);
+    const div   = document.createElement('div');
+    div.id = uid; div.className = 'exp';
+    span.setAttribute('data-exp', uid);
+    if (!conceptIndex[refId]) span.classList.add('pending');
+    span.after(div);
+    span.addEventListener('click', e => { e.stopPropagation(); handleRefClick(span); });
+  });
+}
+
+function handleRefClick(span) {
+  const expEl = document.getElementById(span.getAttribute('data-exp'));
+  if (!expEl) return;
+  const isOpen = expEl.style.display === 'block';
+  if (isOpen) {
+    expEl.style.display = 'none'; span.classList.remove('open');
+  } else {
+    if (!expEl.dataset.rendered) {
+      const concept = conceptIndex[span.getAttribute('data-ref')];
+      if (concept && concept.alias_of) {
+        const target = conceptIndex[concept.alias_of];
+        const nav    = target && isFullConcept(target)
+          ? `<br><span data-alias-nav="${concept.alias_of}" style="font-size:11px;color:#888;cursor:pointer;border-bottom:1px dashed #bbb">→ ${target.title}</span>`
+          : '';
+        expEl.innerHTML = concept.inline + nav;
+        expEl.querySelectorAll('[data-alias-nav]').forEach(el =>
+          el.addEventListener('click', () => {
+            const t = conceptIndex[el.dataset.aliasNav];
+            if (t) navigateTo(t.id);
+          })
+        );
+        typeset(expEl);
+      } else if (concept) {
+        expEl.innerHTML = concept.inline;
+        processRefs(expEl); typeset(expEl);
+      } else {
+        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition noch nicht vorhanden.</em>';
+      }
+      expEl.dataset.rendered = '1';
+    }
+    expEl.style.display = 'block'; span.classList.add('open');
+  }
+}
+
+function renderBlock(block) {
+  const cls  = TYPE_CLASS[block.type] || 'label-def';
+  const body = block.type === 'proof'
+    ? block.steps.map((s, i) =>
+        `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`
+      ).join('')
+    : block.body;
+  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
+}
+
+function renderConcept(concept) {
+  const app = document.getElementById('app');
+  if (!isFullConcept(concept)) {
+    app.innerHTML =
+      `<h2 style="font-size:22px;font-weight:500;margin:0 0 4px">${concept.title}</h2>` +
+      `<p style="font-size:13px;color:#888;margin:0 0 1.5rem">${concept.subtitle}</p>` +
+      `<div class="entry-block"><div class="block-body">${concept.inline}</div></div>` +
+      `<p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
+    processRefs(app); typeset(app);
+    return;
+  }
+  const related = (concept.page.related || []).map(entry => {
+    const id = typeof entry === 'string' ? entry : entry.id;
+    const c  = conceptIndex[id];
+    return `<span class="${c ? 'pill' : 'pill pill-pending'}" data-nav="${id}">${c ? c.title : id}</span>`;
+  }).join('');
+  app.innerHTML =
+    `<h2 style="font-size:22px;font-weight:500;margin:0 0 4px">${concept.title}</h2>` +
+    `<p style="font-size:13px;color:#888;margin:0 0 1.5rem">${concept.subtitle}</p>` +
+    concept.page.blocks.map(renderBlock).join('');
+  processRefs(app);
+  app.querySelectorAll('.pill[data-nav]').forEach(pill =>
+    pill.addEventListener('click', function() {
+      navigateTo(resolveAlias(this.getAttribute('data-nav')));
+    })
+  );
+  document.getElementById('app-panel').scrollTop = 0;
+  typeset(app);
+}
+
+// ── Bootstrap ─────────────────────────────────────────────────────────────────
+fetch('concepts.json')
+  .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+  .then(data => {
+    // Read layout dimensions here — guaranteed to be applied by the time fetch resolves
+    TW = treePanel.offsetWidth;
+    TH = treePanel.offsetHeight;
+
+    svg.attr('width', TW).attr('height', TH);
+    // Center tree origin in the middle of the panel
+    root.attr('transform', `translate(${TW / 2},${TH / 2})`);
+
+    allConcepts = data.concepts;
+    allConcepts.forEach(c => conceptIndex[c.id] = c);
+
+    const startId = new URLSearchParams(location.search).get('c');
+    const first   = (startId && conceptIndex[startId]) || allConcepts.find(isFullConcept) || allConcepts[0];
+    navigateTo(first.id, false);
+  })
+  .catch(err => { document.getElementById('app').textContent = 'Error: ' + err.message; });
+</script>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  startup: { ready() { MathJax.startup.defaultReady(); } }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+</body>
+</html>
