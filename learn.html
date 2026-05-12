@@ -78,7 +78,7 @@ body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0
 <body>
 
 <div id="viewnav">
-  <a id="nav-app"      class="vnav" href="index.html"    target="_blank">App</a>
+  <a id="nav-app"      class="vnav" href="app.html"    target="_blank">App</a>
   <a class="vnav"      href="graph.html"    target="_blank">Graph</a>
   <a id="nav-tree" class="vnav" href="tree.html" target="_blank">Tree</a>
 </div>
@@ -405,7 +405,7 @@ function buildReadingList(sortedIds) {
         anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
         const tid = conceptIndex[this.dataset.nav];
-        if (tid) window.open(`index.html?c=${encodeURIComponent(this.dataset.nav)}`, '_blank');
+        if (tid) window.open(`app.html?c=${encodeURIComponent(this.dataset.nav)}`, '_blank');
       }
     });
   });
@@ -432,7 +432,7 @@ function buildReadingList(sortedIds) {
 
 function updateNavLinks(id) {
   const c = encodeURIComponent(id);
-  document.getElementById('nav-app').href      = `index.html?c=${c}`;
+  document.getElementById('nav-app').href      = `app.html?c=${c}`;
   document.getElementById('nav-tree').href = `tree.html?c=${c}`;
 }
 

@@ -84,6 +84,15 @@ text.lbl {
   text-decoration: none; user-select: none;
 }
 .vnav:hover { border-color: #555; color: #1a1a1a; }
+
+/* ── Mobile layout ── */
+@media (max-width: 768px) {
+  html, body { height: auto; overflow: auto; }
+  #split { flex-direction: column; height: auto; }
+  #tree-panel { flex: none; width: 100%; height: 100vh; min-width: 0; }
+  #app-panel { flex: none; overflow-y: visible; height: auto; border-top: 0.5px solid #eee; }
+  .app-content { margin: 24px auto; padding: 0 16px 60px; }
+}
 </style>
 </head>
 <body>
@@ -96,7 +105,7 @@ text.lbl {
 </div>
 
 <div id="viewnav">
-  <a id="nav-app"      class="vnav" href="index.html"    target="_blank">App</a>
+  <a id="nav-app"      class="vnav" href="app.html"    target="_blank">App</a>
   <a class="vnav"      href="graph.html"    target="_blank">Graph</a>
   <a id="nav-learn" class="vnav" href="learn.html" target="_blank">Learn</a>
 </div>
@@ -274,7 +283,7 @@ function navigateTo(targetId, animate = true) {
 // ── Nav link sync ─────────────────────────────────────────────────────────────
 function syncNavLinks(id) {
   const c = encodeURIComponent(id);
-  document.getElementById('nav-app').href      = `index.html?c=${c}`;
+  document.getElementById('nav-app').href      = `app.html?c=${c}`;
   document.getElementById('nav-learn').href = `learn.html?c=${c}`;
 }
 
