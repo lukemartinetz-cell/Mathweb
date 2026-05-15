@@ -112,7 +112,7 @@ text.lbl {
 <div id="viewnav">
   <a id="nav-app"      class="vnav" href="app.html"   >App</a>
   <a class="vnav"      href="graph.html"   >Graph</a>
-  <a id="nav-learn" class="vnav" href="learn.html">Learn</a>
+  <a id="nav-learn" class="vnav" href="learn-visual.html">Learn</a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
@@ -319,7 +319,7 @@ function navigateTo(targetId, animate = true) {
 function syncNavLinks(id) {
   const c = encodeURIComponent(id);
   document.getElementById('nav-app').href      = `app.html?c=${c}`;
-  document.getElementById('nav-learn').href = `learn.html?c=${c}`;
+  document.getElementById('nav-learn').href = `learn-visual.html?c=${c}`;
 }
 
 // ── App panel (identical to index.html) ───────────────────────────────────────

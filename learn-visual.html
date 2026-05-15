@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn · Commutative Algebra</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; font-family: system-ui, sans-serif; background: #fff; color: #1a1a1a; }
+
+/* ── Layout ── */
+#layout { display: flex; width: 100%; height: 100%; overflow: hidden; }
+
+#question-panel {
+  flex: 0 0 58%;
+  min-width: 280px;
+  overflow-y: auto;
+  padding: 40px 28px 80px;
+  border-right: 0.5px solid #eee;
+}
+
+#graph-panel {
+  flex: 1;
+  position: relative;
+  background: #d8d8d8;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* ── Graph canvas ── */
+#graph-canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+#graph-canvas:active { cursor: grabbing; }
+
+/* ── Placeholder ── */
+#graph-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: #999;
+  pointer-events: none;
+  text-align: center; padding: 24px;
+  line-height: 1.6;
+}
+
+/* ── Legend ── */
+#graph-legend {
+  position: absolute; bottom: 20px; left: 20px; z-index: 10;
+  background: rgba(255,255,255,0.93); border: 0.5px solid #ddd; border-radius: 10px;
+  padding: 12px 16px; font-size: 12px; color: #1a1a1a; line-height: 1;
+  backdrop-filter: blur(6px); user-select: none;
+}
+.ltitle { font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+.lr { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.lr:last-child { margin-bottom: 0; }
+.lc { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+.lsep { font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: #bbb; margin: 10px 0 7px; }
+
+/* ── Graph node labels ── */
+text.glbl {
+  text-anchor: middle;
+  pointer-events: none;
+  font-family: system-ui, sans-serif;
+  font-size: 10px;
+  fill: #1a1a1a;
+  paint-order: stroke;
+  stroke: rgba(216,216,216,0.88);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+/* ── Question panel styles (mirroring learn.html) ── */
+.entry-block { border: 0.5px solid #ddd; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; background: #fff; }
+.block-label { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+.label-def { color: #534AB7; } .label-prop { color: #0F6E56; } .label-proof { color: #854F0B; }
+.label-why { color: #993C1D; } .label-equiv { color: #1B7A70; } .label-cases { color: #854F0B; }
+.list-item { margin: 5px 0; padding-left: 14px; position: relative; }
+.list-item::before { content: "—"; position: absolute; left: 0; color: #bbb; }
+.block-body { font-size: 15px; color: #1a1a1a; line-height: 1.85; }
+.t { border-bottom: 1px dashed #bbb; cursor: pointer; border-radius: 2px; padding: 0 1px; transition: background .12s; }
+.t:hover { background: #f5f5f5; }
+.t.open { border-bottom-style: solid; border-bottom-color: #555; }
+.t.pending { border-bottom-style: dotted; border-bottom-color: #ccc; }
+.t.pending.open { border-bottom-style: dotted; border-bottom-color: #999; }
+.exp { display: none; border-left: 1.5px solid #ddd; margin: 5px 0 5px 2px; padding: 2px 0 2px 12px; font-size: 15px; color: #1a1a1a; line-height: 1.85; }
+.proof-step { margin: 8px 0; padding-left: 22px; position: relative; }
+.step-num { position: absolute; left: 0; top: 2px; font-size: 11px; font-weight: 500; color: #999; }
+.related-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.pill { font-size: 12px; padding: 3px 12px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; cursor: pointer; background: #fafafa; }
+.pill:hover { border-color: #555; color: #1a1a1a; }
+.pill-pending { border-style: dashed; color: #aaa; }
+.pill-pending:hover { border-color: #aaa; color: #888; }
+
+.nav-item { font-size: 12px; padding: 4px 14px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; cursor: pointer; background: #fafafa; user-select: none; }
+.nav-item:hover { border-color: #555; color: #1a1a1a; }
+.nav-item.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+.nav-item.stub { border-style: dashed; color: #aaa; }
+.nav-item.stub:hover { border-color: #aaa; color: #888; }
+
+#viewnav { display: flex; gap: 7px; margin-bottom: 32px; flex-wrap: wrap; }
+.vnav { font-size: 12px; padding: 4px 13px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; text-decoration: none; user-select: none; background: #fafafa; }
+.vnav:hover { border-color: #555; color: #1a1a1a; }
+
+.phase { padding-top: 0; }
+
+/* ── Select phase ── */
+.phase-heading { font-size: 22px; font-weight: 500; margin: 0 0 6px; }
+.phase-sub { font-size: 13px; color: #888; margin: 0 0 2rem; line-height: 1.6; }
+#concept-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ── Quiz phase ── */
+.quiz-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 8px; }
+.quiz-target { font-size: 12px; color: #888; }
+.quiz-target strong { color: #1a1a1a; font-weight: 500; }
+.ghost-btn { font-size: 12px; padding: 4px 13px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; cursor: pointer; background: #fafafa; font-family: inherit; }
+.ghost-btn:hover { border-color: #555; color: #1a1a1a; }
+.quiz-card { border: 0.5px solid #ddd; border-radius: 10px; padding: 1.5rem 1.5rem 1.25rem; margin-bottom: 1.5rem; }
+.quiz-card-title { font-size: 20px; font-weight: 500; margin: 0 0 3px; }
+.quiz-card-subtitle { font-size: 12px; color: #888; margin: 0 0 1rem; }
+.quiz-card-inline { font-size: 14px; color: #444; line-height: 1.75; border-left: 1.5px solid #eee; padding-left: 12px; margin-bottom: 1.5rem; }
+.quiz-buttons { display: flex; gap: 8px; }
+.quiz-btn { font-size: 13px; padding: 7px 20px; border-radius: 99px; border: 0.5px solid #ddd; cursor: pointer; background: #fafafa; color: #444; font-family: inherit; transition: background .1s, border-color .1s; }
+.quiz-btn:hover { border-color: #555; color: #1a1a1a; }
+.quiz-btn-no { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+.quiz-btn-no:hover { background: #333; border-color: #333; color: #fff; }
+.quiz-status { margin-top: 2rem; }
+.status-block { margin-bottom: 1.25rem; }
+.status-label { font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: #888; display: block; margin-bottom: 8px; }
+.status-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.spill { font-size: 12px; padding: 3px 10px; border-radius: 99px; border: 0.5px solid #ddd; background: #fafafa; }
+.spill-unknown { color: #1a1a1a; }
+.spill-known { color: #bbb; border-color: #eee; }
+
+/* ── Read phase ── */
+.read-meta { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
+.read-meta h2 { font-size: 22px; font-weight: 500; margin: 0; }
+.read-count { font-size: 13px; color: #888; }
+.read-sub { font-size: 13px; color: #888; margin: 0 0 2rem; }
+#overview-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid #eee; }
+.concept-entry { padding-bottom: 2.5rem; margin-bottom: 2.5rem; border-bottom: 0.5px solid #eee; scroll-margin-top: 1rem; }
+.concept-entry:last-child { border-bottom: none; margin-bottom: 4rem; }
+.concept-entry h2 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
+.concept-entry .entry-sub { font-size: 13px; color: #888; margin: 0 0 1.5rem; }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  html, body { height: auto; overflow: auto; }
+  #layout { flex-direction: column; height: auto; overflow: visible; }
+  #question-panel {
+    flex: none; width: 100%; max-width: 100%;
+    overflow-y: visible;
+    border-right: none;
+    border-bottom: 0.5px solid #eee;
+    padding: 32px 16px 40px;
+  }
+  #graph-panel { flex: none; width: 100%; height: 360px; }
+}
+</style>
+</head>
+<body>
+
+<div id="layout">
+
+  <!-- ── Question panel ── -->
+  <div id="question-panel">
+    <div id="viewnav">
+      <a class="vnav" href="app.html">App</a>
+      <a class="vnav" href="graph.html">Graph</a>
+      <a class="vnav" href="tree.html">Tree</a>
+    </div>
+
+    <!-- Phase 1: select -->
+    <div id="phase-select" class="phase">
+      <p class="phase-heading">Was möchtest du lernen?</p>
+      <p class="phase-sub">Wähle einen Begriff aus. Der Graph rechts zeigt, welche Vorkenntnisse der Algorithmus findet und welche davon du bereits kennst.</p>
+      <div id="concept-list"></div>
+    </div>
+
+    <!-- Phase 2: quiz -->
+    <div id="phase-quiz" class="phase" style="display:none">
+      <div class="quiz-meta">
+        <span class="quiz-target">Lernziel: <strong id="quiz-target-title"></strong></span>
+        <button class="ghost-btn" id="btn-restart">← Neu starten</button>
+      </div>
+      <div class="quiz-card">
+        <div class="quiz-card-title" id="quiz-title"></div>
+        <div class="quiz-card-subtitle" id="quiz-sub"></div>
+        <div class="quiz-card-inline" id="quiz-inline"></div>
+        <div class="quiz-buttons">
+          <button class="quiz-btn" id="btn-know">Kenne ich</button>
+          <button class="quiz-btn quiz-btn-no" id="btn-unknown">Kenne ich nicht</button>
+        </div>
+        <p style="font-size:11px;color:#bbb;margin-top:10px">← → Pfeiltasten</p>
+      </div>
+      <div class="quiz-status" id="quiz-status"></div>
+    </div>
+
+    <!-- Phase 3: reading list -->
+    <div id="phase-read" class="phase" style="display:none">
+      <div class="read-meta">
+        <h2 id="read-title"></h2>
+        <span class="read-count" id="read-count"></span>
+      </div>
+      <p class="read-sub" id="read-sub"></p>
+      <div id="overview-row"></div>
+      <div id="read-list"></div>
+    </div>
+  </div>
+
+  <!-- ── Graph panel ── -->
+  <div id="graph-panel">
+    <svg id="graph-canvas"></svg>
+    <div id="graph-placeholder">Wähle einen Begriff, um den Algorithmus als Graph zu sehen.</div>
+    <div id="graph-legend">
+      <div class="ltitle">Zustand</div>
+      <div class="lr">
+        <div class="lc" style="background:#534AB7"></div>
+        <span>Wird gerade geprüft</span>
+      </div>
+      <div class="lr">
+        <div class="lc" style="background:#1a1a1a"></div>
+        <span>Nicht bekannt</span>
+      </div>
+      <div class="lr">
+        <div class="lc" style="background:#c8c8c8;border:1px solid #bbb"></div>
+        <span>Bereits bekannt</span>
+      </div>
+      <div class="lr">
+        <div class="lc" style="background:#888"></div>
+        <span>Noch nicht geprüft</span>
+      </div>
+      <div class="lsep">Art</div>
+      <div class="lr">
+        <div class="lc" style="background:#fff;border:1.5px dashed #888"></div>
+        <span>Nur Stub vorhanden</span>
+      </div>
+      <div class="lr">
+        <svg width="14" height="14" style="flex:none"><circle cx="7" cy="7" r="5" fill="none" stroke="#534AB7" stroke-width="2" stroke-dasharray="3 2"/></svg>
+        <span>Lernziel</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#layout -->
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+// ── Shared ────────────────────────────────────────────────────────────────────
+let conceptIndex = {};
+let allConcepts  = [];
+
+// ── Quiz state ────────────────────────────────────────────────────────────────
+let targetId    = null;
+let knownSet    = new Set();
+let unknownSet  = new Set();
+let askedSet    = new Set();
+let quizQueue   = [];
+let questionNum = 0;
+let currentQId  = null;
+
+// ── Graph state ───────────────────────────────────────────────────────────────
+const gNodeMap = new Map();   // id → node object (preserves x,y across updates)
+let gNodes = [], gLinks = [];
+let gSim, gLinkLayer, gNodeLayer;
+
+const G_FILL   = { current: '#534AB7', unknown: '#1a1a1a', known: '#c8c8c8', queued: '#888' };
+const G_STROKE = { current: '#534AB7', unknown: '#1a1a1a', known: '#bbb',    queued: '#888' };
+
+function gNodeR(d) { return d.isTarget ? 22 : (d.isFull ? 16 : 10); }
+
+// ── Helpers (shared with quiz logic) ─────────────────────────────────────────
+const STEP_NUMS  = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨'];
+const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:'label-proof', equiv:'label-equiv', cases:'label-cases' };
+
+function typeset(el) {
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
+}
+
+function isFullConcept(c) {
+  return !!(c && c.page && Array.isArray(c.page.blocks) && c.page.blocks.length > 0 && !c.stub);
+}
+
+function resolveAlias(id) {
+  let cur = id, hops = 0;
+  while (conceptIndex[cur]?.alias_of && hops++ < 10) cur = conceptIndex[cur].alias_of;
+  return cur;
+}
+
+function getRequiredParents(id) {
+  const c = conceptIndex[id];
+  if (!c || !c.refs) return [];
+  return [...new Set(
+    c.refs
+      .filter(r => r.type === 'required')
+      .map(r => resolveAlias(r.id))
+      .filter(pid => pid !== id && conceptIndex[pid] && !conceptIndex[pid].alias_of && isFullConcept(conceptIndex[pid]))
+  )];
+}
+
+function topoSort(ids) {
+  const idSet    = new Set(ids);
+  const inDeg    = Object.fromEntries(ids.map(id => [id, 0]));
+  const children = Object.fromEntries(ids.map(id => [id, []]));
+  for (const id of ids)
+    for (const pid of getRequiredParents(id))
+      if (idSet.has(pid)) { inDeg[id]++; children[pid].push(id); }
+  const sorted = [], q = ids.filter(id => inDeg[id] === 0);
+  while (q.length) {
+    const id = q.shift(); sorted.push(id);
+    for (const dep of children[id]) if (--inDeg[dep] === 0) q.push(dep);
+  }
+  for (const id of ids) if (!sorted.includes(id)) sorted.push(id);
+  return sorted;
+}
+
+// ── Phase management ──────────────────────────────────────────────────────────
+function showPhase(name) {
+  ['select','quiz','read'].forEach(p =>
+    document.getElementById('phase-' + p).style.display = (p === name ? '' : 'none')
+  );
+  if (name !== 'read') document.getElementById('question-panel').scrollTop = 0;
+}
+
+function restart() {
+  targetId = null;
+  knownSet = new Set(); unknownSet = new Set();
+  askedSet = new Set(); quizQueue  = [];
+  questionNum = 0; currentQId = null;
+  gNodeMap.clear(); gNodes = []; gLinks = [];
+  updateGraph();
+  showPhase('select');
+}
+
+// ── Phase 1: select ───────────────────────────────────────────────────────────
+function buildSelectPhase() {
+  const el = document.getElementById('concept-list');
+  el.innerHTML = allConcepts
+    .filter(c => !c.alias_of && isFullConcept(c))
+    .map(c => `<span class="nav-item" data-id="${c.id}">${c.title}</span>`)
+    .join('');
+  el.querySelectorAll('.nav-item').forEach(item =>
+    item.addEventListener('click', function() { selectTarget(this.dataset.id); })
+  );
+}
+
+function selectTarget(id) {
+  targetId = resolveAlias(id);
+  const c  = conceptIndex[targetId];
+  if (!c) return;
+  unknownSet.add(targetId);
+  askedSet.add(targetId);
+  document.getElementById('quiz-target-title').textContent = c.title;
+  for (const pid of getRequiredParents(targetId))
+    if (!askedSet.has(pid)) { quizQueue.push(pid); askedSet.add(pid); }
+  questionNum = 0;
+  updateGraph();
+  showPhase('quiz');
+  nextQuestion();
+}
+
+// ── Phase 2: quiz ─────────────────────────────────────────────────────────────
+function nextQuestion() {
+  currentQId = null;
+  renderQuizStatus();
+  updateGraph();
+  if (!quizQueue.length) { finishQuiz(); return; }
+  showQuestion(quizQueue.shift());
+}
+
+function showQuestion(id) {
+  questionNum++;
+  currentQId = id;
+  const c = conceptIndex[id];
+  document.getElementById('quiz-title').textContent    = c?.title || id;
+  document.getElementById('quiz-sub').textContent      = c?.subtitle || '';
+  const inlineEl = document.getElementById('quiz-inline');
+  inlineEl.innerHTML     = c?.inline || '';
+  inlineEl.style.display = c?.inline ? '' : 'none';
+  typeset(inlineEl);
+  document.getElementById('btn-know').onclick    = () => answer(id, true);
+  document.getElementById('btn-unknown').onclick = () => answer(id, false);
+  updateGraph();
+}
+
+function answer(id, isKnown) {
+  if (isKnown) {
+    knownSet.add(id);
+  } else {
+    unknownSet.add(id);
+    for (const pid of getRequiredParents(id))
+      if (!askedSet.has(pid)) { quizQueue.push(pid); askedSet.add(pid); }
+  }
+  updateGraph();
+  nextQuestion();
+}
+
+function renderQuizStatus() {
+  const el        = document.getElementById('quiz-status');
+  const unkTitles = [...unknownSet].map(id => conceptIndex[id]?.title || id);
+  const knTitles  = [...knownSet].map(id => conceptIndex[id]?.title || id);
+  let html = '';
+  if (unkTitles.length)
+    html += `<div class="status-block"><span class="status-label">Noch zu lernen (${unkTitles.length})</span><div class="status-pills">${unkTitles.map(t => `<span class="spill spill-unknown">${t}</span>`).join('')}</div></div>`;
+  if (knTitles.length)
+    html += `<div class="status-block"><span class="status-label">Bereits bekannt (${knTitles.length})</span><div class="status-pills">${knTitles.map(t => `<span class="spill spill-known">${t}</span>`).join('')}</div></div>`;
+  el.innerHTML = html;
+}
+
+// ── Phase 3: reading list ─────────────────────────────────────────────────────
+function finishQuiz() {
+  currentQId = null;
+  updateGraph();
+  const sorted = topoSort([...unknownSet].filter(id => isFullConcept(conceptIndex[id])));
+  buildReadingList(sorted);
+  showPhase('read');
+}
+
+function processRefs(container) {
+  container.querySelectorAll('.t[data-ref]:not([data-exp])').forEach(span => {
+    const refId = span.getAttribute('data-ref');
+    const uid   = 'r' + Math.random().toString(36).slice(2, 9);
+    const div   = document.createElement('div');
+    div.id = uid; div.className = 'exp';
+    span.setAttribute('data-exp', uid);
+    if (!conceptIndex[refId]) span.classList.add('pending');
+    span.after(div);
+    span.addEventListener('click', e => { e.stopPropagation(); handleRefClick(span); });
+  });
+}
+
+function handleRefClick(span) {
+  const expEl = document.getElementById(span.getAttribute('data-exp'));
+  if (!expEl) return;
+  const isOpen = expEl.style.display === 'block';
+  if (isOpen) {
+    expEl.style.display = 'none'; span.classList.remove('open');
+  } else {
+    if (!expEl.dataset.rendered) {
+      const concept = conceptIndex[span.getAttribute('data-ref')];
+      if (concept && concept.alias_of) {
+        const target = conceptIndex[concept.alias_of];
+        const nav = target && isFullConcept(target)
+          ? `<br><span data-alias-nav="${concept.alias_of}" style="font-size:11px;color:#888;cursor:pointer;border-bottom:1px dashed #bbb">→ ${target.title}</span>`
+          : '';
+        expEl.innerHTML = concept.inline + nav;
+        typeset(expEl);
+      } else if (concept) {
+        expEl.innerHTML = concept.inline;
+        processRefs(expEl); typeset(expEl);
+      } else {
+        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition noch nicht vorhanden.</em>';
+      }
+      expEl.dataset.rendered = '1';
+    }
+    expEl.style.display = 'block'; span.classList.add('open');
+  }
+}
+
+function renderBlock(block) {
+  const cls = TYPE_CLASS[block.type] || 'label-def';
+  let body;
+  if (block.type === 'proof') {
+    body = block.steps.map((s, i) =>
+      `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`
+    ).join('');
+  } else if (block.type === 'equiv' || block.type === 'cases') {
+    body = (block.items || []).map(item => `<div class="list-item">${item}</div>`).join('');
+  } else {
+    body = block.body;
+  }
+  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
+}
+
+function renderConceptBody(c) {
+  if (!isFullConcept(c)) {
+    return `<div class="entry-block"><div class="block-body">${c.inline || ''}</div></div>
+            <p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
+  }
+  return c.page.blocks.map(renderBlock).join('');
+}
+
+function buildReadingList(sortedIds) {
+  const target = conceptIndex[targetId];
+  document.getElementById('read-title').textContent = target?.title || targetId;
+  document.getElementById('read-count').textContent = `${sortedIds.length} Begriff${sortedIds.length !== 1 ? 'e' : ''}`;
+  document.getElementById('read-sub').textContent   = 'Sortiert von den Grundlagen zum Lernziel — kein Begriff setzt ein unbekanntes Vorwissen voraus.';
+
+  const overviewEl = document.getElementById('overview-row');
+  overviewEl.innerHTML = sortedIds.map(id => {
+    const c = conceptIndex[id];
+    return `<span class="nav-item${id === targetId ? ' active' : ''}" data-anchor="${id}">${c?.title || id}</span>`;
+  }).join('');
+  overviewEl.querySelectorAll('.nav-item').forEach(item =>
+    item.addEventListener('click', function() {
+      document.getElementById('entry-' + this.dataset.anchor)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      overviewEl.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      this.classList.add('active');
+    })
+  );
+
+  const listEl = document.getElementById('read-list');
+  listEl.innerHTML = sortedIds.map(id => {
+    const c = conceptIndex[id];
+    if (!c) return '';
+    return `<div class="concept-entry" id="entry-${id}">
+      <h2>${c.title}</h2>
+      <p class="entry-sub">${c.subtitle || ''}</p>
+      ${renderConceptBody(c)}
+    </div>`;
+  }).join('');
+
+  listEl.querySelectorAll('.pill[data-nav]').forEach(pill =>
+    pill.addEventListener('click', function() {
+      const anchor = document.getElementById('entry-' + this.dataset.nav);
+      if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else if (conceptIndex[this.dataset.nav])
+        window.location.href = `app.html?c=${encodeURIComponent(this.dataset.nav)}`;
+    })
+  );
+
+  const obs = new IntersectionObserver(changes => {
+    for (const ch of changes) {
+      if (ch.isIntersecting) {
+        const id = ch.target.id.replace('entry-', '');
+        overviewEl.querySelectorAll('.nav-item').forEach(n =>
+          n.classList.toggle('active', n.dataset.anchor === id)
+        );
+      }
+    }
+  }, { threshold: 0.25 });
+  listEl.querySelectorAll('.concept-entry').forEach(e => obs.observe(e));
+
+  processRefs(listEl);
+  typeset(listEl);
+}
+
+// ── Graph: init ───────────────────────────────────────────────────────────────
+function initGraph() {
+  const panel = document.getElementById('graph-panel');
+  const rect  = panel.getBoundingClientRect();
+  const W = rect.width  || 400;
+  const H = rect.height || 500;
+
+  const svgSel = d3.select('#graph-canvas').attr('width', W).attr('height', H);
+  const gSel   = svgSel.append('g');
+
+  const zoom = d3.zoom()
+    .scaleExtent([0.1, 6])
+    .on('zoom', e => gSel.attr('transform', e.transform));
+  svgSel.call(zoom);
+  svgSel.call(zoom.transform, d3.zoomIdentity.translate(W / 2, H / 2));
+
+  const defs = svgSel.append('defs');
+  defs.append('marker')
+    .attr('id', 'garr').attr('viewBox', '0 -4 9 8')
+    .attr('refX', 9).attr('refY', 0)
+    .attr('markerWidth', 5).attr('markerHeight', 5).attr('orient', 'auto')
+    .append('path').attr('d', 'M0,-4L9,0L0,4').attr('fill', '#aaa');
+
+  gLinkLayer = gSel.append('g');
+  gNodeLayer = gSel.append('g');
+
+  gSim = d3.forceSimulation()
+    .force('link',    d3.forceLink().id(d => d.id).distance(100).strength(0.4))
+    .force('charge',  d3.forceManyBody().strength(d => d.isFull ? -380 : -140))
+    .force('center',  d3.forceCenter(0, 0).strength(0.05))
+    .force('collide', d3.forceCollide().radius(d => gNodeR(d) + 30).strength(0.7))
+    .alphaDecay(0.025)
+    .on('tick', tickGraph);
+}
+
+function tickGraph() {
+  gLinkLayer.selectAll('line.glink').each(function(d) {
+    const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y;
+    const len = Math.hypot(dx, dy) || 1, ux = dx / len, uy = dy / len;
+    const sr = gNodeR(d.source), tr = gNodeR(d.target) + 3;
+    d3.select(this)
+      .attr('x1', d.source.x + ux * sr).attr('y1', d.source.y + uy * sr)
+      .attr('x2', d.target.x - ux * tr).attr('y2', d.target.y - uy * tr);
+  });
+  gNodeLayer.selectAll('g.gnode').attr('transform', d => `translate(${d.x ?? 0},${d.y ?? 0})`);
+}
+
+// ── Graph: update state & re-render ──────────────────────────────────────────
+function updateGraph() {
+  if (!gSim) return;
+
+  const showIds = new Set();
+  if (targetId)  showIds.add(targetId);
+  if (currentQId) showIds.add(currentQId);
+  for (const id of askedSet) showIds.add(id);
+  for (const id of quizQueue) showIds.add(id);
+
+  for (const id of showIds) {
+    if (!gNodeMap.has(id)) {
+      gNodeMap.set(id, {
+        id,
+        isFull: isFullConcept(conceptIndex[id]),
+        isTarget: false,
+        state: 'queued',
+        x: (Math.random() - 0.5) * 80,
+        y: (Math.random() - 0.5) * 80,
+        vx: 0, vy: 0,
+      });
+    }
+    const n = gNodeMap.get(id);
+    n.isTarget = id === targetId;
+    if      (id === currentQId)     n.state = 'current';
+    else if (unknownSet.has(id))    n.state = 'unknown';
+    else if (knownSet.has(id))      n.state = 'known';
+    else                            n.state = 'queued';
+  }
+
+  gNodes = [...gNodeMap.values()].filter(n => showIds.has(n.id));
+
+  const showSet = new Set(gNodes.map(n => n.id));
+  const linkSet = new Set();
+  gLinks = [];
+  for (const node of gNodes) {
+    const c = conceptIndex[node.id];
+    for (const ref of c?.refs ?? []) {
+      if (ref.type === 'required') {
+        const src = resolveAlias(ref.id);
+        if (showSet.has(src) && src !== node.id) {
+          const key = `${src}→${node.id}`;
+          if (!linkSet.has(key)) { linkSet.add(key); gLinks.push({ source: src, target: node.id }); }
+        }
+      }
+    }
+  }
+
+  document.getElementById('graph-placeholder').style.display = gNodes.length > 0 ? 'none' : '';
+
+  gSim.nodes(gNodes);
+  gSim.force('link').links(gLinks);
+  renderGraph();
+  if (gNodes.length > 0) gSim.alpha(0.4).restart();
+}
+
+function renderGraph() {
+  // Links
+  gLinkLayer.selectAll('line.glink')
+    .data(gLinks, d => {
+      const s = typeof d.source === 'object' ? d.source.id : d.source;
+      const t = typeof d.target === 'object' ? d.target.id : d.target;
+      return `${s}→${t}`;
+    })
+    .join(
+      e => e.append('line').attr('class', 'glink')
+             .attr('fill', 'none').attr('stroke', '#aaa')
+             .attr('stroke-width', 1).attr('marker-end', 'url(#garr)'),
+      u => u,
+      x => x.remove()
+    );
+
+  // Nodes
+  const groups = gNodeLayer.selectAll('g.gnode')
+    .data(gNodes, d => d.id)
+    .join(
+      enter => {
+        const g = enter.append('g').attr('class', 'gnode');
+        g.append('circle').attr('class', 'gring');
+        g.append('circle').attr('class', 'gbody');
+        g.append('text').attr('class', 'glbl');
+        return g;
+      },
+      u => u,
+      x => x.remove()
+    );
+
+  // Target ring (outer dashed circle, purple)
+  groups.select('circle.gring')
+    .attr('r', d => gNodeR(d) + 6)
+    .attr('fill', 'none')
+    .attr('stroke', d => d.isTarget ? '#534AB7' : 'none')
+    .attr('stroke-width', 1.5)
+    .attr('stroke-dasharray', '4 3');
+
+  // Main body
+  groups.select('circle.gbody')
+    .attr('r', d => gNodeR(d))
+    .attr('fill',   d => d.isFull ? G_FILL[d.state]   : '#fff')
+    .attr('stroke', d => d.isFull ? 'none'             : G_STROKE[d.state])
+    .attr('stroke-width',    d => d.isFull ? 0 : 1.5)
+    .attr('stroke-dasharray', d => d.isFull ? 'none' : '4 2');
+
+  // Labels
+  groups.select('text.glbl')
+    .attr('dy', d => gNodeR(d) + 13)
+    .text(d => {
+      const t = conceptIndex[d.id]?.title || d.id;
+      return t.length > 17 ? t.slice(0, 16) + '…' : t;
+    });
+}
+
+// ── Bootstrap ─────────────────────────────────────────────────────────────────
+document.getElementById('btn-restart').addEventListener('click', restart);
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('phase-quiz').style.display === 'none') return;
+  if (e.key === 'ArrowLeft')  document.getElementById('btn-know').click();
+  if (e.key === 'ArrowRight') document.getElementById('btn-unknown').click();
+});
+
+fetch('concepts.json')
+  .then(r => r.json())
+  .then(data => {
+    allConcepts = data.concepts;
+    allConcepts.forEach(c => conceptIndex[c.id] = c);
+    buildSelectPhase();
+    initGraph();
+    updateGraph();
+    const startId = new URLSearchParams(location.search).get('c');
+    if (startId && conceptIndex[startId]) selectTarget(startId);
+    else showPhase('select');
+  })
+  .catch(err => {
+    document.getElementById('concept-list').innerHTML =
+      `<p style="color:#c00;font-size:14px">Error loading concepts.json: ${err.message}</p>`;
+  });
+</script>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  startup: { ready() { MathJax.startup.defaultReady(); } }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+</body>
+</html>
