@@ -349,7 +349,6 @@ function selectTarget(id) {
   if (!c) return;
   unknownSet.add(targetId);
   askedSet.add(targetId);
-  document.getElementById('quiz-target-title').textContent = c.title;
   for (const pid of getRequiredParents(targetId))
     if (!askedSet.has(pid)) { quizQueue.push(pid); askedSet.add(pid); }
   questionNum = 0;
