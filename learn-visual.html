@@ -95,9 +95,10 @@ text.glbl {
 .nav-item.stub { border-style: dashed; color: #aaa; }
 .nav-item.stub:hover { border-color: #aaa; color: #888; }
 
-#viewnav { display: flex; gap: 7px; margin-bottom: 32px; flex-wrap: wrap; }
+#viewnav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
 .vnav { font-size: 12px; padding: 4px 13px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; text-decoration: none; user-select: none; background: #fafafa; }
 .vnav:hover { border-color: #555; color: #1a1a1a; }
+.vnav-group { display: flex; gap: 7px; }
 
 .phase { padding-top: 0; }
 
@@ -152,6 +153,7 @@ text.glbl {
     padding: 32px 16px 40px;
   }
   #graph-panel { flex: none; width: 100%; height: 360px; }
+  .key-hint { display: none; }
 }
 </style>
 </head>
@@ -162,9 +164,12 @@ text.glbl {
   <!-- ── Question panel ── -->
   <div id="question-panel">
     <div id="viewnav">
-      <a class="vnav" href="app.html">App</a>
-      <a class="vnav" href="graph.html">Graph</a>
-      <a class="vnav" href="tree.html">Tree</a>
+      <button id="btn-restart" class="ghost-btn" style="display:none">← Neu starten</button>
+      <div class="vnav-group">
+        <a class="vnav" href="app.html">App</a>
+        <a class="vnav" href="graph.html">Graph</a>
+        <a class="vnav" href="tree.html">Tree</a>
+      </div>
     </div>
 
     <!-- Phase 1: select -->
@@ -176,10 +181,6 @@ text.glbl {
 
     <!-- Phase 2: quiz -->
     <div id="phase-quiz" class="phase" style="display:none">
-      <div class="quiz-meta">
-        <span class="quiz-target">Lernziel: <strong id="quiz-target-title"></strong></span>
-        <button class="ghost-btn" id="btn-restart">← Neu starten</button>
-      </div>
       <div class="quiz-card">
         <div class="quiz-card-title" id="quiz-title"></div>
         <div class="quiz-card-subtitle" id="quiz-sub"></div>
@@ -188,7 +189,7 @@ text.glbl {
           <button class="quiz-btn" id="btn-know">Kenne ich</button>
           <button class="quiz-btn quiz-btn-no" id="btn-unknown">Kenne ich nicht</button>
         </div>
-        <p style="font-size:11px;color:#bbb;margin-top:10px">← → Pfeiltasten</p>
+        <p class="key-hint" style="font-size:11px;color:#bbb;margin-top:10px">← → Pfeiltasten</p>
       </div>
       <div class="quiz-status" id="quiz-status"></div>
     </div>
@@ -316,6 +317,7 @@ function showPhase(name) {
   ['select','quiz','read'].forEach(p =>
     document.getElementById('phase-' + p).style.display = (p === name ? '' : 'none')
   );
+  document.getElementById('btn-restart').style.display = name === 'select' ? 'none' : '';
   if (name !== 'read') document.getElementById('question-panel').scrollTop = 0;
 }
 
@@ -393,15 +395,11 @@ function answer(id, isKnown) {
 }
 
 function renderQuizStatus() {
-  const el        = document.getElementById('quiz-status');
-  const unkTitles = [...unknownSet].map(id => conceptIndex[id]?.title || id);
-  const knTitles  = [...knownSet].map(id => conceptIndex[id]?.title || id);
-  let html = '';
-  if (unkTitles.length)
-    html += `<div class="status-block"><span class="status-label">Noch zu lernen (${unkTitles.length})</span><div class="status-pills">${unkTitles.map(t => `<span class="spill spill-unknown">${t}</span>`).join('')}</div></div>`;
-  if (knTitles.length)
-    html += `<div class="status-block"><span class="status-label">Bereits bekannt (${knTitles.length})</span><div class="status-pills">${knTitles.map(t => `<span class="spill spill-known">${t}</span>`).join('')}</div></div>`;
-  el.innerHTML = html;
+  const el       = document.getElementById('quiz-status');
+  const knTitles = [...knownSet].map(id => conceptIndex[id]?.title || id);
+  el.innerHTML   = knTitles.length
+    ? `<div class="status-block"><span class="status-label">Bereits bekannt (${knTitles.length})</span><div class="status-pills">${knTitles.map(t => `<span class="spill spill-known">${t}</span>`).join('')}</div></div>`
+    : '';
 }
 
 // ── Phase 3: reading list ─────────────────────────────────────────────────────
