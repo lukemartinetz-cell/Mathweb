@@ -305,7 +305,8 @@ function selectTarget(id) {
 
   unknownSet.add(targetId);
   askedSet.add(targetId);
-  document.getElementById('quiz-target-title').textContent = c.title;
+  const titleEl = document.getElementById('quiz-target-title');
+  if (titleEl) titleEl.textContent = c.title;
   updateNavLinks(targetId);
 
   for (const pid of getRequiredParents(targetId)) {
@@ -327,9 +328,11 @@ function nextQuestion() {
 
 function showQuestion(id) {
   questionNum++;
-  const c = conceptIndex[id];
-  document.getElementById('quiz-title').textContent = c?.title || id;
-  document.getElementById('quiz-sub').textContent   = c?.subtitle || '';
+  const c      = conceptIndex[id];
+  const titleQ = document.getElementById('quiz-title');
+  const subQ   = document.getElementById('quiz-sub');
+  if (titleQ) titleQ.textContent = c?.title || id;
+  if (subQ)   subQ.textContent   = c?.subtitle || '';
 
   const inlineEl = document.getElementById('quiz-inline');
   inlineEl.innerHTML = c?.inline || '';
@@ -354,6 +357,7 @@ function answer(id, isKnown) {
 
 function renderQuizStatus() {
   const el       = document.getElementById('quiz-status');
+  if (!el) return;
   const unkTitles = [...unknownSet].map(id => conceptIndex[id]?.title || id);
   const knTitles  = [...knownSet].map(id => conceptIndex[id]?.title || id);
   let html = '';
@@ -375,9 +379,12 @@ function finishQuiz() {
 function buildReadingList(sortedIds) {
   const target = conceptIndex[targetId];
 
-  document.getElementById('read-title').textContent = target?.title || targetId;
-  document.getElementById('read-count').textContent = `${sortedIds.length} Begriff${sortedIds.length !== 1 ? 'e' : ''}`;
-  document.getElementById('read-sub').textContent   = 'Sortiert von den Grundlagen zum Lernziel — kein Begriff setzt ein unbekanntes Vorwissen voraus.';
+  const readTitle = document.getElementById('read-title');
+  const readCount = document.getElementById('read-count');
+  const readSub   = document.getElementById('read-sub');
+  if (readTitle) readTitle.textContent = target?.title || targetId;
+  if (readCount) readCount.textContent = `${sortedIds.length} Begriff${sortedIds.length !== 1 ? 'e' : ''}`;
+  if (readSub)   readSub.textContent   = 'Sortiert von den Grundlagen zum Lernziel — kein Begriff setzt ein unbekanntes Vorwissen voraus.';
 
   // Overview pills
   const overviewEl = document.getElementById('overview-row');
