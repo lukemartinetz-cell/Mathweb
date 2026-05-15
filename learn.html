@@ -78,9 +78,9 @@ body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0
 <body>
 
 <div id="viewnav">
-  <a id="nav-app"      class="vnav" href="app.html"    target="_blank">App</a>
-  <a class="vnav"      href="graph.html"    target="_blank">Graph</a>
-  <a id="nav-tree" class="vnav" href="tree.html" target="_blank">Tree</a>
+  <a id="nav-app"      class="vnav" href="app.html"   >App</a>
+  <a class="vnav"      href="graph.html"   >Graph</a>
+  <a id="nav-tree" class="vnav" href="tree.html">Tree</a>
 </div>
 
 <!-- ── Phase 1: select target ── -->
@@ -405,7 +405,7 @@ function buildReadingList(sortedIds) {
         anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
         const tid = conceptIndex[this.dataset.nav];
-        if (tid) window.open(`app.html?c=${encodeURIComponent(this.dataset.nav)}`, '_blank');
+        if (tid) window.location.href = `app.html?c=${encodeURIComponent(this.dataset.nav)}`;
       }
     });
   });
