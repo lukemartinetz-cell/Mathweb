@@ -21,6 +21,7 @@ function htmlStrings(concept) {
   for (const block of concept.page?.blocks ?? []) {
     if (block.body) out.push(block.body);
     for (const step of block.steps ?? []) out.push(step);
+    for (const item of block.items ?? []) out.push(item);
   }
   return out;
 }

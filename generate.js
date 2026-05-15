@@ -11,7 +11,7 @@ const client = new Anthropic();
 
 const SYS_P1 = `You generate rigorous mathematical content for a commutative algebra learning app (Altman & Kleiman).
 
-Output a single JSON object — NO HTML, NO <span> tags, NO data-ref attributes. Plain text with LaTeX math only.
+Output a single JSON object — NO HTML, NO <span> tags, NO data-ref attributes. Plain text with LaTeX math only, plus {ref:id} notation markers (see below).
 
 Schema:
 {
@@ -21,8 +21,10 @@ Schema:
   "inline": "1–3 sentence German summary. Plain text with LaTeX. No HTML.",
   "sections": {
     "why": "Motivation paragraph in German. What problem does this concept solve?",
-    "def": "Precise formal definition in German.",
+    "def": "Primary formal definition in German — ONE definition only, no equivalent formulations here.",
+    "equiv": ["First equivalent characterization in German with LaTeX", "Second equivalent characterization", "..."],
     "prop": "Main proposition or theorem (omit key if none).",
+    "cases": ["Case (a) in German with LaTeX", "Case (b)", "..."],
     "proof": ["Step 1 in German with LaTeX", "Step 2", "..."]
   }
 }
@@ -31,9 +33,14 @@ Rules:
 - Write in German. Formal mathematical language.
 - LaTeX: inline \\( ... \\), display \\[ ... \\]. All backslashes doubled in JSON strings.
 - Use \\mathfrak{a}, \\mathfrak{b} for ideals; \\mathfrak{m} for maximal ideals.
-- Do NOT write any HTML tags. Do NOT link concepts. Just plain text + LaTeX.
-- Omit "prop" and "proof" keys entirely if not applicable.
-- proof is an array of step strings, not a single string.
+- Do NOT write any HTML tags. Do NOT add data-ref attributes.
+- ENUMERATED CONDITIONS: separate each axiom or condition with \\n — e.g. "(i) first condition\\n(ii) second condition\\n(iii) third condition". Never run conditions together as one sentence.
+- NOTATION REFS: if a LaTeX expression directly represents a named concept in the known pool, append {ref:concept-id} immediately after its closing delimiter with no space — e.g. \\(\\mathrm{Spec}(R)\\){ref:spektrum-eines-rings} or \\(\\ker(\\varphi)\\){ref:ideal}. Only use IDs that exist in the provided concept pool.
+- def: PRIMARY definition only. Any statement of the form "äquivalent ...", "dies ist gleichbedeutend mit ...", or "genau dann wenn ..." belongs in equiv, not def.
+- equiv: array of equivalent characterizations, one complete German sentence per item. Omit key entirely if none.
+- proof: array of steps for a LINEAR logical deduction — steps render with circled numbers ①②③. Use ONLY when the argument is a sequential chain of deductions.
+- cases: array of PARALLEL items (e.g. "Zu (a): ...", "Zu (b): ...", or verifying multiple independent examples) — rendered WITHOUT step numbers. Use instead of proof for case-by-case verification.
+- Omit "equiv", "prop", "cases", "proof" keys entirely if not applicable.
 - Output only JSON, no markdown fences.`;
 
 const SYS_P2 = `You identify mathematical concept references in German mathematical text.
@@ -53,7 +60,7 @@ Output a single JSON object:
 }
 
 Field meanings:
-- word: exact phrase (base/uninflected form) as it appears in the text
+- word: the EXACT string as it appears in the text, including inflection (e.g. "kommutativen Rings" not "kommutativer Ring", "Ringhomomorphismen" not "Ringhomomorphismus"). Never use base/uninflected forms.
 - id: canonical concept ID — use the existing pool ID if the concept exists, otherwise propose a new kebab-case ID
 - new: true ONLY when the concept genuinely does not exist anywhere in the pool
 - alias_id: (optional) if the word is a German synonym or alternative name for an existing concept, provide a new kebab-case alias ID for this word form; keep "id" as the canonical ID
@@ -63,7 +70,7 @@ Field meanings:
 Classification rules:
 - Only identify terms that name mathematical concepts (definitions, structures, theorems) — not generic words like "Menge", "Funktion", or "Element" unless they name a specific structure.
 - Match to existing pool IDs whenever the concept is the same, even if the German phrasing differs (use alias_id for the German word form).
-- Each canonical "id" appears at most ONCE in refs. Pick the most representative occurrence.
+- MULTIPLE FORMS: if the same concept appears under multiple distinct inflected forms (e.g. both "Ringhomomorphismus" and "Ringhomomorphismen"), add a SEPARATE ref entry for each distinct form, all pointing to the same canonical id.
 - Skip content inside LaTeX delimiters \\( \\) and \\[ \\] — identify natural-language terms only.
 - Do NOT identify the concept being defined itself.
 - SAME-BLOCK SUPPRESSION: If a mathematical term is explicitly defined or explained within the same sentence or paragraph where it appears, do NOT mark it as a ref. Only mark terms that the reader must already know — do not create circular references to things the text itself teaches.
@@ -188,28 +195,48 @@ function wrapRefs(text, refList) {
   return out;
 }
 
+// Convert {ref:id} notation markers (produced by P1) into clickable spans.
+// Must run after wrapRefs so the LaTeX portion is still intact in the text.
+function resolveNotationRefs(text) {
+  if (!text) return text;
+  return text
+    .replace(/(\\\([\s\S]*?\\\))\{ref:([\w-]+)\}/g,
+      (_, latex, id) => `<span class="t" data-ref="${id}">${latex}</span>`)
+    .replace(/(\\\[[\s\S]*?\\\])\{ref:([\w-]+)\}/g,
+      (_, latex, id) => `<span class="t" data-ref="${id}">${latex}</span>`);
+}
+
 function plainToHtml(text) {
   if (!text) return '';
-  return text.replace(/\n\n/g, '<br><br>').replace(/\n(?!\n)/g, ' ').trim();
+  return text.replace(/\n/g, '<br>').trim();
 }
 
 function assembleBlocks(sections, refList) {
   const blocks = [];
+  const wrap = s => resolveNotationRefs(wrapRefs(plainToHtml(s), refList));
   if (sections?.why) blocks.push({
     type: 'why', label: 'Motivation',
-    body: wrapRefs(plainToHtml(sections.why), refList),
+    body: wrap(sections.why),
   });
   if (sections?.def) blocks.push({
     type: 'def', label: 'Definition',
-    body: wrapRefs(plainToHtml(sections.def), refList),
+    body: wrap(sections.def),
+  });
+  if (sections?.equiv?.length) blocks.push({
+    type: 'equiv', label: 'Äquivalente Charakterisierungen',
+    items: sections.equiv.map(wrap),
   });
   if (sections?.prop) blocks.push({
     type: 'prop', label: 'Proposition',
-    body: wrapRefs(plainToHtml(sections.prop), refList),
+    body: wrap(sections.prop),
+  });
+  if (sections?.cases?.length) blocks.push({
+    type: 'cases', label: 'Beweis',
+    items: sections.cases.map(wrap),
   });
   if (sections?.proof?.length) blocks.push({
     type: 'proof', label: 'Beweis',
-    steps: sections.proof.map(s => wrapRefs(plainToHtml(s), refList)),
+    steps: sections.proof.map(wrap),
   });
   return blocks;
 }
@@ -255,6 +282,7 @@ function allHtmlStrings(concept) {
   for (const b of concept.page?.blocks ?? []) {
     if (b.body) out.push(b.body);
     for (const s of b.steps ?? []) out.push(s);
+    for (const item of b.items ?? []) out.push(item);
   }
   return out.filter(Boolean);
 }
@@ -348,15 +376,26 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     content.inline,
     content.sections?.why,
     content.sections?.def,
+    ...(content.sections?.equiv ?? []),
     content.sections?.prop,
+    ...(content.sections?.cases ?? []),
     ...(content.sections?.proof ?? []),
   ].filter(Boolean).join('\n\n');
+
+  // Extract {ref:id} notation markers from P1 output; build stripped text for P2/P3
+  const notationRefIds = new Set();
+  const notMarkerRe = /\{ref:([\w-]+)\}/g;
+  let notMarkerMatch;
+  while ((notMarkerMatch = notMarkerRe.exec(allPlainText)) !== null) {
+    notationRefIds.add(notMarkerMatch[1]);
+  }
+  const allPlainTextStripped = allPlainText.replace(/\{ref:[\w-]+\}/g, '');
 
   // ── Phase 2: Ref detection ──────────────────────────────────────────────
   console.log(`[P2] Detecting references...`);
 
   const p2Raw = await callClaude(SYS_P2,
-    `Known concept pool:\n${allList}\n\nText for concept "${content.title}" (id: ${content.id}):\n${allPlainText}`,
+    `Known concept pool:\n${allList}\n\nText for concept "${content.title}" (id: ${content.id}):\n${allPlainTextStripped}`,
     { maxTokens: 3000 }
   );
   const { refs: refList } = parseJSON(p2Raw);
@@ -374,10 +413,11 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
   // Phase 3 gets canonical IDs (ref.id) — alias_id is an HTML-layer concern only
   const refSummary = refList.map(r => `  ${r.id}: "${r.word}"`).join('\n') || '  (none)';
   const coreText = [content.inline, content.sections?.def].filter(Boolean).join('\n\n');
+  const coreTextStripped = coreText.replace(/\{ref:[\w-]+\}/g, '');
 
   const p3Raw = await callClaude(SYS_P3,
-    `Core text (inline + definition):\n${coreText}\n\n` +
-    `Full text (all sections):\n${allPlainText}\n\n` +
+    `Core text (inline + definition):\n${coreTextStripped}\n\n` +
+    `Full text (all sections):\n${allPlainTextStripped}\n\n` +
     `Detected refs (canonical IDs):\n${refSummary}\n\n` +
     `Existing required-dependency graph:\n${graphSummary}`,
     { maxTokens: 2000 }
@@ -405,6 +445,14 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     }
   }
 
+  // Add notation ref IDs (from {ref:id} markers in P1 output) to pending stubs
+  for (const nid of notationRefIds) {
+    if (!existingIds.has(nid) && !pendingStubs.find(s => s.id === nid)) {
+      pendingStubs.push({ id: nid, word: null, inline: null });
+      existingIds.add(nid);
+    }
+  }
+
   // ── Phase 4: HTML assembly (deterministic) ──────────────────────────────
   console.log(`[P4] Assembling HTML...`);
 
@@ -412,7 +460,7 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     id:       content.id,
     title:    content.title,
     subtitle: content.subtitle,
-    inline:   wrapRefs(content.inline, refList),
+    inline:   resolveNotationRefs(wrapRefs(content.inline, refList)),
     refs:     classifiedRefs ?? [],
     page: {
       blocks:  assembleBlocks(content.sections, refList),

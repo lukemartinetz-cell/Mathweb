@@ -8,7 +8,8 @@
 body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0 24px;background:#fff;color:#1a1a1a}
 .entry-block{border:0.5px solid #ddd;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;background:#fff}
 .block-label{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
-.label-def{color:#534AB7}.label-prop{color:#0F6E56}.label-proof{color:#854F0B}.label-why{color:#993C1D}
+.label-def{color:#534AB7}.label-prop{color:#0F6E56}.label-proof{color:#854F0B}.label-why{color:#993C1D}.label-equiv{color:#1B7A70}.label-cases{color:#854F0B}
+.list-item{margin:5px 0;padding-left:14px;position:relative}.list-item::before{content:"—";position:absolute;left:0;color:#bbb}
 .block-body{font-size:15px;color:#1a1a1a;line-height:1.85}
 .t{border-bottom:1px dashed #bbb;cursor:pointer;border-radius:2px;padding:0 1px;transition:background .12s}
 .t:hover{background:#f5f5f5}
@@ -127,7 +128,7 @@ let conceptIndex = {};
 let allConcepts  = [];
 
 const STEP_NUMS  = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨'];
-const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:'label-proof' };
+const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:'label-proof', equiv:'label-equiv', cases:'label-cases' };
 
 function typeset(el) {
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
@@ -184,9 +185,16 @@ function handleRefClick(span) {
 
 function renderBlock(block) {
   const cls  = TYPE_CLASS[block.type] || 'label-def';
-  const body = block.type === 'proof'
-    ? block.steps.map((s, i) => `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`).join('')
-    : block.body;
+  let body;
+  if (block.type === 'proof') {
+    body = block.steps.map((s, i) =>
+      `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`
+    ).join('');
+  } else if (block.type === 'equiv' || block.type === 'cases') {
+    body = (block.items || []).map(item => `<div class="list-item">${item}</div>`).join('');
+  } else {
+    body = block.body;
+  }
   return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
 }
 
