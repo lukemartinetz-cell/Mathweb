@@ -1,104 +1,21 @@
 {
   "concepts": [
     {
+      "stub": true,
       "id": "ideal",
       "title": "Ideal",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Ringe und Ideale",
-      "inline": "Ein Ideal \\(\\mathfrak{a}\\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist eine <span class=\"t\" data-ref=\"untergruppe\">Untergruppe</span> der additiven Gruppe von \\(R\\), die unter Multiplikation mit beliebigen Ringelementen abgeschlossen ist. Ideale sind genau die Kerne von <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismen</span> und ermöglichen die Bildung des <span class=\"t\" data-ref=\"quotientenring\">Quotientenrings</span> \\(R/\\mathfrak{a}\\).",
-      "refs": [
-        {
-          "id": "kommutativer-ring",
-          "type": "required"
-        },
-        {
-          "id": "untergruppe",
-          "type": "required"
-        },
-        {
-          "id": "ringhomomorphismus",
-          "type": "required"
-        },
-        {
-          "id": "quotientenring",
-          "type": "required"
-        },
-        {
-          "id": "untermodul",
-          "type": "required"
-        },
-        {
-          "id": "aequivalenzrelation",
-          "type": "required"
-        },
-        {
-          "id": "universelle-eigenschaft",
-          "type": "required"
-        },
-        {
-          "id": "kanonischer-isomorphismus",
-          "type": "required"
-        },
-        {
-          "id": "normalteiler",
-          "type": "enriches"
-        },
-        {
-          "id": "lokalisierung",
-          "type": "enriches"
-        },
-        {
-          "id": "spektrum-eines-rings",
-          "type": "enriches"
-        },
-        {
-          "id": "primaerzerlegung",
-          "type": "enriches"
-        },
-        {
-          "id": "modultheorie",
-          "type": "enriches"
-        },
-        {
-          "id": "varietaet",
-          "type": "enriches"
-        }
-      ],
+      "subtitle": "Algebra · Ringtheorie",
+      "inline": "Ein Ideal \\(\\mathfrak{a}\\) eines kommutativen Rings \\(R\\) ist eine Untergruppe der additiven Gruppe von \\(R\\), die unter Multiplikation mit beliebigen Ringelementen abgeschlossen ist. Ideale sind genau die Kerne von Ringhomomorphismen und ermöglichen die Bildung des Quotientenrings \\(R/\\mathfrak{a}\\).",
+      "refs": [],
       "page": {
-        "blocks": [
-          {
-            "type": "why",
-            "label": "Motivation",
-            "body": "In der Theorie kommutativer Ringe übernehmen Ideale die Rolle, die <span class=\"t\" data-ref=\"normalteiler\">Normalteiler</span> in der Gruppentheorie spielen: Sie sind genau jene Teilmengen, nach denen man konsistent Quotienten bilden kann. Sie kodieren Teilbarkeits- und Lösbarkeitsbedingungen (etwa das Verschwinden von Polynomen auf einer <span class=\"t\" data-ref=\"varietaet\">Varietät</span>) und bilden den Grundbaustein für nahezu alle Konstruktionen der kommutativen Algebra: <span class=\"t\" data-ref=\"lokalisierung\">Lokalisierung</span>, <span class=\"t\" data-ref=\"spektrum-eines-rings\">Spektrum</span>, <span class=\"t\" data-ref=\"primaerzerlegung\">Primärzerlegung</span>, <span class=\"t\" data-ref=\"modultheorie\">Modultheorie</span>. Ohne den Begriff des Ideals lässt sich weder die Struktur eines Rings analysieren noch eine sinnvolle Geometrie auf \\(\\mathrm{Spec}(R)\\) etablieren."
-          },
-          {
-            "type": "def",
-            "label": "Definition",
-            "body": "Sei \\(R\\) ein kommutativer Ring mit Eins. Eine Teilmenge \\(\\mathfrak{a} \\subseteq R\\) heißt Ideal, falls gilt: (i) \\(0 \\in \\mathfrak{a}\\); (ii) für alle \\(a,b \\in \\mathfrak{a}\\) ist \\(a + b \\in \\mathfrak{a}\\); (iii) für alle \\(r \\in R\\) und \\(a \\in \\mathfrak{a}\\) ist \\(r a \\in \\mathfrak{a}\\). Äquivalent: \\(\\mathfrak{a}\\) ist ein \\(R\\)-<span class=\"t\" data-ref=\"untermodul\">Untermodul</span> von \\(R\\). Ein Ideal \\(\\mathfrak{a}\\) heißt echt, falls \\(\\mathfrak{a} \\neq R\\); dies ist gleichbedeutend mit \\(1 \\notin \\mathfrak{a}\\)."
-          },
-          {
-            "type": "prop",
-            "label": "Proposition",
-            "body": "Eine Teilmenge \\(\\mathfrak{a} \\subseteq R\\) ist genau dann ein Ideal, wenn es einen Ringhomomorphismus \\(\\varphi: R \\to S\\) mit \\(\\mathfrak{a} = \\ker(\\varphi)\\) gibt. In diesem Fall existiert ein eindeutiger Quotientenring \\(R/\\mathfrak{a}\\) zusammen mit der kanonischen Projektion \\(\\pi: R \\to R/\\mathfrak{a}\\), deren Kern gerade \\(\\mathfrak{a}\\) ist."
-          },
-          {
-            "type": "proof",
-            "label": "Beweis",
-            "steps": [
-              "Ist \\(\\varphi: R \\to S\\) ein Ringhomomorphismus, so ist \\(\\ker(\\varphi)\\) eine additive <span class=\"t\" data-ref=\"untergruppe\">Untergruppe</span>; für \\(r \\in R\\) und \\(a \\in \\ker(\\varphi)\\) gilt \\(\\varphi(ra) = \\varphi(r)\\varphi(a) = \\varphi(r)\\cdot 0 = 0\\), also \\(ra \\in \\ker(\\varphi)\\). Somit ist \\(\\ker(\\varphi)\\) ein Ideal.",
-              "Sei umgekehrt \\(\\mathfrak{a}\\) ein Ideal. Definiere auf \\(R\\) die Relation \\(a \\sim b :\\Leftrightarrow a - b \\in \\mathfrak{a}\\); aus den Idealaxiomen folgt, dass dies eine Äquivalenzrelation ist, die mit Addition und Multiplikation verträglich ist.",
-              "Auf der Menge \\(R/\\mathfrak{a}\\) der Äquivalenzklassen \\([a] = a + \\mathfrak{a}\\) erklärt man \\([a]+[b] := [a+b]\\) und \\([a]\\cdot[b] := [ab]\\). Diese Operationen sind wohldefiniert, da \\(\\mathfrak{a}\\) unter Addition und Multiplikation mit Ringelementen abgeschlossen ist.",
-              "Mit dieser Struktur wird \\(R/\\mathfrak{a}\\) ein kommutativer Ring mit Einselement \\([1]\\), und die Abbildung \\(\\pi: R \\to R/\\mathfrak{a}\\), \\(a \\mapsto [a]\\), ist ein surjektiver Ringhomomorphismus mit \\(\\ker(\\pi) = \\mathfrak{a}\\).",
-              "Die <span class=\"t\" data-ref=\"universelle-eigenschaft\">universelle Eigenschaft</span> (jeder Ringhomomorphismus \\(\\varphi: R \\to S\\) mit \\(\\mathfrak{a} \\subseteq \\ker(\\varphi)\\) faktorisiert eindeutig über \\(\\pi\\)) liefert die Eindeutigkeit des <span class=\"t\" data-ref=\"quotientenring\">Quotientenrings</span> bis auf <span class=\"t\" data-ref=\"kanonischer-isomorphismus\">kanonischen Isomorphismus</span>."
-            ]
-          }
-        ],
+        "blocks": [],
         "related": []
       }
     },
     {
       "id": "kommutativer-ring",
       "title": "Kommutativer Ring",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Grundbegriffe",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein kommutativer Ring ist eine Menge \\(R\\) mit zwei Verknüpfungen \\(+\\) und \\(\\cdot\\), so dass \\((R,+)\\) eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span> ist, \\((R,\\cdot)\\) ein <span class=\"t\" data-ref=\"monoid\">kommutatives Monoid</span> mit Einselement \\(1\\) und das <span class=\"t\" data-ref=\"distributivgesetz\">Distributivgesetz</span> gilt. Kommutative Ringe bilden den zentralen Studiengegenstand der kommutativen Algebra.",
       "refs": [
         {
@@ -202,7 +119,7 @@
     {
       "id": "ringhomomorphismus",
       "title": "Ringhomomorphismus",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Grundbegriffe",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Ringhomomorphismus ist eine Abbildung \\( \\varphi\\colon R \\to R' \\) zwischen <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ringen</span>, die Addition, Multiplikation und das Einselement respektiert. Solche Abbildungen sind die strukturerhaltenden Morphismen der Kategorie der Ringe.",
       "refs": [
         {
@@ -286,7 +203,7 @@
     {
       "id": "quotientenring",
       "title": "Quotientenring",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Ringkonstruktionen",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Quotientenring \\(R/\\mathfrak{a}\\) entsteht, indem man im <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) modulo eines <span class=\"t\" data-ref=\"ideal\">Ideals</span> \\(\\mathfrak{a}\\) rechnet. Seine Elemente sind die Nebenklassen \\(r+\\mathfrak{a}\\), und Addition und Multiplikation werden repräsentantenweise erklärt.",
       "refs": [
         {
@@ -369,18 +286,6 @@
     },
     {
       "stub": true,
-      "id": "normalteiler",
-      "title": "Normalteiler",
-      "subtitle": "Algebra · Ringtheorie",
-      "inline": "Ein Normalteiler ist eine Untergruppe, die unter Konjugation invariant ist und nach der Quotientengruppen gebildet werden können.",
-      "refs": [],
-      "page": {
-        "blocks": [],
-        "related": []
-      }
-    },
-    {
-      "stub": true,
       "id": "lokalisierung",
       "title": "Lokalisierung",
       "subtitle": "Algebra · Ringtheorie",
@@ -421,18 +326,6 @@
       "title": "Modultheorie",
       "subtitle": "Algebra · Ringtheorie",
       "inline": "Die Modultheorie untersucht Moduln über Ringen als Verallgemeinerung von Vektorräumen.",
-      "refs": [],
-      "page": {
-        "blocks": [],
-        "related": []
-      }
-    },
-    {
-      "stub": true,
-      "id": "untermodul",
-      "title": "Untermodul",
-      "subtitle": "Algebra · Ringtheorie",
-      "inline": "Ein Untermodul ist eine unter Addition und Skalarmultiplikation abgeschlossene Teilmenge eines Moduls.",
       "refs": [],
       "page": {
         "blocks": [],
@@ -598,7 +491,7 @@
     {
       "id": "nullteiler",
       "title": "Nullteiler",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Ringtheorie",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Nullteiler in einem <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) ist ein Element \\(a \\in R\\), für das ein \\(b \\neq 0\\) mit \\(ab = 0\\) existiert. Nullteiler messen die Abweichung von \\(R\\) von einem <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>.",
       "refs": [
         {
@@ -685,7 +578,7 @@
     {
       "id": "primideal",
       "title": "Primideal",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Spezielle Ideale",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Primideal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist ein echtes <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{p} \\subsetneq R\\), so dass aus \\(ab \\in \\mathfrak{p}\\) stets \\(a \\in \\mathfrak{p}\\) oder \\(b \\in \\mathfrak{p}\\) folgt. Äquivalent ist der <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> \\(R/\\mathfrak{p}\\) ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>.",
       "refs": [
         {
@@ -788,7 +681,7 @@
     {
       "id": "nilpotentes-element",
       "title": "Nilpotentes Element",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Grundbegriffe der Ringtheorie",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Element \\( x \\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\( R \\) heißt nilpotent, falls eine natürliche Zahl \\( n \\geq 1 \\) existiert mit \\( x^n = 0 \\). Die Menge aller nilpotenten Elemente bildet ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>, das sogenannte Nilradikal \\( \\operatorname{nil}(R) \\).",
       "refs": [
         {
@@ -879,7 +772,7 @@
     {
       "id": "einheit",
       "title": "Einheit",
-      "subtitle": "Kap. 1 · Altman & Kleiman · Ringtheorie",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Einheit in einem <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) ist ein Element \\(u \\in R\\), zu dem ein \\(v \\in R\\) mit \\(uv = 1\\) existiert. Die Menge aller Einheiten bildet bezüglich der Multiplikation eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span> \\(R^{\\times}\\), die Einheitengruppe von \\(R\\).",
       "refs": [
         {
@@ -947,7 +840,7 @@
     {
       "id": "maximales-ideal",
       "title": "Maximales Ideal",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Idealtheorie",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein maximales <span class=\"t\" data-ref=\"ideal\">Ideal</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist ein echtes <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{m} \\subsetneq R\\), das in keinem anderen echten <span class=\"t\" data-ref=\"ideal\">Ideal</span> echt enthalten ist. Maximale Ideale charakterisieren genau jene Ideale, deren <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> ein <span class=\"t\" data-ref=\"koerper\">Körper</span> ist.",
       "refs": [
         {
@@ -1086,7 +979,7 @@
     {
       "id": "nilradikal",
       "title": "Nilradikal",
-      "subtitle": "Kap. 1 · Altman–Kleiman · Radikale",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Nilradikal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist die Menge \\(\\operatorname{nil}(R)\\) aller <span class=\"t\" data-ref=\"nilpotentes-element\">nilpotenten Elemente</span>. Es ist ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> und stimmt mit dem Durchschnitt aller <span class=\"t\" data-ref=\"primideal\">Primideale</span> von \\(R\\) überein.",
       "refs": [
         {
@@ -1175,7 +1068,7 @@
     {
       "id": "jacobson-radikal",
       "title": "Jacobson-Radikal",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Radikale eines Rings",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Jacobson-Radikal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist der Durchschnitt aller <span class=\"t\" data-ref=\"maximales-ideal\">maximalen Ideale</span> von \\(R\\). Es enthält das <span class=\"t\" data-ref=\"nilradikal\">Nilradikal</span> und charakterisiert genau jene Elemente, deren \"Verschiebung um 1\" stets eine <span class=\"t\" data-ref=\"einheit\">Einheit</span> liefert.",
       "refs": [
         {
@@ -1287,7 +1180,7 @@
     {
       "id": "idealsumme",
       "title": "Idealsumme",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Konstruktionen mit Idealen",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Die Summe \\(\\mathfrak{a}+\\mathfrak{b}\\) zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist das kleinste Ideal, das sowohl \\(\\mathfrak{a}\\) als auch \\(\\mathfrak{b}\\) enthält. Sie besteht aus allen Summen \\(a+b\\) mit \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) und verallgemeinert sich auf beliebige Familien von Idealen.",
       "refs": [
         {
@@ -1367,7 +1260,7 @@
     {
       "id": "koprime-ideale",
       "title": "Koprime Ideale",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Idealoperationen",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Zwei <span class=\"t\" data-ref=\"ideal\">Ideale</span> \\(\\mathfrak{a},\\mathfrak{b}\\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) heißen koprim, wenn \\(\\mathfrak{a}+\\mathfrak{b}=R\\) gilt. Diese Bedingung verallgemeinert die Teilerfremdheit ganzer Zahlen und ist die Voraussetzung des <span class=\"t\" data-ref=\"chinesischer-restsatz\">Chinesischen Restsatzes</span>.",
       "refs": [
         {
@@ -1464,7 +1357,7 @@
     {
       "id": "idealprodukt",
       "title": "Idealprodukt",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Ideale und Operationen",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Idealprodukt \\(\\mathfrak{a}\\mathfrak{b}\\) zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> ist das von allen Produkten \\(ab\\) mit \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) erzeugte Ideal. Es ist stets in \\(\\mathfrak{a}\\cap\\mathfrak{b}\\) enthalten und dient unter anderem als multiplikative Struktur auf dem Verband aller <span class=\"t\" data-ref=\"ideal\">Ideale</span>.",
       "refs": [
         {
@@ -1571,7 +1464,7 @@
     {
       "id": "idealschnitt",
       "title": "Idealschnitt",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Idealoperationen",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Schnitt einer Familie von Idealen \\(\\{\\mathfrak{a}_\\lambda\\}_{\\lambda\\in\\Lambda}\\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist die Menge \\(\\bigcap_{\\lambda}\\mathfrak{a}_\\lambda\\), und sie ist wieder ein Ideal. Der Idealschnitt ist die größte untere Schranke der Familie im <span class=\"t\" data-ref=\"idealverband\">Verband aller Ideale</span>.",
       "refs": [
         {
@@ -1647,7 +1540,7 @@
     {
       "id": "erweiterung-von-idealen",
       "title": "Erweiterung von Idealen",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Ideale unter Ringhomomorphismen",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ist \\(\\varphi\\colon R \\to R'\\) ein <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> und \\(\\mathfrak{a} \\subseteq R\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>, so ist die Erweiterung \\(\\mathfrak{a}^{e} := \\varphi(\\mathfrak{a})\\,R'\\) das von \\(\\varphi(\\mathfrak{a})\\) in \\(R'\\) erzeugte <span class=\"t\" data-ref=\"ideal\">Ideal</span>. Sie überführt Ideale des Quellrings in Ideale des Zielrings.",
       "refs": [
         {
@@ -1722,7 +1615,7 @@
     {
       "id": "kontraktion-von-idealen",
       "title": "Kontraktion von Idealen",
-      "subtitle": "Kapitel 1 · Altman–Kleiman · Ideale und Ringhomomorphismen",
+      "subtitle": "Algebra · Ringtheorie",
       "inline": "Die Kontraktion eines Ideals \\(\\mathfrak{b} \\subseteq R'\\) längs eines <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> \\(\\varphi\\colon R \\to R'\\) ist das Urbild \\(\\varphi^{-1}(\\mathfrak{b})\\). Sie ist stets ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> in \\(R\\) und liefert das Gegenstück zur <span class=\"t\" data-ref=\"erweiterung-von-idealen\">Erweiterung von Idealen</span>.",
       "refs": [
         {

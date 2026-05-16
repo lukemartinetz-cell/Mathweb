@@ -17,7 +17,7 @@ Schema:
 {
   "id": "kebab-case-id",
   "title": "German title",
-  "subtitle": "Chapter · Source · Topic",
+  "subtitle": "Algebra · Ringtheorie",
   "inline": "1–3 sentence German summary. Plain text with LaTeX. No HTML.",
   "sections": {
     "why": "Motivation paragraph in German. What problem does this concept solve?",
@@ -45,12 +45,14 @@ Rules:
 
 const SYS_P2 = `You identify mathematical concept references in German mathematical text.
 
-Given: plain text + a pool of known concept IDs with titles.
+Given: plain text + a pool of known concept IDs with titles. Concepts marked [stub] are placeholders without full content yet.
 
 Output a single JSON object:
 {
   "refs": [
     { "word": "Ring", "id": "ring", "new": false },
+    { "word": "Untergruppe", "id": "untergruppe", "new": false,
+      "inline": "Eine Untergruppe ist eine Teilmenge einer Gruppe, die selbst unter der Gruppenoperation eine Gruppe bildet." },
     { "word": "Quotientenring", "id": "quotient-ring", "new": false,
       "alias_id": "quotientenring",
       "alias_inline": "Ein Quotientenring ist ein Ring der Form \\\\(R/\\\\mathfrak{a}\\\\)." },
@@ -63,9 +65,9 @@ Field meanings:
 - word: the EXACT string as it appears in the text, including inflection (e.g. "kommutativen Rings" not "kommutativer Ring", "Ringhomomorphismen" not "Ringhomomorphismus"). Never use base/uninflected forms.
 - id: canonical concept ID — use the existing pool ID if the concept exists, otherwise propose a new kebab-case ID
 - new: true ONLY when the concept genuinely does not exist anywhere in the pool
+- inline: (required when new:true OR when concept is marked [stub] in the pool) — one-sentence German definition for this concept, with LaTeX if needed
 - alias_id: (optional) if the word is a German synonym or alternative name for an existing concept, provide a new kebab-case alias ID for this word form; keep "id" as the canonical ID
 - alias_inline: (required when alias_id is set) one-sentence German definition for this word form, with LaTeX if needed
-- inline: (required when new:true) one-sentence German definition for the stub, with LaTeX if needed
 
 Classification rules:
 - Only identify terms that name mathematical concepts (definitions, structures, theorems) — not generic words like "Menge", "Funktion", or "Element" unless they name a specific structure.
@@ -290,11 +292,12 @@ function allHtmlStrings(concept) {
 // ── Stub / alias factories ────────────────────────────────────────────────
 
 function makeStub(id, title, inline) {
+  if (!inline) throw new Error(`makeStub called without inline for "${id}" — this is a bug in the pipeline`);
   return {
     stub: true, id,
     title: title || id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     subtitle: 'Algebra · Ringtheorie',
-    inline: inline || '(Noch nicht definiert.)',
+    inline,
     refs: [],
     page: { blocks: [], related: [] },
   };
@@ -318,8 +321,6 @@ function validate(concept, data) {
   for (const r of concept.refs ?? [])
     if (!knownIds.has(r.id)) issues.push(`Unknown refs[] ID "${r.id}"`);
 
-  const refSet = new Set((concept.refs ?? []).map(r => r.id));
-
   const reqCount = (concept.refs ?? []).filter(r => r.type === 'required').length;
   if (reqCount > 10) issues.push(`${reqCount} required refs (max 10)`);
 
@@ -333,18 +334,30 @@ function validate(concept, data) {
   return issues;
 }
 
+// ── Strip {ref:id} markers from a content string ──────────────────────────
+
+function stripNotationMarkers(text, idSet) {
+  if (!text) return text;
+  return text.replace(/\{ref:([\w-]+)\}/g, (match, id) => idSet.has(id) ? match : '');
+}
+
 // ── Main pipeline ─────────────────────────────────────────────────────────
 
 async function generateConcept(topic, { dryRun = false, verbose = false } = {}) {
   const data = JSON.parse(await readFile(CONCEPTS_PATH, 'utf8'));
 
+  const existingIds = new Set(data.concepts.map(c => c.id));
   const fullConcepts = data.concepts.filter(c => !isStubLike(c) && !isAlias(c));
   const stubConcepts = data.concepts.filter(c => isStubLike(c) && !isAlias(c));
   const fullList = fullConcepts.map(c => `  ${c.id}: ${c.title}`).join('\n') || '  (none)';
   const stubList = stubConcepts.map(c => `  ${c.id}: ${c.title}`).join('\n') || '  (none)';
-  const allList  = data.concepts.map(c => c.alias_of
+
+  // Pool for Phase 2: stubs are marked so Claude knows to provide inline text for them
+  const allList = data.concepts.map(c => c.alias_of
     ? `  ${c.id} [alias→${c.alias_of}]: ${c.title || c.id}`
-    : `  ${c.id}: ${c.title}`
+    : isStubLike(c)
+      ? `  ${c.id} [stub]: ${c.title}`
+      : `  ${c.id}: ${c.title}`
   ).join('\n') || '  (none)';
 
   const topicLower = topic.toLowerCase();
@@ -369,10 +382,12 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
   );
   const content = parseJSON(p1Raw);
   delete content.stub;
+  existingIds.add(content.id);
 
   if (verbose) { console.log('\n── P1 ──'); console.log(JSON.stringify(content, null, 2)); }
 
-  const allPlainText = [
+  // Extract {ref:id} notation markers from raw P1 output
+  const rawPlainText = [
     content.inline,
     content.sections?.why,
     content.sections?.def,
@@ -382,14 +397,43 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     ...(content.sections?.proof ?? []),
   ].filter(Boolean).join('\n\n');
 
-  // Extract {ref:id} notation markers from P1 output; build stripped text for P2/P3
   const notationRefIds = new Set();
   const notMarkerRe = /\{ref:([\w-]+)\}/g;
   let notMarkerMatch;
-  while ((notMarkerMatch = notMarkerRe.exec(allPlainText)) !== null) {
+  while ((notMarkerMatch = notMarkerRe.exec(rawPlainText)) !== null) {
     notationRefIds.add(notMarkerMatch[1]);
   }
-  const allPlainTextStripped = allPlainText.replace(/\{ref:[\w-]+\}/g, '');
+
+  // Validate notation markers: strip any that reference IDs not in the existing pool.
+  // Phase 1 is instructed to only use known IDs; violations are model errors, not stubs.
+  const invalidNotationIds = [...notationRefIds].filter(id => !existingIds.has(id));
+  if (invalidNotationIds.length) {
+    console.log(`  ⚠ P1 used unknown notation ref IDs (stripped): ${invalidNotationIds.join(', ')}`);
+    const escapedIds = invalidNotationIds.map(id => id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const stripRe = new RegExp(`\\{ref:(${escapedIds.join('|')})\\}`, 'g');
+    content.inline = content.inline?.replace(stripRe, '') ?? content.inline;
+    if (content.sections) {
+      for (const key of ['why', 'def', 'prop']) {
+        if (content.sections[key]) content.sections[key] = content.sections[key].replace(stripRe, '');
+      }
+      for (const key of ['equiv', 'cases', 'proof']) {
+        if (Array.isArray(content.sections[key]))
+          content.sections[key] = content.sections[key].map(s => s.replace(stripRe, ''));
+      }
+    }
+    for (const id of invalidNotationIds) notationRefIds.delete(id);
+  }
+
+  // Build stripped plain text for Phase 2 / Phase 3 (remove valid {ref:id} markers too)
+  const allPlainTextStripped = [
+    content.inline,
+    content.sections?.why,
+    content.sections?.def,
+    ...(content.sections?.equiv ?? []),
+    content.sections?.prop,
+    ...(content.sections?.cases ?? []),
+    ...(content.sections?.proof ?? []),
+  ].filter(Boolean).join('\n\n').replace(/\{ref:[\w-]+\}/g, '');
 
   // ── Phase 2: Ref detection ──────────────────────────────────────────────
   console.log(`[P2] Detecting references...`);
@@ -402,6 +446,13 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
 
   if (verbose) { console.log('\n── P2 ──'); console.log(JSON.stringify(refList, null, 2)); }
 
+  // Build inline lookup from Phase 2 — used for stub creation after Phase 4.
+  // Only canonical (non-alias) refs with inline text can produce stubs.
+  const p2InlineMap = new Map();
+  for (const ref of refList) {
+    if (ref.inline) p2InlineMap.set(ref.id, { word: ref.word, inline: ref.inline });
+  }
+
   // ── Phase 3: Dependency classification ─────────────────────────────────
   console.log(`[P3] Classifying dependencies...`);
 
@@ -412,8 +463,8 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
 
   // Phase 3 gets canonical IDs (ref.id) — alias_id is an HTML-layer concern only
   const refSummary = refList.map(r => `  ${r.id}: "${r.word}"`).join('\n') || '  (none)';
-  const coreText = [content.inline, content.sections?.def].filter(Boolean).join('\n\n');
-  const coreTextStripped = coreText.replace(/\{ref:[\w-]+\}/g, '');
+  const coreTextStripped = [content.inline, content.sections?.def]
+    .filter(Boolean).join('\n\n').replace(/\{ref:[\w-]+\}/g, '');
 
   const p3Raw = await callClaude(SYS_P3,
     `Core text (inline + definition):\n${coreTextStripped}\n\n` +
@@ -425,33 +476,6 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
   const { refs: classifiedRefs } = parseJSON(p3Raw);
 
   if (verbose) { console.log('\n── P3 ──'); console.log(JSON.stringify({ refs: classifiedRefs }, null, 2)); }
-
-  // ── Deterministic stub collection (between P3 and P4) ──────────────────
-  // Every ID Phase 3 classified must end up in the file — regardless of
-  // whether Phase 2 marked it as new:true. We build the list now so Phase 5
-  // can validate against the full expected set.
-  const existingIds = new Set(data.concepts.map(c => c.id));
-  existingIds.add(content.id);
-
-  const pendingStubs = [];   // { id, word, inline } — to create in write step
-  for (const r of (classifiedRefs ?? [])) {
-    if (!existingIds.has(r.id) && !pendingStubs.find(s => s.id === r.id)) {
-      const p2ref = refList.find(x => x.id === r.id);
-      const inline = p2ref?.inline ?? null;
-      pendingStubs.push({ id: r.id, word: p2ref?.word, inline });
-      existingIds.add(r.id);
-      if (!inline && verbose)
-        console.log(`  ⚠ No Phase-2 inline for "${r.id}" — placeholder will be used`);
-    }
-  }
-
-  // Add notation ref IDs (from {ref:id} markers in P1 output) to pending stubs
-  for (const nid of notationRefIds) {
-    if (!existingIds.has(nid) && !pendingStubs.find(s => s.id === nid)) {
-      pendingStubs.push({ id: nid, word: null, inline: null });
-      existingIds.add(nid);
-    }
-  }
 
   // ── Phase 4: HTML assembly (deterministic) ──────────────────────────────
   console.log(`[P4] Assembling HTML...`);
@@ -473,16 +497,29 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
   // ── Phase 5: Validation ─────────────────────────────────────────────────
   console.log(`[P5] Validating...`);
 
-  // Build mock data that includes all entries we'll create in the write step
+  // Build mock data: existing concepts + aliases + stubs that will be created from data-ref scan
   const mockExtras = [];
-  for (const ref of refList)
-    if (ref.alias_id && !data.concepts.find(c => c.id === ref.alias_id))
-      mockExtras.push(makeAlias(ref.alias_id, ref.id, ref.alias_inline));
-  for (const { id, word, inline } of pendingStubs)
-    if (!data.concepts.find(c => c.id === id))
-      mockExtras.push(makeStub(id, word, inline));
-  const mockConcepts = [...data.concepts, ...mockExtras];
+  const mockIds = new Set([...existingIds]);
 
+  for (const ref of refList)
+    if (ref.alias_id && !mockIds.has(ref.alias_id)) {
+      mockExtras.push(makeAlias(ref.alias_id, ref.id, ref.alias_inline));
+      mockIds.add(ref.alias_id);
+    }
+
+  for (const html of allHtmlStrings(concept)) {
+    for (const refId of extractDataRefs(html)) {
+      if (!mockIds.has(refId)) {
+        const info = p2InlineMap.get(refId);
+        if (info) {
+          mockExtras.push(makeStub(refId, info.word, info.inline));
+          mockIds.add(refId);
+        }
+      }
+    }
+  }
+
+  const mockConcepts = [...data.concepts, ...mockExtras];
   const issues = validate(concept, { concepts: mockConcepts });
 
   if (issues.length) {
@@ -530,58 +567,39 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     }
   }
 
-  // Deterministic stubs for all Phase 3 classified IDs (not AI-flag-dependent)
-  for (const { id, word, inline } of pendingStubs) {
-    if (!knownIds.has(id)) {
-      data.concepts.push(makeStub(id, word, inline));
-      knownIds.add(id);
-      autoStubbed++;
-      console.log(`  ~ Stub      "${id}"${inline ? `: ${inline.slice(0, 60)}…` : ' [no inline from Phase 2]'}`);
-    }
-  }
-
-  // Catch-all: stub any data-ref IDs the HTML contains that are still unknown
+  // Stubs: only created for data-ref IDs in the assembled HTML that are not yet in the file.
+  // Inline text comes exclusively from Phase 2 — no placeholders.
   for (const html of allHtmlStrings(concept)) {
     for (const refId of extractDataRefs(html)) {
       if (!knownIds.has(refId)) {
-        data.concepts.push(makeStub(refId));
+        const info = p2InlineMap.get(refId);
+        if (!info) {
+          console.log(`  ✗ No inline for data-ref "${refId}" — stub not created (Phase 2 missed this term)`);
+          continue;
+        }
+        data.concepts.push(makeStub(refId, info.word, info.inline));
         knownIds.add(refId);
         autoStubbed++;
-        console.log(`  ~ Auto-stub "${refId}" (from HTML catch-all)`);
+        console.log(`  ~ Stub      "${refId}": ${info.inline.slice(0, 60)}…`);
       }
     }
   }
 
   await writeFile(CONCEPTS_PATH, JSON.stringify(data, null, 2), 'utf8');
 
-  // ── Correction pass ──────────────────────────────────────────────────────
+  // ── Correction pass (warnings only — no stub creation) ───────────────────
   console.log(`\n[Correction] Verifying written concept...`);
   const corrections = [];
-  let correctionWrites = 0;
 
-  // Every refs[] ID must have a concept entry
-  for (const r of concept.refs ?? []) {
-    if (!knownIds.has(r.id)) {
-      data.concepts.push(makeStub(r.id));
-      knownIds.add(r.id);
-      corrections.push(`Created missing stub for refs[] ID "${r.id}"`);
-      correctionWrites++;
-    }
-  }
+  for (const r of concept.refs ?? [])
+    if (!knownIds.has(r.id))
+      corrections.push(`⚠ refs[] ID "${r.id}" has no entry in file — Phase 3 classified an unrecognized ID`);
 
-  // Every data-ref ID in HTML must have a concept entry
-  for (const html of allHtmlStrings(concept)) {
-    for (const refId of extractDataRefs(html)) {
-      if (!knownIds.has(refId)) {
-        data.concepts.push(makeStub(refId));
-        knownIds.add(refId);
-        corrections.push(`Created missing stub for data-ref "${refId}"`);
-        correctionWrites++;
-      }
-    }
-  }
+  for (const html of allHtmlStrings(concept))
+    for (const refId of extractDataRefs(html))
+      if (!knownIds.has(refId))
+        corrections.push(`⚠ data-ref "${refId}" has no entry — no Phase-2 inline was available`);
 
-  // Warn about refs[] IDs that have no span in the HTML (wrapRefs may have missed them)
   const spanIds = new Set(allHtmlStrings(concept).flatMap(extractDataRefs));
   for (const r of concept.refs ?? []) {
     const coveredByAlias = data.concepts.some(c => isAlias(c) && c.alias_of === r.id && spanIds.has(c.id));
@@ -591,16 +609,13 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
 
   if (corrections.length) {
     console.log('');
-    corrections.forEach(c => console.log(`  ${c.startsWith('⚠') ? '' : '✓ '}${c}`));
-    if (correctionWrites > 0) {
-      await writeFile(CONCEPTS_PATH, JSON.stringify(data, null, 2), 'utf8');
-      console.log(`  File updated with ${correctionWrites} correction(s).\n`);
-    }
+    corrections.forEach(c => console.log(`  ${c}`));
+    console.log('');
   } else {
     console.log('  ✓ All references verified.\n');
   }
 
-  console.log(`Done. Added ${added}, upgraded ${upgraded}, skipped ${skipped}, aliases ${aliased}, stubs ${autoStubbed + correctionWrites}.`);
+  console.log(`Done. Added ${added}, upgraded ${upgraded}, skipped ${skipped}, aliases ${aliased}, stubs ${autoStubbed}.`);
 }
 
 // ── CLI ───────────────────────────────────────────────────────────────────
