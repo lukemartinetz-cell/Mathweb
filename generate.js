@@ -17,7 +17,6 @@ Schema:
 {
   "id": "kebab-case-id",
   "title": "German title",
-  "subtitle": "Algebra · Ringtheorie",
   "inline": "1–3 sentence German summary. Plain text with LaTeX. No HTML.",
   "sections": {
     "why": "Motivation paragraph in German. What problem does this concept solve?",
@@ -296,7 +295,6 @@ function makeStub(id, title, inline) {
   return {
     stub: true, id,
     title: title || id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-    subtitle: 'Algebra · Ringtheorie',
     inline,
     refs: [],
     page: { blocks: [], related: [] },
@@ -481,10 +479,9 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
   console.log(`[P4] Assembling HTML...`);
 
   const concept = {
-    id:       content.id,
-    title:    content.title,
-    subtitle: content.subtitle,
-    inline:   resolveNotationRefs(wrapRefs(content.inline, refList)),
+    id:     content.id,
+    title:  content.title,
+    inline: resolveNotationRefs(wrapRefs(content.inline, refList)),
     refs:     classifiedRefs ?? [],
     page: {
       blocks:  assembleBlocks(content.sections, refList),

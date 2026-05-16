@@ -4,7 +4,6 @@
       "stub": true,
       "id": "ideal",
       "title": "Ideal",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Ideal \\(\\mathfrak{a}\\) eines kommutativen Rings \\(R\\) ist eine Untergruppe der additiven Gruppe von \\(R\\), die unter Multiplikation mit beliebigen Ringelementen abgeschlossen ist. Ideale sind genau die Kerne von Ringhomomorphismen und ermöglichen die Bildung des Quotientenrings \\(R/\\mathfrak{a}\\).",
       "refs": [],
       "page": {
@@ -15,7 +14,6 @@
     {
       "id": "kommutativer-ring",
       "title": "Kommutativer Ring",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein kommutativer Ring ist eine Menge \\(R\\) mit zwei Verknüpfungen \\(+\\) und \\(\\cdot\\), so dass \\((R,+)\\) eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span> ist, \\((R,\\cdot)\\) ein <span class=\"t\" data-ref=\"monoid\">kommutatives Monoid</span> mit Einselement \\(1\\) und das <span class=\"t\" data-ref=\"distributivgesetz\">Distributivgesetz</span> gilt. Kommutative Ringe bilden den zentralen Studiengegenstand der kommutativen Algebra.",
       "refs": [
         {
@@ -108,7 +106,6 @@
       "stub": true,
       "id": "untergruppe",
       "title": "Untergruppe",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Untergruppe ist eine Teilmenge einer Gruppe, die selbst unter der Gruppenoperation eine Gruppe bildet.",
       "refs": [],
       "page": {
@@ -119,7 +116,6 @@
     {
       "id": "ringhomomorphismus",
       "title": "Ringhomomorphismus",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Ringhomomorphismus ist eine Abbildung \\( \\varphi\\colon R \\to R' \\) zwischen <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ringen</span>, die Addition, Multiplikation und das Einselement respektiert. Solche Abbildungen sind die strukturerhaltenden Morphismen der Kategorie der Ringe.",
       "refs": [
         {
@@ -203,7 +199,6 @@
     {
       "id": "quotientenring",
       "title": "Quotientenring",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Quotientenring \\(R/\\mathfrak{a}\\) entsteht, indem man im <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) modulo eines <span class=\"t\" data-ref=\"ideal\">Ideals</span> \\(\\mathfrak{a}\\) rechnet. Seine Elemente sind die Nebenklassen \\(r+\\mathfrak{a}\\), und Addition und Multiplikation werden repräsentantenweise erklärt.",
       "refs": [
         {
@@ -288,7 +283,6 @@
       "stub": true,
       "id": "lokalisierung",
       "title": "Lokalisierung",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Die Lokalisierung eines Rings an einer multiplikativ abgeschlossenen Menge invertiert formal deren Elemente.",
       "refs": [],
       "page": {
@@ -300,7 +294,6 @@
       "stub": true,
       "id": "spektrum-eines-rings",
       "title": "Spektrum",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Spektrum \\(\\mathrm{Spec}(R)\\) eines Rings ist die Menge seiner Primideale, ausgestattet mit der Zariski-Topologie.",
       "refs": [],
       "page": {
@@ -312,7 +305,6 @@
       "stub": true,
       "id": "primaerzerlegung",
       "title": "Primärzerlegung",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Primärzerlegung stellt ein Ideal als Durchschnitt primärer Ideale dar.",
       "refs": [],
       "page": {
@@ -324,7 +316,6 @@
       "stub": true,
       "id": "modultheorie",
       "title": "Modultheorie",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Die Modultheorie untersucht Moduln über Ringen als Verallgemeinerung von Vektorräumen.",
       "refs": [],
       "page": {
@@ -336,7 +327,6 @@
       "stub": true,
       "id": "aequivalenzrelation",
       "title": "Äquivalenzrelation",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Äquivalenzrelation ist eine reflexive, symmetrische und transitive Relation auf einer Menge.",
       "refs": [],
       "page": {
@@ -348,7 +338,6 @@
       "stub": true,
       "id": "universelle-eigenschaft",
       "title": "universelle Eigenschaft",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine universelle Eigenschaft charakterisiert ein Objekt durch eine eindeutige Faktorisierung von Morphismen.",
       "refs": [],
       "page": {
@@ -360,7 +349,6 @@
       "stub": true,
       "id": "kanonischer-isomorphismus",
       "title": "kanonischen Isomorphismus",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein kanonischer Isomorphismus ist ein durch die universelle Eigenschaft eindeutig bestimmter Isomorphismus.",
       "refs": [],
       "page": {
@@ -372,7 +360,6 @@
       "stub": true,
       "id": "varietaet",
       "title": "Varietät",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Varietät ist die Nullstellenmenge eines Systems von Polynomen.",
       "refs": [],
       "page": {
@@ -384,7 +371,6 @@
       "stub": true,
       "id": "abelsche-gruppe",
       "title": "abelsche Gruppe",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine abelsche Gruppe ist eine Gruppe \\((G,+)\\), in der die Verknüpfung kommutativ ist.",
       "refs": [],
       "page": {
@@ -396,7 +382,6 @@
       "stub": true,
       "id": "monoid",
       "title": "kommutatives Monoid",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Monoid ist eine Menge mit einer assoziativen Verknüpfung und einem neutralen Element; es heißt kommutativ, wenn die Verknüpfung kommutativ ist.",
       "refs": [],
       "page": {
@@ -408,7 +393,6 @@
       "stub": true,
       "id": "distributivgesetz",
       "title": "Distributivgesetz",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Distributivgesetz besagt \\(a\\cdot(b+c) = a\\cdot b + a\\cdot c\\) für alle Elemente eines Rings.",
       "refs": [],
       "page": {
@@ -420,7 +404,6 @@
       "stub": true,
       "id": "polynomring",
       "title": "Polynomringen",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Polynomring \\(R[x_1,\\dots,x_n]\\) über einem Ring \\(R\\) ist der Ring aller Polynome in den Variablen \\(x_1,\\dots,x_n\\) mit Koeffizienten in \\(R\\).",
       "refs": [],
       "page": {
@@ -432,7 +415,6 @@
       "stub": true,
       "id": "koerper",
       "title": "Körper",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Körper ist ein kommutativer Ring, in dem jedes Element \\(a \\neq 0\\) ein multiplikatives Inverses besitzt.",
       "refs": [],
       "page": {
@@ -444,7 +426,6 @@
       "stub": true,
       "id": "nullring",
       "title": "Nullring",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Nullring ist der Ring \\(\\{0\\}\\), in dem \\(0 = 1\\) gilt.",
       "refs": [],
       "page": {
@@ -456,7 +437,6 @@
       "stub": true,
       "id": "hauptideal",
       "title": "Hauptideal",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Hauptideal ist ein Ideal der Form \\(\\langle a \\rangle = aR\\), das von einem einzelnen Element \\(a \\in R\\) erzeugt wird.",
       "refs": [],
       "page": {
@@ -468,7 +448,6 @@
       "stub": true,
       "id": "homomorphiesatz",
       "title": "Homomorphiesatzes",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Homomorphiesatz besagt, dass jeder Ringhomomorphismus \\(\\varphi\\colon R\\to S\\) einen Isomorphismus \\(R/\\ker\\varphi\\xrightarrow{\\sim}\\operatorname{im}\\varphi\\) induziert.",
       "refs": [],
       "page": {
@@ -480,7 +459,6 @@
       "stub": true,
       "id": "faktorgruppe",
       "title": "Faktorgruppen",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Faktorgruppe ist die Gruppe der Nebenklassen \\(G/N\\) einer Gruppe \\(G\\) modulo eines Normalteilers \\(N\\).",
       "refs": [],
       "page": {
@@ -491,7 +469,6 @@
     {
       "id": "nullteiler",
       "title": "Nullteiler",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Nullteiler in einem <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) ist ein Element \\(a \\in R\\), für das ein \\(b \\neq 0\\) mit \\(ab = 0\\) existiert. Nullteiler messen die Abweichung von \\(R\\) von einem <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>.",
       "refs": [
         {
@@ -567,7 +544,6 @@
       "stub": true,
       "id": "integritaetsbereich",
       "title": "Integritätsbereich",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Integritätsbereich ist ein vom Nullring verschiedener kommutativer Ring, in dem aus \\(ab=0\\) stets \\(a=0\\) oder \\(b=0\\) folgt.",
       "refs": [],
       "page": {
@@ -578,7 +554,6 @@
     {
       "id": "primideal",
       "title": "Primideal",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Primideal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist ein echtes <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{p} \\subsetneq R\\), so dass aus \\(ab \\in \\mathfrak{p}\\) stets \\(a \\in \\mathfrak{p}\\) oder \\(b \\in \\mathfrak{p}\\) folgt. Äquivalent ist der <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> \\(R/\\mathfrak{p}\\) ein <span class=\"t\" data-ref=\"integritaetsbereich\">Integritätsbereich</span>.",
       "refs": [
         {
@@ -681,7 +656,6 @@
     {
       "id": "nilpotentes-element",
       "title": "Nilpotentes Element",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Element \\( x \\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\( R \\) heißt nilpotent, falls eine natürliche Zahl \\( n \\geq 1 \\) existiert mit \\( x^n = 0 \\). Die Menge aller nilpotenten Elemente bildet ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>, das sogenannte Nilradikal \\( \\operatorname{nil}(R) \\).",
       "refs": [
         {
@@ -761,7 +735,6 @@
       "stub": true,
       "id": "binomischer-lehrsatz",
       "title": "binomischen Lehrsatz",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der binomische Lehrsatz besagt, dass in einem kommutativen Ring \\((x+y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}\\) gilt.",
       "refs": [],
       "page": {
@@ -772,7 +745,6 @@
     {
       "id": "einheit",
       "title": "Einheit",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Einheit in einem <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Ring</span> \\(R\\) ist ein Element \\(u \\in R\\), zu dem ein \\(v \\in R\\) mit \\(uv = 1\\) existiert. Die Menge aller Einheiten bildet bezüglich der Multiplikation eine <span class=\"t\" data-ref=\"abelsche-gruppe\">abelsche Gruppe</span> \\(R^{\\times}\\), die Einheitengruppe von \\(R\\).",
       "refs": [
         {
@@ -840,7 +812,6 @@
     {
       "id": "maximales-ideal",
       "title": "Maximales Ideal",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein maximales <span class=\"t\" data-ref=\"ideal\">Ideal</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist ein echtes <span class=\"t\" data-ref=\"ideal\">Ideal</span> \\(\\mathfrak{m} \\subsetneq R\\), das in keinem anderen echten <span class=\"t\" data-ref=\"ideal\">Ideal</span> echt enthalten ist. Maximale Ideale charakterisieren genau jene Ideale, deren <span class=\"t\" data-ref=\"quotientenring\">Quotientenring</span> ein <span class=\"t\" data-ref=\"koerper\">Körper</span> ist.",
       "refs": [
         {
@@ -932,7 +903,6 @@
       "stub": true,
       "id": "multiplikativ-abgeschlossene-menge",
       "title": "multiplikativ abgeschlossen",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Teilmenge \\(S \\subseteq R\\) eines Rings heißt multiplikativ abgeschlossen, falls \\(1 \\in S\\) und mit \\(a, b \\in S\\) auch \\(ab \\in S\\) gilt.",
       "refs": [],
       "page": {
@@ -944,7 +914,6 @@
       "stub": true,
       "id": "primzahl",
       "title": "Primzahl",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Eine Primzahl ist eine natürliche Zahl \\(p \\geq 2\\), die nur durch \\(1\\) und sich selbst teilbar ist.",
       "refs": [],
       "page": {
@@ -956,7 +925,6 @@
       "stub": true,
       "id": "nullideal",
       "title": "Nullideal",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Nullideal eines Rings \\(R\\) ist das Ideal \\(\\{0\\} \\subseteq R\\).",
       "refs": [],
       "page": {
@@ -968,7 +936,6 @@
       "stub": true,
       "id": "zornsches-lemma",
       "title": "Zornschen Lemma",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Zornsche Lemma besagt, dass jede nichtleere, partiell geordnete Menge, in der jede Kette eine obere Schranke besitzt, ein maximales Element enthält.",
       "refs": [],
       "page": {
@@ -979,7 +946,6 @@
     {
       "id": "nilradikal",
       "title": "Nilradikal",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Nilradikal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist die Menge \\(\\operatorname{nil}(R)\\) aller <span class=\"t\" data-ref=\"nilpotentes-element\">nilpotenten Elemente</span>. Es ist ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> und stimmt mit dem Durchschnitt aller <span class=\"t\" data-ref=\"primideal\">Primideale</span> von \\(R\\) überein.",
       "refs": [
         {
@@ -1068,7 +1034,6 @@
     {
       "id": "jacobson-radikal",
       "title": "Jacobson-Radikal",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Jacobson-Radikal eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist der Durchschnitt aller <span class=\"t\" data-ref=\"maximales-ideal\">maximalen Ideale</span> von \\(R\\). Es enthält das <span class=\"t\" data-ref=\"nilradikal\">Nilradikal</span> und charakterisiert genau jene Elemente, deren \"Verschiebung um 1\" stets eine <span class=\"t\" data-ref=\"einheit\">Einheit</span> liefert.",
       "refs": [
         {
@@ -1169,7 +1134,6 @@
       "stub": true,
       "id": "lemma-von-nakayama",
       "title": "Lemma von Nakayama",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Lemma von Nakayama besagt, dass für einen endlich erzeugten Modul \\(M\\) über einem kommutativen Ring \\(R\\) mit \\(\\operatorname{rad}(R)\\cdot M = M\\) bereits \\(M=0\\) folgt.",
       "refs": [],
       "page": {
@@ -1180,7 +1144,6 @@
     {
       "id": "idealsumme",
       "title": "Idealsumme",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Die Summe \\(\\mathfrak{a}+\\mathfrak{b}\\) zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist das kleinste Ideal, das sowohl \\(\\mathfrak{a}\\) als auch \\(\\mathfrak{b}\\) enthält. Sie besteht aus allen Summen \\(a+b\\) mit \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) und verallgemeinert sich auf beliebige Familien von Idealen.",
       "refs": [
         {
@@ -1249,7 +1212,6 @@
       "stub": true,
       "id": "chinesischer-restsatz",
       "title": "Chinesische Restsatz",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Chinesische Restsatz besagt, dass für paarweise koprime Ideale \\(\\mathfrak{a}_1,\\dots,\\mathfrak{a}_n\\) eines kommutativen Rings \\(R\\) ein kanonischer Isomorphismus \\(R/\\bigcap_i\\mathfrak{a}_i \\cong \\prod_i R/\\mathfrak{a}_i\\) besteht.",
       "refs": [],
       "page": {
@@ -1260,7 +1222,6 @@
     {
       "id": "koprime-ideale",
       "title": "Koprime Ideale",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Zwei <span class=\"t\" data-ref=\"ideal\">Ideale</span> \\(\\mathfrak{a},\\mathfrak{b}\\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) heißen koprim, wenn \\(\\mathfrak{a}+\\mathfrak{b}=R\\) gilt. Diese Bedingung verallgemeinert die Teilerfremdheit ganzer Zahlen und ist die Voraussetzung des <span class=\"t\" data-ref=\"chinesischer-restsatz\">Chinesischen Restsatzes</span>.",
       "refs": [
         {
@@ -1346,7 +1307,6 @@
       "stub": true,
       "id": "idealverband",
       "title": "Verband aller Ideale",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Idealverband eines kommutativen Rings \\(R\\) ist die durch Inklusion geordnete Menge aller Ideale von \\(R\\), die mit Durchschnitt und Idealsumme einen vollständigen Verband bildet.",
       "refs": [],
       "page": {
@@ -1357,7 +1317,6 @@
     {
       "id": "idealprodukt",
       "title": "Idealprodukt",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Das Idealprodukt \\(\\mathfrak{a}\\mathfrak{b}\\) zweier <span class=\"t\" data-ref=\"ideal\">Ideale</span> eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> ist das von allen Produkten \\(ab\\) mit \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) erzeugte Ideal. Es ist stets in \\(\\mathfrak{a}\\cap\\mathfrak{b}\\) enthalten und dient unter anderem als multiplikative Struktur auf dem Verband aller <span class=\"t\" data-ref=\"ideal\">Ideale</span>.",
       "refs": [
         {
@@ -1441,7 +1400,6 @@
       "stub": true,
       "id": "idealdurchschnitt",
       "title": "Idealdurchschnitt",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Idealdurchschnitt zweier Ideale \\(\\mathfrak{a},\\mathfrak{b}\\) eines Rings ist der mengentheoretische Schnitt \\(\\mathfrak{a}\\cap\\mathfrak{b}\\), der wieder ein Ideal ist.",
       "refs": [],
       "page": {
@@ -1453,7 +1411,6 @@
       "stub": true,
       "id": "dedekindring",
       "title": "Dedekindringen",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Dedekindring ist ein noetherscher, ganzabgeschlossener Integritätsbereich der Krulldimension höchstens \\(1\\), in dem jedes Ideal eindeutig in ein Produkt von Primidealen zerfällt.",
       "refs": [],
       "page": {
@@ -1464,7 +1421,6 @@
     {
       "id": "idealschnitt",
       "title": "Idealschnitt",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Der Schnitt einer Familie von Idealen \\(\\{\\mathfrak{a}_\\lambda\\}_{\\lambda\\in\\Lambda}\\) eines <span class=\"t\" data-ref=\"kommutativer-ring\">kommutativen Rings</span> \\(R\\) ist die Menge \\(\\bigcap_{\\lambda}\\mathfrak{a}_\\lambda\\), und sie ist wieder ein Ideal. Der Idealschnitt ist die größte untere Schranke der Familie im <span class=\"t\" data-ref=\"idealverband\">Verband aller Ideale</span>.",
       "refs": [
         {
@@ -1540,7 +1496,6 @@
     {
       "id": "erweiterung-von-idealen",
       "title": "Erweiterung von Idealen",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ist \\(\\varphi\\colon R \\to R'\\) ein <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> und \\(\\mathfrak{a} \\subseteq R\\) ein <span class=\"t\" data-ref=\"ideal\">Ideal</span>, so ist die Erweiterung \\(\\mathfrak{a}^{e} := \\varphi(\\mathfrak{a})\\,R'\\) das von \\(\\varphi(\\mathfrak{a})\\) in \\(R'\\) erzeugte <span class=\"t\" data-ref=\"ideal\">Ideal</span>. Sie überführt Ideale des Quellrings in Ideale des Zielrings.",
       "refs": [
         {
@@ -1615,7 +1570,6 @@
     {
       "id": "kontraktion-von-idealen",
       "title": "Kontraktion von Idealen",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Die Kontraktion eines Ideals \\(\\mathfrak{b} \\subseteq R'\\) längs eines <span class=\"t\" data-ref=\"ringhomomorphismus\">Ringhomomorphismus</span> \\(\\varphi\\colon R \\to R'\\) ist das Urbild \\(\\varphi^{-1}(\\mathfrak{b})\\). Sie ist stets ein <span class=\"t\" data-ref=\"ideal\">Ideal</span> in \\(R\\) und liefert das Gegenstück zur <span class=\"t\" data-ref=\"erweiterung-von-idealen\">Erweiterung von Idealen</span>.",
       "refs": [
         {
@@ -1695,7 +1649,6 @@
       "stub": true,
       "id": "teilring",
       "title": "Teilring",
-      "subtitle": "Algebra · Ringtheorie",
       "inline": "Ein Teilring eines Rings \\(R'\\) ist eine Teilmenge \\(R \\subseteq R'\\), die mit den eingeschränkten Operationen selbst ein Ring ist und die Eins von \\(R'\\) enthält.",
       "refs": [],
       "page": {

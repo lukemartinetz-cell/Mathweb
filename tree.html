@@ -396,8 +396,7 @@ function renderConcept(concept) {
   const app = document.getElementById('app');
   if (!isFullConcept(concept)) {
     app.innerHTML =
-      `<h2 style="font-size:22px;font-weight:500;margin:0 0 4px">${concept.title}</h2>` +
-      `<p style="font-size:13px;color:#888;margin:0 0 1.5rem">${concept.subtitle}</p>` +
+      `<h2 style="font-size:22px;font-weight:500;margin:0 0 1.5rem">${concept.title}</h2>` +
       `<div class="entry-block"><div class="block-body">${concept.inline}</div></div>` +
       `<p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
     processRefs(app); typeset(app);
@@ -409,8 +408,7 @@ function renderConcept(concept) {
     return `<span class="${c ? 'pill' : 'pill pill-pending'}" data-nav="${id}">${c ? c.title : id}</span>`;
   }).join('');
   app.innerHTML =
-    `<h2 style="font-size:22px;font-weight:500;margin:0 0 4px">${concept.title}</h2>` +
-    `<p style="font-size:13px;color:#888;margin:0 0 1.5rem">${concept.subtitle}</p>` +
+    `<h2 style="font-size:22px;font-weight:500;margin:0 0 1.5rem">${concept.title}</h2>` +
     concept.page.blocks.map(renderBlock).join('');
   processRefs(app);
   app.querySelectorAll('.pill[data-nav]').forEach(pill =>

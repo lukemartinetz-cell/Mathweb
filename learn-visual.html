@@ -115,7 +115,6 @@ text.glbl {
 .ghost-btn:hover { border-color: #555; color: #1a1a1a; }
 .quiz-card { border: 0.5px solid #ddd; border-radius: 10px; padding: 1.5rem 1.5rem 1.25rem; margin-bottom: 1.5rem; }
 .quiz-card-title { font-size: 20px; font-weight: 500; margin: 0 0 3px; }
-.quiz-card-subtitle { font-size: 12px; color: #888; margin: 0 0 1rem; }
 .quiz-card-inline { font-size: 14px; color: #444; line-height: 1.75; border-left: 1.5px solid #eee; padding-left: 12px; margin-bottom: 1.5rem; }
 .quiz-buttons { display: flex; gap: 8px; }
 .quiz-btn { font-size: 13px; padding: 7px 20px; border-radius: 99px; border: 0.5px solid #ddd; cursor: pointer; background: #fafafa; color: #444; font-family: inherit; transition: background .1s, border-color .1s; }
@@ -158,7 +157,6 @@ text.glbl {
   .phase-heading { margin-bottom: 4px; }
   .phase-sub { margin-bottom: 1rem; }
   .quiz-card { padding: 1rem 1rem 0.875rem; margin-bottom: 0.75rem; }
-  .quiz-card-subtitle { margin-bottom: 0.5rem; }
   .quiz-card-inline { margin-bottom: 0.875rem; }
   .quiz-status { margin-top: 0.75rem; }
   .status-block { margin-bottom: 0.75rem; }
@@ -191,7 +189,6 @@ text.glbl {
     <div id="phase-quiz" class="phase" style="display:none">
       <div class="quiz-card">
         <div class="quiz-card-title" id="quiz-title"></div>
-        <div class="quiz-card-subtitle" id="quiz-sub"></div>
         <div class="quiz-card-inline" id="quiz-inline"></div>
         <div class="quiz-buttons">
           <button class="quiz-btn" id="btn-know">Kenne ich</button>
@@ -350,8 +347,7 @@ function showQuestion(id) {
   questionNum++;
   currentQId = id;
   const c = conceptIndex[id];
-  document.getElementById('quiz-title').textContent    = c?.title || id;
-  document.getElementById('quiz-sub').textContent      = c?.subtitle || '';
+  document.getElementById('quiz-title').textContent = c?.title || id;
   const inlineEl = document.getElementById('quiz-inline');
   inlineEl.innerHTML     = c?.inline || '';
   inlineEl.style.display = c?.inline ? '' : 'none';
@@ -480,7 +476,6 @@ function buildReadingList(sortedIds) {
     if (!c) return '';
     return `<div class="concept-entry" id="entry-${id}">
       <h2>${c.title}</h2>
-      <p class="entry-sub">${c.subtitle || ''}</p>
       ${renderConceptBody(c)}
     </div>`;
   }).join('');
