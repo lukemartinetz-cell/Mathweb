@@ -9,69 +9,72 @@ const client = new Anthropic();
 
 // ── System prompts ────────────────────────────────────────────────────────
 
-const SYS_P1 = `You generate rigorous mathematical content for a commutative algebra learning app (Altman & Kleiman).
+const SYS_P1 = `You generate rigorous mathematical content for a commutative algebra learning app.
 
 Output a single JSON object — NO HTML, NO <span> tags, NO data-ref attributes. Plain text with LaTeX math only, plus {ref:id} notation markers (see below).
 
 Schema:
 {
   "id": "kebab-case-id",
-  "title": "German title",
-  "inline": "1–3 sentence German summary. Plain text with LaTeX. No HTML.",
+  "title": "English title",
+  "inline": "1–3 sentence English summary. Plain text with LaTeX. No HTML.",
   "sections": {
-    "why": "Motivation paragraph in German. What problem does this concept solve?",
-    "def": "Primary formal definition in German — ONE definition only, no equivalent formulations here.",
-    "equiv": ["First equivalent characterization in German with LaTeX", "Second equivalent characterization", "..."],
+    "why": "Motivation paragraph in English. What problem does this concept solve?",
+    "def": "Primary formal definition in English — ONE definition only, no equivalent formulations here.",
+    "def_proof": "(optional) Complete proof as continuous mathematical prose with LaTeX.",
+    "equiv": ["First equivalent characterization in English with LaTeX", "Second equivalent characterization", "..."],
+    "equiv_proof": "(optional) Complete proof that these characterizations are equivalent, as continuous mathematical prose with LaTeX.",
     "prop": "Main proposition or theorem (omit key if none).",
-    "cases": ["Case (a) in German with LaTeX", "Case (b)", "..."],
-    "proof": ["Step 1 in German with LaTeX", "Step 2", "..."]
+    "prop_proof": "(optional) Complete proof of the proposition, as continuous mathematical prose with LaTeX.",
+    "cases": ["Case (a) in English with LaTeX", "Case (b)", "..."]
   }
 }
 
 Rules:
-- Write in German. Formal mathematical language.
+- Write in English. Formal mathematical language.
 - LaTeX: inline \\( ... \\), display \\[ ... \\]. All backslashes doubled in JSON strings.
 - Use \\mathfrak{a}, \\mathfrak{b} for ideals; \\mathfrak{m} for maximal ideals.
 - Do NOT write any HTML tags. Do NOT add data-ref attributes.
 - ENUMERATED CONDITIONS: separate each axiom or condition with \\n — e.g. "(i) first condition\\n(ii) second condition\\n(iii) third condition". Never run conditions together as one sentence.
-- NOTATION REFS: if a LaTeX expression directly represents a named concept in the known pool, append {ref:concept-id} immediately after its closing delimiter with no space — e.g. \\(\\mathrm{Spec}(R)\\){ref:spektrum-eines-rings} or \\(\\ker(\\varphi)\\){ref:ideal}. Only use IDs that exist in the provided concept pool.
-- def: PRIMARY definition only. Any statement of the form "äquivalent ...", "dies ist gleichbedeutend mit ...", or "genau dann wenn ..." belongs in equiv, not def.
-- equiv: array of equivalent characterizations, one complete German sentence per item. Omit key entirely if none.
-- proof: array of steps for a LINEAR logical deduction — steps render with circled numbers ①②③. Use ONLY when the argument is a sequential chain of deductions.
-- cases: array of PARALLEL items (e.g. "Zu (a): ...", "Zu (b): ...", or verifying multiple independent examples) — rendered WITHOUT step numbers. Use instead of proof for case-by-case verification.
-- Omit "equiv", "prop", "cases", "proof" keys entirely if not applicable.
+- EMPHASIS: use \\emph{text} for emphasis in running prose (outside math delimiters). Do NOT use \\emph inside \\( ... \\) or \\[ ... \\].
+- NOTATION REFS: if a LaTeX expression directly represents a named concept in the known pool, append {ref:concept-id} immediately after its closing delimiter with no space — e.g. \\(\\mathrm{Spec}(R)\\){ref:spectrum-of-a-ring} or \\(\\ker(\\varphi)\\){ref:ideal}. Only use IDs that exist in the provided concept pool.
+- def: PRIMARY definition only. Any statement of the form "equivalent to ...", "this is equivalent to ...", or "if and only if ..." belongs in equiv, not def.
+- equiv: array of equivalent characterizations, one complete English sentence per item. Omit key entirely if none.
+- def_proof / equiv_proof / prop_proof: write as a complete, rigorous, standalone proof in the style of a graduate algebra textbook — continuous mathematical prose with LaTeX. Use \\[ ... \\] for key equations. No step numbers, no bullet points, no section headers. Include every logical step needed for the proof to be self-contained. Omit if there is nothing non-trivial to prove.
+- cases: array of PARALLEL worked examples or remarks (e.g. "In \\(\\mathbb{Z}\\), ...", "If \\(R\\) is a field, ...") — rendered as a dashed list labelled "Examples". Do NOT use for proofs; proofs belong in the *_proof fields.
+- Omit "equiv", "prop", "cases", "def_proof", "equiv_proof", "prop_proof" keys entirely if not applicable.
 - Output only JSON, no markdown fences.`;
 
-const SYS_P2 = `You identify mathematical concept references in German mathematical text.
+const SYS_P2 = `You identify mathematical concept references in English mathematical text.
 
 Given: plain text + a pool of known concept IDs with titles. Concepts marked [stub] are placeholders without full content yet.
 
 Output a single JSON object:
 {
   "refs": [
-    { "word": "Ring", "id": "ring", "new": false },
-    { "word": "Untergruppe", "id": "untergruppe", "new": false,
-      "inline": "Eine Untergruppe ist eine Teilmenge einer Gruppe, die selbst unter der Gruppenoperation eine Gruppe bildet." },
-    { "word": "Quotientenring", "id": "quotient-ring", "new": false,
-      "alias_id": "quotientenring",
-      "alias_inline": "Ein Quotientenring ist ein Ring der Form \\\\(R/\\\\mathfrak{a}\\\\)." },
-    { "word": "neue Struktur", "id": "neue-struktur", "new": true,
-      "inline": "Eine neue Struktur ist eine Menge mit..." }
+    { "word": "ring", "id": "ring", "new": false },
+    { "word": "subgroup", "id": "subgroup", "new": false,
+      "inline": "A subgroup is a subset of a group that is itself a group under the group operation." },
+    { "word": "quotient ring", "id": "quotient-ring", "new": false,
+      "alias_id": "quotient-ring-alt",
+      "alias_inline": "A quotient ring is a ring of the form \\\\(R/\\\\mathfrak{a}\\\\)." },
+    { "word": "new structure", "id": "new-structure", "new": true,
+      "inline": "A new structure is a set with..." }
   ]
 }
 
 Field meanings:
-- word: the EXACT string as it appears in the text, including inflection (e.g. "kommutativen Rings" not "kommutativer Ring", "Ringhomomorphismen" not "Ringhomomorphismus"). Never use base/uninflected forms.
+- word: the EXACT string as it appears in the text, including plural or other inflected forms (e.g. "ring homomorphisms" not "ring homomorphism", "ideals" not "ideal"). Never use base/uninflected forms.
 - id: canonical concept ID — use the existing pool ID if the concept exists, otherwise propose a new kebab-case ID
 - new: true ONLY when the concept genuinely does not exist anywhere in the pool
-- inline: (required when new:true OR when concept is marked [stub] in the pool) — one-sentence German definition for this concept, with LaTeX if needed
-- alias_id: (optional) if the word is a German synonym or alternative name for an existing concept, provide a new kebab-case alias ID for this word form; keep "id" as the canonical ID
-- alias_inline: (required when alias_id is set) one-sentence German definition for this word form, with LaTeX if needed
+- inline: (required when new:true OR when concept is marked [stub] in the pool) — one-sentence English definition for this concept, with LaTeX if needed
+- alias_id: (optional) if the word is a synonym or alternative name for an existing concept, provide a new kebab-case alias ID for this word form; keep "id" as the canonical ID
+- alias_inline: (required when alias_id is set) one-sentence English definition for this word form, with LaTeX if needed
 
 Classification rules:
-- Only identify terms that name mathematical concepts (definitions, structures, theorems) — not generic words like "Menge", "Funktion", or "Element" unless they name a specific structure.
-- Match to existing pool IDs whenever the concept is the same, even if the German phrasing differs (use alias_id for the German word form).
-- MULTIPLE FORMS: if the same concept appears under multiple distinct inflected forms (e.g. both "Ringhomomorphismus" and "Ringhomomorphismen"), add a SEPARATE ref entry for each distinct form, all pointing to the same canonical id.
+- Only identify terms that name mathematical concepts (definitions, structures, theorems) — not generic words like "set", "function", or "element" unless they name a specific structure.
+- Match to existing pool IDs whenever the concept is the same, even if the phrasing differs (use alias_id for the variant word form).
+- MULTIPLE FORMS: if the same concept appears under multiple distinct forms (e.g. both "ring homomorphism" and "ring homomorphisms"), add a SEPARATE ref entry for each distinct form, all pointing to the same canonical id.
 - Skip content inside LaTeX delimiters \\( \\) and \\[ \\] — identify natural-language terms only.
 - Do NOT identify the concept being defined itself.
 - SAME-BLOCK SUPPRESSION: If a mathematical term is explicitly defined or explained within the same sentence or paragraph where it appears, do NOT mark it as a ref. Only mark terms that the reader must already know — do not create circular references to things the text itself teaches.
@@ -94,11 +97,16 @@ Output a single JSON object:
 }
 
 Classification rules:
-- "required": concept appears in inline or def/proof AND the entry cannot be read without it.
-- "enriches": concept appears ONLY in the why/motivation block or a worked example.
-- Each ID appears at most once in refs[].
+- "required": the concept is semantically necessary for a reader to understand the formal definition (the def field). Apply "required" when:
+    (a) IS-A / parent type: the definition says "X is a Y", "X is an additive Y", "X is the Y of ...", or similar — Y is the mathematical structure that X is a subtype or instance of.
+    (b) Core ingredient: the definition directly invokes this concept's defining operation, axioms, or structure by name, and the definition cannot be understood without it.
+    Do NOT mark as required: concepts that appear in def for contrast, analogy, or context; concepts mentioned only in proofs, equivalent characterizations, motivation, or examples.
+- "enriches": everything else — concepts in proofs, motivation, examples, or equivalences; concepts in def that provide context rather than being what the concept IS or a core ingredient.
+- The inline summary often re-states what the def already says; do not count a concept as "required" just because it appears in both inline and def.
+- Default to "enriches" for any concept that does not clearly satisfy (a) or (b) in the def field.
 - CYCLE RULE: if concept B already requires concept A (directly or transitively), do NOT classify A as "required" here — use "enriches" instead to avoid mutual required dependencies.
 - Max 10 required refs. Demote the least essential ones to "enriches" if over limit.
+- Each ID appears at most once in refs[].
 - Output only JSON, no markdown fences.`;
 
 // ── Helpers ───────────────────────────────────────────────────────────────
@@ -201,15 +209,20 @@ function wrapRefs(text, refList) {
 function resolveNotationRefs(text) {
   if (!text) return text;
   return text
-    .replace(/(\\\([\s\S]*?\\\))\{ref:([\w-]+)\}/g,
+    .replace(/(\\\((?:[^\\]|\\[^)])*\\\))\{ref:([\w-]+)\}/g,
       (_, latex, id) => `<span class="t" data-ref="${id}">${latex}</span>`)
-    .replace(/(\\\[[\s\S]*?\\\])\{ref:([\w-]+)\}/g,
-      (_, latex, id) => `<span class="t" data-ref="${id}">${latex}</span>`);
+    .replace(/(\\\[(?:[^\\]|\\[^\]])*\\\])\{ref:([\w-]+)\}/g,
+      (_, latex, id) => `<span class="t" data-ref="${id}">${latex}</span>`)
+    .replace(/\{ref:[\w-]+\}/g, '');
 }
 
 function plainToHtml(text) {
   if (!text) return '';
-  return text.replace(/\n/g, '<br>').trim();
+  return text
+    .replace(/\\emph\{([^}]*)\}/g, '<em>$1</em>')
+    .replace(/\\textbf\{([^}]*)\}/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>')
+    .trim();
 }
 
 function assembleBlocks(sections, refList) {
@@ -219,25 +232,24 @@ function assembleBlocks(sections, refList) {
     type: 'why', label: 'Motivation',
     body: wrap(sections.why),
   });
-  if (sections?.def) blocks.push({
-    type: 'def', label: 'Definition',
-    body: wrap(sections.def),
-  });
-  if (sections?.equiv?.length) blocks.push({
-    type: 'equiv', label: 'Äquivalente Charakterisierungen',
-    items: sections.equiv.map(wrap),
-  });
-  if (sections?.prop) blocks.push({
-    type: 'prop', label: 'Proposition',
-    body: wrap(sections.prop),
-  });
+  if (sections?.def) {
+    const b = { type: 'def', label: 'Definition', body: wrap(sections.def) };
+    if (sections.def_proof) b.proof = wrap(sections.def_proof);
+    blocks.push(b);
+  }
+  if (sections?.equiv?.length) {
+    const b = { type: 'equiv', label: 'Equivalent Characterizations', items: sections.equiv.map(wrap) };
+    if (sections.equiv_proof) b.proof = wrap(sections.equiv_proof);
+    blocks.push(b);
+  }
+  if (sections?.prop) {
+    const b = { type: 'prop', label: 'Proposition', body: wrap(sections.prop) };
+    if (sections.prop_proof) b.proof = wrap(sections.prop_proof);
+    blocks.push(b);
+  }
   if (sections?.cases?.length) blocks.push({
-    type: 'cases', label: 'Beweis',
+    type: 'cases', label: 'Examples',
     items: sections.cases.map(wrap),
-  });
-  if (sections?.proof?.length) blocks.push({
-    type: 'proof', label: 'Beweis',
-    steps: sections.proof.map(wrap),
   });
   return blocks;
 }
@@ -281,8 +293,9 @@ function extractDataRefs(html) {
 function allHtmlStrings(concept) {
   const out = [concept.inline];
   for (const b of concept.page?.blocks ?? []) {
-    if (b.body) out.push(b.body);
-    for (const s of b.steps ?? []) out.push(s);
+    if (b.body)   out.push(b.body);
+    if (b.proof)  out.push(b.proof);
+    for (const s    of b.steps ?? []) out.push(s);
     for (const item of b.items ?? []) out.push(item);
   }
   return out.filter(Boolean);
@@ -475,14 +488,56 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
 
   if (verbose) { console.log('\n── P3 ──'); console.log(JSON.stringify({ refs: classifiedRefs }, null, 2)); }
 
+  // ── IS-A safety net: promote enriches→required for parent-type refs in def ─
+  if (content.sections?.def && classifiedRefs?.length) {
+    const defNonLatex = tokenizeLatex(content.sections.def)
+      .filter(s => !s.latex).map(s => s.text).join('');
+
+    const reqGraph = buildRequiredGraph(data.concepts);
+    const tentativeRequired = new Set(
+      classifiedRefs.filter(r => r.type === 'required').map(r => r.id)
+    );
+    reqGraph.set(content.id, tentativeRequired);
+
+    for (const r of classifiedRefs) {
+      if (r.type !== 'enriches') continue;
+      const refEntry = refList.find(x => x.id === r.id);
+      if (!refEntry) continue;
+
+      // Strip trailing 's' so singular/plural both match against the def
+      const stem = refEntry.word.replace(/s$/i, '');
+      const esc  = stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      // IS-A: (is|are|be) + up to 4 intermediate words + stem (optional trailing s)
+      const isAPattern = new RegExp(
+        `(?:is|are|be)\\s+(?:\\S+\\s+){0,4}${WB_L}${esc}s?${WB_R}`, 'i'
+      );
+      if (!isAPattern.test(defNonLatex)) continue;
+
+      if (canReach(reqGraph, r.id, content.id)) {
+        console.log(`  ~ IS-A match for "${r.id}" skipped — would create cycle`);
+        continue;
+      }
+      if (tentativeRequired.size >= 10) {
+        console.log(`  ~ IS-A match for "${r.id}" skipped — 10 required limit reached`);
+        continue;
+      }
+
+      r.type = 'required';
+      tentativeRequired.add(r.id);
+      reqGraph.set(content.id, tentativeRequired);
+      console.log(`  ↑ IS-A: promoted "${r.id}" to required`);
+    }
+  }
+
   // ── Phase 4: HTML assembly (deterministic) ──────────────────────────────
   console.log(`[P4] Assembling HTML...`);
 
   const concept = {
-    id:     content.id,
-    title:  content.title,
-    inline: resolveNotationRefs(wrapRefs(content.inline, refList)),
-    refs:     classifiedRefs ?? [],
+    id:        content.id,
+    title:     content.title,
+    generated: new Date().toISOString().slice(0, 10),
+    inline:    resolveNotationRefs(wrapRefs(content.inline, refList)),
+    refs:      classifiedRefs ?? [],
     page: {
       blocks:  assembleBlocks(content.sections, refList),
       related: [],

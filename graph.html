@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Concept Graph · Commutative Algebra</title>
+<script>
+(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});});})();
+function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});if(typeof updateGraph==='function')updateGraph();}
+</script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 100%; height: 100%; overflow: hidden; background: #d0d0d0; font-family: system-ui, sans-serif; }
@@ -82,6 +86,23 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #d0d0d0; f
   font-size: 12.5px; white-space: nowrap;
   opacity: 0; transition: opacity 0.1s;
 }
+button.vnav{cursor:pointer;border:none;font-family:inherit}
+html.dm,html.dm body{background:#0c0c0c}
+html.dm .link-required{stroke:#666}
+html.dm .node-full circle{fill:#e6e6e6}
+html.dm .node-stub circle{fill:#1e1e1e;stroke:#666}
+html.dm .node-full .lbl{fill:#e6e6e6}
+html.dm .node-stub .lbl{fill:#888}
+html.dm .lbl{stroke:rgba(12,12,12,0.9)}
+html.dm #legend{background:rgba(20,20,20,0.93);border-color:#2e2e2e;color:#e6e6e6}
+html.dm .ltitle{color:#666}
+html.dm .lc-full{background:#e6e6e6}
+html.dm .lc-stub{border-color:#666;background:#1e1e1e}
+html.dm .ll-req{background:#666}
+html.dm #hint{color:#666;background:rgba(20,20,20,0.82)}
+html.dm .vnav{border-color:#2e2e2e;color:#aaa;background:rgba(20,20,20,0.92)}
+html.dm .vnav:hover{border-color:#777;color:#e6e6e6}
+html.dm #tip{background:#e6e6e6;color:#141414}
 </style>
 </head>
 <body>
@@ -89,10 +110,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #d0d0d0; f
 <svg id="graph"></svg>
 
 <div id="legend">
-  <div class="ltitle">Legende</div>
-  <div class="lr"><div class="lc-full"></div><span>Vollständiger Begriff</span></div>
-  <div class="lr"><div class="lc-stub"></div><span>Stub (unvollständig)</span></div>
-  <div class="lr"><div class="ll-req"></div><span>Abhängigkeit</span></div>
+  <div class="ltitle">Legend</div>
+  <div class="lr"><div class="lc-full"></div><span>Full concept</span></div>
+  <div class="lr"><div class="lc-stub"></div><span>Stub</span></div>
+  <div class="lr"><div class="ll-req"></div><span>Dependency</span></div>
 </div>
 
 <div id="hint">Scroll to zoom · Drag to pan · Click node to open in App</div>
@@ -101,6 +122,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #d0d0d0; f
   <a class="vnav" href="app.html">App</a>
   <a class="vnav" href="tree.html">Tree</a>
   <a class="vnav" href="learn-visual.html">Learn</a>
+  <button class="vnav theme-toggle" onclick="toggleTheme()">Dark</button>
 </div>
 
 <div id="tip"></div>
@@ -132,6 +154,37 @@ fetch('concepts.json')
     document.body.innerHTML = `<p style="color:#c00;font-size:14px">Error loading concepts.json: ${err.message}</p>`;
   });
 
+// ── Topological depth (longest path from roots) ───────────────────────────
+// Returns a Map<id, depth> where depth 0 = no prerequisites (root concepts).
+function computeDepths(nodes, links) {
+  const out   = new Map(nodes.map(n => [n.id, []]));
+  const indeg = new Map(nodes.map(n => [n.id, 0]));
+  for (const l of links) {
+    out.get(l.source).push(l.target);
+    indeg.set(l.target, (indeg.get(l.target) || 0) + 1);
+  }
+  // Kahn's topological sort
+  const depth = new Map(nodes.map(n => [n.id, 0]));
+  const pq    = nodes.filter(n => indeg.get(n.id) === 0).map(n => n.id);
+  const topo  = [];
+  while (pq.length) {
+    const id = pq.shift();
+    topo.push(id);
+    for (const child of out.get(id)) {
+      indeg.set(child, indeg.get(child) - 1);
+      if (indeg.get(child) === 0) pq.push(child);
+    }
+  }
+  // Longest-path depth propagation
+  for (const id of topo) {
+    for (const child of out.get(id)) {
+      if (depth.get(id) + 1 > depth.get(child))
+        depth.set(child, depth.get(id) + 1);
+    }
+  }
+  return depth;
+}
+
 // ── Build & render ────────────────────────────────────────────────────────
 function drawGraph(data) {
   // Aliases are resolved to their canonical concepts — they don't appear as nodes
@@ -160,6 +213,21 @@ function drawGraph(data) {
 
   const W = window.innerWidth;
   const H = window.innerHeight;
+
+  // Compute topological depth before the simulation resolves link IDs to objects
+  const depthMap  = computeDepths(nodes, links);
+  const maxDepth  = Math.max(0, ...depthMap.values());
+
+  // Nodes that appear in no edge are unconstrained — don't band them
+  const connectedIds = new Set(links.flatMap(l => [l.source, l.target]));
+
+  // Seed positions along depth bands so the simulation starts well-separated
+  const margin = H * 0.10;
+  nodes.forEach(n => {
+    const dep = depthMap.get(n.id) || 0;
+    n.x = W / 2 + (Math.random() - 0.5) * Math.min(W * 0.7, 900);
+    n.y = maxDepth ? margin + (dep / maxDepth) * (H - 2 * margin) : H / 2;
+  });
 
   const svg = d3.select('#graph').attr('width', W).attr('height', H);
   const g   = svg.append('g');
@@ -196,10 +264,16 @@ function drawGraph(data) {
         .strength(0.3)
     )
     .force('charge',
-      d3.forceManyBody().strength(d => d.isFull ? -700 : -220)
+      d3.forceManyBody().strength(d => d.isFull ? -800 : -260)
     )
-    .force('center',  d3.forceCenter(W / 2, H / 2).strength(0.04))
-    .force('collide', d3.forceCollide().radius(d => nodeR(d) + 38).strength(0.8));
+    .force('center',  d3.forceCenter(W / 2, H / 2).strength(0.02))
+    .force('collide', d3.forceCollide().radius(d => nodeR(d) + 38).strength(0.8))
+    // Pull connected nodes toward their topological depth band to reduce edge crossings;
+    // isolated nodes (no edges) get no pull so repulsion scatters them naturally
+    .force('y', d3.forceY(d => {
+      const dep = depthMap.get(d.id) || 0;
+      return maxDepth ? margin + (dep / maxDepth) * (H - 2 * margin) : H / 2;
+    }).strength(d => connectedIds.has(d.id) ? 0.22 : 0));
 
   // ── Edges ─────────────────────────────────────────────────────────────
   const linkSel = g.append('g')
@@ -219,7 +293,7 @@ function drawGraph(data) {
     .on('mouseenter', onEnter)
     .on('mouseleave', onLeave)
     .on('click', (_ev, d) =>
-      window.location.href = `app.html?c=${encodeURIComponent(d.id)}`
+      window.location.href = `tree.html?c=${encodeURIComponent(d.id)}`
     );
 
   nodeSel.append('circle').attr('r', d => nodeR(d));

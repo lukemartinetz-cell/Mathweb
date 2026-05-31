@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commutative Algebra · Tree</title>
+<script>
+(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});});})();
+function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});if(typeof updateGraph==='function')updateGraph();}
+</script>
 <style>
 /* ── Reset & layout ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -79,6 +83,10 @@ text.lbl {
 .pill { font-size: 12px; padding: 3px 12px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; cursor: pointer; background: #fafafa; }
 .pill:hover { border-color: #555; color: #1a1a1a; }
 .pill-pending { border-style: dashed; color: #aaa; }
+.proof-toggle-row { margin-top: 10px; }
+.proof-toggle { font-size: 11px; color: #999; cursor: pointer; background: none; border: none; padding: 0; font-family: inherit; letter-spacing: .04em; }
+.proof-toggle:hover { color: #1a1a1a; }
+.proof-body { margin-top: 10px; padding-top: 12px; border-top: 0.5px solid #eee; font-size: 14px; color: #444; line-height: 1.85; }
 
 /* ── Viewnav ── */
 #viewnav { position: fixed; top: 14px; right: 16px; z-index: 20; display: flex; gap: 7px; }
@@ -98,6 +106,32 @@ text.lbl {
   #app-panel { flex: none; overflow-y: visible; height: auto; border-top: 0.5px solid #eee; }
   .app-content { margin: 24px auto; padding: 0 16px 60px; }
 }
+button.vnav{cursor:pointer;border:none;font-family:inherit}
+html.dm,html.dm body,html.dm #tree-panel,html.dm #app-panel{background:#141414}
+html.dm #app-panel{border-top-color:#2e2e2e}
+html.dm .app-content{color:#e6e6e6}
+html.dm .tree-edge{stroke:#333}
+html.dm .tree-node circle{fill:#e6e6e6}
+html.dm .tree-node.is-stub circle{fill:#1e1e1e;stroke:#888}
+html.dm .tree-node:not(.is-center):hover circle{stroke:#aaa}
+html.dm text.lbl{fill:#e6e6e6;stroke:rgba(20,20,20,0.92)}
+html.dm .entry-block{background:#1e1e1e;border-color:#2e2e2e}
+html.dm .block-body{color:#e6e6e6}
+html.dm .list-item::before{color:#555}
+html.dm .t{border-bottom-color:#555}
+html.dm .t:hover{background:#262626}
+html.dm .t.open{border-bottom-color:#aaa}
+html.dm .t.pending{border-bottom-color:#3a3a3a}
+html.dm .t.pending.open{border-bottom-color:#777}
+html.dm .exp{border-left-color:#2e2e2e;color:#e6e6e6}
+html.dm .step-num{color:#666}
+html.dm .pill{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .pill:hover{border-color:#777;color:#e6e6e6}
+html.dm .proof-toggle{color:#666}
+html.dm .proof-toggle:hover{color:#e6e6e6}
+html.dm .proof-body{border-top-color:#2e2e2e;color:#b0b0b0}
+html.dm .vnav{border-color:#2e2e2e;color:#aaa;background:rgba(20,20,20,0.92)}
+html.dm .vnav:hover{border-color:#777;color:#e6e6e6}
 </style>
 </head>
 <body>
@@ -113,6 +147,7 @@ text.lbl {
   <a id="nav-app"      class="vnav" href="app.html"   >App</a>
   <a class="vnav"      href="graph.html"   >Graph</a>
   <a id="nav-learn" class="vnav" href="learn-visual.html">Learn</a>
+  <button class="vnav theme-toggle" onclick="toggleTheme()">Dark</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
@@ -330,6 +365,18 @@ function typeset(el) {
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
 }
 
+function toggleProof(btn, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? 'Proof' : 'Hide proof';
+  if (!open && !el.dataset.rendered) {
+    processRefs(el); typeset(el);
+    el.dataset.rendered = '1';
+  }
+}
+
 function processRefs(container) {
   container.querySelectorAll('.t[data-ref]:not([data-exp])').forEach(span => {
     const refId = span.getAttribute('data-ref');
@@ -369,7 +416,7 @@ function handleRefClick(span) {
         expEl.innerHTML = concept.inline;
         processRefs(expEl); typeset(expEl);
       } else {
-        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition noch nicht vorhanden.</em>';
+        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition not yet available.</em>';
       }
       expEl.dataset.rendered = '1';
     }
@@ -378,18 +425,18 @@ function handleRefClick(span) {
 }
 
 function renderBlock(block) {
-  const cls  = TYPE_CLASS[block.type] || 'label-def';
+  const cls = TYPE_CLASS[block.type] || 'label-def';
   let body;
-  if (block.type === 'proof') {
-    body = block.steps.map((s, i) =>
-      `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`
-    ).join('');
-  } else if (block.type === 'equiv' || block.type === 'cases') {
+  if (block.type === 'equiv' || block.type === 'cases') {
     body = (block.items || []).map(item => `<div class="list-item">${item}</div>`).join('');
   } else {
     body = block.body;
   }
-  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
+  const pid = block.proof ? 'p' + Math.random().toString(36).slice(2, 9) : null;
+  const proofHtml = pid
+    ? `<div class="proof-toggle-row"><button class="proof-toggle" onclick="toggleProof(this,'${pid}')">Proof</button></div><div class="proof-body" id="${pid}" style="display:none">${block.proof}</div>`
+    : '';
+  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div>${proofHtml}</div>`;
 }
 
 function renderConcept(concept) {
@@ -398,7 +445,7 @@ function renderConcept(concept) {
     app.innerHTML =
       `<h2 style="font-size:22px;font-weight:500;margin:0 0 1.5rem">${concept.title}</h2>` +
       `<div class="entry-block"><div class="block-body">${concept.inline}</div></div>` +
-      `<p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
+      `<p style="font-size:13px;color:#ccc;margin-top:1rem">Full entry not yet available.</p>`;
     processRefs(app); typeset(app);
     return;
   }
@@ -409,7 +456,8 @@ function renderConcept(concept) {
   }).join('');
   app.innerHTML =
     `<h2 style="font-size:22px;font-weight:500;margin:0 0 1.5rem">${concept.title}</h2>` +
-    concept.page.blocks.map(renderBlock).join('');
+    concept.page.blocks.map(renderBlock).join('') +
+    (concept.generated ? `<p style="font-size:11px;color:#bbb;text-align:right;margin-top:2rem;margin-bottom:0">${concept.generated}</p>` : '');
   processRefs(app);
   app.querySelectorAll('.pill[data-nav]').forEach(pill =>
     pill.addEventListener('click', function() {
@@ -437,6 +485,10 @@ fetch('concepts.json')
 
     const startId = new URLSearchParams(location.search).get('c');
     const first   = (startId && conceptIndex[startId]) || allConcepts.find(isFullConcept) || allConcepts[0];
+    if (!first) {
+      document.getElementById('app').textContent = 'No concepts yet.';
+      return;
+    }
     navigateTo(first.id, false);
   })
   .catch(err => { document.getElementById('app').textContent = 'Error: ' + err.message; });

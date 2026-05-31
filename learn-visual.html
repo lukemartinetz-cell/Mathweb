@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learn · Commutative Algebra</title>
+<script>
+(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});});})();
+function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});if(typeof updateGraph==='function')updateGraph();}
+</script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 100%; height: 100%; font-family: system-ui, sans-serif; background: #fff; color: #1a1a1a; }
@@ -88,6 +92,10 @@ text.glbl {
 .pill:hover { border-color: #555; color: #1a1a1a; }
 .pill-pending { border-style: dashed; color: #aaa; }
 .pill-pending:hover { border-color: #aaa; color: #888; }
+.proof-toggle-row { margin-top: 10px; }
+.proof-toggle { font-size: 11px; color: #999; cursor: pointer; background: none; border: none; padding: 0; font-family: inherit; letter-spacing: .04em; }
+.proof-toggle:hover { color: #1a1a1a; }
+.proof-body { margin-top: 10px; padding-top: 12px; border-top: 0.5px solid #eee; font-size: 14px; color: #444; line-height: 1.85; }
 
 .nav-item { font-size: 12px; padding: 4px 14px; border-radius: 99px; border: 0.5px solid #ddd; color: #666; cursor: pointer; background: #fafafa; user-select: none; }
 .nav-item:hover { border-color: #555; color: #1a1a1a; }
@@ -161,6 +169,45 @@ text.glbl {
   .quiz-status { margin-top: 0.75rem; }
   .status-block { margin-bottom: 0.75rem; }
 }
+button.vnav{cursor:pointer;border:none;font-family:inherit}
+html.dm,html.dm body{background:#141414;color:#e6e6e6}
+html.dm #question-panel{border-right-color:#2e2e2e;border-bottom-color:#2e2e2e}
+html.dm #graph-panel{background:#0c0c0c}
+html.dm #graph-placeholder{color:#666}
+html.dm text.glbl{fill:#e6e6e6;stroke:rgba(12,12,12,0.88)}
+html.dm .entry-block{background:#1e1e1e;border-color:#2e2e2e}
+html.dm .block-body{color:#e6e6e6}
+html.dm .list-item::before{color:#555}
+html.dm .t{border-bottom-color:#555}
+html.dm .t:hover{background:#262626}
+html.dm .t.open{border-bottom-color:#aaa}
+html.dm .t.pending{border-bottom-color:#3a3a3a}
+html.dm .t.pending.open{border-bottom-color:#777}
+html.dm .exp{border-left-color:#2e2e2e;color:#e6e6e6}
+html.dm .step-num{color:#666}
+html.dm .pill{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .pill:hover{border-color:#777;color:#e6e6e6}
+html.dm .proof-toggle{color:#666}
+html.dm .proof-toggle:hover{color:#e6e6e6}
+html.dm .proof-body{border-top-color:#2e2e2e;color:#b0b0b0}
+html.dm .nav-item{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .nav-item:hover{border-color:#777;color:#e6e6e6}
+html.dm .nav-item.active{background:#e6e6e6;color:#141414;border-color:#e6e6e6}
+html.dm .vnav{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .vnav:hover{border-color:#777;color:#e6e6e6}
+html.dm .ghost-btn{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .ghost-btn:hover{border-color:#777;color:#e6e6e6}
+html.dm .quiz-card{border-color:#2e2e2e}
+html.dm .quiz-card-inline{color:#b0b0b0;border-left-color:#2e2e2e}
+html.dm .quiz-btn{border-color:#2e2e2e;background:#1e1e1e;color:#b0b0b0}
+html.dm .quiz-btn:hover{border-color:#777;color:#e6e6e6}
+html.dm .quiz-btn-no{background:#e6e6e6;color:#141414;border-color:#e6e6e6}
+html.dm .quiz-btn-no:hover{background:#ccc;border-color:#ccc;color:#141414}
+html.dm .spill{border-color:#2e2e2e;background:#1e1e1e}
+html.dm .spill-unknown{color:#e6e6e6}
+html.dm .spill-known{color:#555;border-color:#2a2a2a}
+html.dm #overview-row{border-bottom-color:#2e2e2e}
+html.dm .concept-entry{border-bottom-color:#2e2e2e}
 </style>
 </head>
 <body>
@@ -170,18 +217,19 @@ text.glbl {
   <!-- ── Question panel ── -->
   <div id="question-panel">
     <div id="viewnav">
-      <button id="btn-restart" class="ghost-btn" style="display:none">← Neu starten</button>
+      <button id="btn-restart" class="ghost-btn" style="display:none">← Restart</button>
       <div class="vnav-group">
         <a class="vnav" href="app.html">App</a>
         <a class="vnav" href="graph.html">Graph</a>
         <a class="vnav" href="tree.html">Tree</a>
+        <button class="vnav theme-toggle" onclick="toggleTheme()">Dark</button>
       </div>
     </div>
 
     <!-- Phase 1: select -->
     <div id="phase-select" class="phase">
-      <p class="phase-heading">Was möchtest du lernen?</p>
-      <p class="phase-sub">Wähle einen Begriff aus. Der Graph rechts zeigt, welche Vorkenntnisse der Algorithmus findet und welche davon du bereits kennst.</p>
+      <p class="phase-heading">What do you want to learn?</p>
+      <p class="phase-sub">Choose a concept. The graph on the right shows which prerequisites the algorithm finds and which of them you already know.</p>
       <div id="concept-list"></div>
     </div>
 
@@ -191,10 +239,10 @@ text.glbl {
         <div class="quiz-card-title" id="quiz-title"></div>
         <div class="quiz-card-inline" id="quiz-inline"></div>
         <div class="quiz-buttons">
-          <button class="quiz-btn" id="btn-know">Kenne ich</button>
-          <button class="quiz-btn quiz-btn-no" id="btn-unknown">Kenne ich nicht</button>
+          <button class="quiz-btn" id="btn-know">I know this</button>
+          <button class="quiz-btn quiz-btn-no" id="btn-unknown">I don't know this</button>
         </div>
-        <p class="key-hint" style="font-size:11px;color:#bbb;margin-top:10px">← → Pfeiltasten</p>
+        <p class="key-hint" style="font-size:11px;color:#bbb;margin-top:10px">← → Arrow keys</p>
       </div>
       <div class="quiz-status" id="quiz-status"></div>
     </div>
@@ -214,7 +262,7 @@ text.glbl {
   <!-- ── Graph panel ── -->
   <div id="graph-panel">
     <svg id="graph-canvas"></svg>
-    <div id="graph-placeholder">Wähle einen Begriff, um den Algorithmus als Graph zu sehen.</div>
+    <div id="graph-placeholder">Choose a concept to see the algorithm as a graph.</div>
   </div>
 
 </div><!-- /#layout -->
@@ -239,8 +287,8 @@ const gNodeMap = new Map();   // id → node object (preserves x,y across update
 let gNodes = [], gLinks = [];
 let gSim, gLinkLayer, gNodeLayer;
 
-const G_FILL   = { current: '#534AB7', unknown: '#1a1a1a', known: '#c8c8c8', queued: '#888' };
-const G_STROKE = { current: '#534AB7', unknown: '#1a1a1a', known: '#bbb',    queued: '#888' };
+function gFill(state)   { const dk=document.documentElement.classList.contains('dm'); return ({current:'#534AB7',unknown:dk?'#e6e6e6':'#1a1a1a',known:dk?'#333':'#c8c8c8',queued:dk?'#555':'#888'})[state]; }
+function gStroke(state) { const dk=document.documentElement.classList.contains('dm'); return ({current:'#534AB7',unknown:dk?'#e6e6e6':'#1a1a1a',known:dk?'#555':'#bbb',queued:dk?'#555':'#888'})[state]; }
 
 function gNodeR(d) { return d.isTarget ? 22 : (d.isFull ? 16 : 10); }
 
@@ -250,6 +298,18 @@ const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:
 
 function typeset(el) {
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
+}
+
+function toggleProof(btn, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? 'Proof' : 'Hide proof';
+  if (!open && !el.dataset.rendered) {
+    processRefs(el); typeset(el);
+    el.dataset.rendered = '1';
+  }
 }
 
 function isFullConcept(c) {
@@ -373,7 +433,7 @@ function renderQuizStatus() {
   const el       = document.getElementById('quiz-status');
   const knTitles = [...knownSet].map(id => conceptIndex[id]?.title || id);
   el.innerHTML   = knTitles.length
-    ? `<div class="status-block"><span class="status-label">Bereits bekannt (${knTitles.length})</span><div class="status-pills">${knTitles.map(t => `<span class="spill spill-known">${t}</span>`).join('')}</div></div>`
+    ? `<div class="status-block"><span class="status-label">Already known (${knTitles.length})</span><div class="status-pills">${knTitles.map(t => `<span class="spill spill-known">${t}</span>`).join('')}</div></div>`
     : '';
 }
 
@@ -419,7 +479,7 @@ function handleRefClick(span) {
         expEl.innerHTML = concept.inline;
         processRefs(expEl); typeset(expEl);
       } else {
-        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition noch nicht vorhanden.</em>';
+        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition not yet available.</em>';
       }
       expEl.dataset.rendered = '1';
     }
@@ -430,31 +490,32 @@ function handleRefClick(span) {
 function renderBlock(block) {
   const cls = TYPE_CLASS[block.type] || 'label-def';
   let body;
-  if (block.type === 'proof') {
-    body = block.steps.map((s, i) =>
-      `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`
-    ).join('');
-  } else if (block.type === 'equiv' || block.type === 'cases') {
+  if (block.type === 'equiv' || block.type === 'cases') {
     body = (block.items || []).map(item => `<div class="list-item">${item}</div>`).join('');
   } else {
     body = block.body;
   }
-  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
+  const pid = block.proof ? 'p' + Math.random().toString(36).slice(2, 9) : null;
+  const proofHtml = pid
+    ? `<div class="proof-toggle-row"><button class="proof-toggle" onclick="toggleProof(this,'${pid}')">Proof</button></div><div class="proof-body" id="${pid}" style="display:none">${block.proof}</div>`
+    : '';
+  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div>${proofHtml}</div>`;
 }
 
 function renderConceptBody(c) {
   if (!isFullConcept(c)) {
     return `<div class="entry-block"><div class="block-body">${c.inline || ''}</div></div>
-            <p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
+            <p style="font-size:13px;color:#ccc;margin-top:1rem">Full entry not yet available.</p>`;
   }
-  return c.page.blocks.map(renderBlock).join('');
+  return c.page.blocks.map(renderBlock).join('') +
+    (c.generated ? `<p style="font-size:11px;color:#bbb;text-align:right;margin-top:2rem;margin-bottom:0">${c.generated}</p>` : '');
 }
 
 function buildReadingList(sortedIds) {
   const target = conceptIndex[targetId];
   document.getElementById('read-title').textContent = target?.title || targetId;
-  document.getElementById('read-count').textContent = `${sortedIds.length} Begriff${sortedIds.length !== 1 ? 'e' : ''}`;
-  document.getElementById('read-sub').textContent   = 'Sortiert von den Grundlagen zum Lernziel — kein Begriff setzt ein unbekanntes Vorwissen voraus.';
+  document.getElementById('read-count').textContent = `${sortedIds.length} concept${sortedIds.length !== 1 ? 's' : ''}`;
+  document.getElementById('read-sub').textContent   = 'Sorted from foundations to target — no concept assumes unknown prior knowledge.';
 
   const overviewEl = document.getElementById('overview-row');
   overviewEl.innerHTML = sortedIds.map(id => {
@@ -650,8 +711,8 @@ function renderGraph() {
   // Main body
   groups.select('circle.gbody')
     .attr('r', d => gNodeR(d))
-    .attr('fill',   d => d.isFull ? G_FILL[d.state]   : '#fff')
-    .attr('stroke', d => d.isFull ? 'none'             : G_STROKE[d.state])
+    .attr('fill',   d => d.isFull ? gFill(d.state)   : (document.documentElement.classList.contains('dm')?'#1e1e1e':'#fff'))
+    .attr('stroke', d => d.isFull ? 'none'             : gStroke(d.state))
     .attr('stroke-width',    d => d.isFull ? 0 : 1.5)
     .attr('stroke-dasharray', d => d.isFull ? 'none' : '4 2');
 

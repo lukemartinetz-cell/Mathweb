@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lernpfad · Commutative Algebra</title>
+<title>Learn · Commutative Algebra</title>
+<script>
+(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});});})();
+function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});if(typeof updateGraph==='function')updateGraph();}
+</script>
 <style>
 body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0 24px;background:#fff;color:#1a1a1a}
 .entry-block{border:0.5px solid #ddd;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;background:#fff}
@@ -24,6 +28,10 @@ body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0
 .pill:hover{border-color:#555;color:#1a1a1a}
 .pill-pending{border-style:dashed;color:#aaa}
 .pill-pending:hover{border-color:#aaa;color:#888}
+.proof-toggle-row{margin-top:10px}
+.proof-toggle{font-size:11px;color:#999;cursor:pointer;background:none;border:none;padding:0;font-family:inherit;letter-spacing:.04em}
+.proof-toggle:hover{color:#1a1a1a}
+.proof-body{margin-top:10px;padding-top:12px;border-top:0.5px solid #eee;font-size:14px;color:#444;line-height:1.85}
 .nav-item{font-size:12px;padding:4px 14px;border-radius:99px;border:0.5px solid #ddd;color:#666;cursor:pointer;background:#fafafa;user-select:none}
 .nav-item:hover{border-color:#555;color:#1a1a1a}
 .nav-item.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
@@ -73,6 +81,42 @@ body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0
 .concept-entry:last-child{border-bottom:none;margin-bottom:4rem}
 .concept-entry h2{font-size:22px;font-weight:500;margin:0 0 4px}
 .concept-entry .entry-sub{font-size:13px;color:#888;margin:0 0 1.5rem}
+button.vnav{cursor:pointer;border:none;font-family:inherit}
+html.dm body{background:#141414;color:#e6e6e6}
+html.dm .entry-block{background:#1e1e1e;border-color:#2e2e2e}
+html.dm .block-body{color:#e6e6e6}
+html.dm .list-item::before{color:#555}
+html.dm .t{border-bottom-color:#555}
+html.dm .t:hover{background:#262626}
+html.dm .t.open{border-bottom-color:#aaa}
+html.dm .t.pending{border-bottom-color:#3a3a3a}
+html.dm .t.pending.open{border-bottom-color:#777}
+html.dm .exp{border-left-color:#2e2e2e;color:#e6e6e6}
+html.dm .step-num{color:#666}
+html.dm .pill{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .pill:hover{border-color:#777;color:#e6e6e6}
+html.dm .proof-toggle{color:#666}
+html.dm .proof-toggle:hover{color:#e6e6e6}
+html.dm .proof-body{border-top-color:#2e2e2e;color:#b0b0b0}
+html.dm .nav-item{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .nav-item:hover{border-color:#777;color:#e6e6e6}
+html.dm .nav-item.active{background:#e6e6e6;color:#141414;border-color:#e6e6e6}
+html.dm .nav-item.stub{border-color:#2e2e2e;color:#555}
+html.dm .vnav{border-color:#2e2e2e;color:#aaa;background:rgba(20,20,20,0.92)}
+html.dm .vnav:hover{border-color:#777;color:#e6e6e6}
+html.dm .ghost-btn{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .ghost-btn:hover{border-color:#777;color:#e6e6e6}
+html.dm .quiz-card{border-color:#2e2e2e}
+html.dm .quiz-card-inline{color:#b0b0b0;border-left-color:#2e2e2e}
+html.dm .quiz-btn{border-color:#2e2e2e;background:#1e1e1e;color:#b0b0b0}
+html.dm .quiz-btn:hover{border-color:#777;color:#e6e6e6}
+html.dm .quiz-btn-no{background:#e6e6e6;color:#141414;border-color:#e6e6e6}
+html.dm .quiz-btn-no:hover{background:#ccc;border-color:#ccc;color:#141414}
+html.dm .spill{border-color:#2e2e2e;background:#1e1e1e}
+html.dm .spill-unknown{color:#e6e6e6}
+html.dm .spill-known{color:#555;border-color:#2a2a2a}
+html.dm #overview-row{border-bottom-color:#2e2e2e}
+html.dm .concept-entry{border-bottom-color:#2e2e2e}
 </style>
 </head>
 <body>
@@ -82,29 +126,30 @@ body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0
   <a class="vnav"      href="graph.html"   >Graph</a>
   <a id="nav-tree" class="vnav" href="tree.html">Tree</a>
   <a class="vnav"      href="learn-visual.html">Learn</a>
+  <button class="vnav theme-toggle" onclick="toggleTheme()">Dark</button>
 </div>
 
 <!-- ── Phase 1: select target ── -->
 <div id="phase-select" class="phase">
-  <p class="phase-heading">Was möchtest du lernen?</p>
-  <p class="phase-sub">Wähle einen Begriff aus. Die Seite findet dann alle Vorkenntnisse, die du noch nicht kennst, und erstellt dir einen persönlichen Leseplan.</p>
+  <p class="phase-heading">What do you want to learn?</p>
+  <p class="phase-sub">Choose a concept. The page will find all prerequisites you don't know yet and build you a personalised reading plan.</p>
   <div id="concept-list"></div>
 </div>
 
 <!-- ── Phase 2: quiz ── -->
 <div id="phase-quiz" class="phase" style="display:none">
   <div class="quiz-meta">
-    <span class="quiz-target">Lernziel: <strong id="quiz-target-title"></strong></span>
-    <button class="ghost-btn" id="btn-restart">← Neu starten</button>
+    <span class="quiz-target">Target: <strong id="quiz-target-title"></strong></span>
+    <button class="ghost-btn" id="btn-restart">← Restart</button>
   </div>
   <div class="quiz-card">
     <div class="quiz-card-title" id="quiz-title"></div>
     <div class="quiz-card-inline" id="quiz-inline"></div>
     <div class="quiz-buttons">
-      <button class="quiz-btn"             id="btn-know">Kenne ich</button>
-      <button class="quiz-btn quiz-btn-no" id="btn-unknown">Kenne ich nicht</button>
+      <button class="quiz-btn"             id="btn-know">I know this</button>
+      <button class="quiz-btn quiz-btn-no" id="btn-unknown">I don't know this</button>
     </div>
-    <p style="font-size:11px;color:#bbb;margin-top:10px">← → Pfeiltasten</p>
+    <p style="font-size:11px;color:#bbb;margin-top:10px">← → Arrow keys</p>
   </div>
   <div class="quiz-status" id="quiz-status"></div>
 </div>
@@ -131,6 +176,18 @@ const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:
 
 function typeset(el) {
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
+}
+
+function toggleProof(btn, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? 'Proof' : 'Hide proof';
+  if (!open && !el.dataset.rendered) {
+    processRefs(el); typeset(el);
+    el.dataset.rendered = '1';
+  }
 }
 
 function isFullConcept(c) {
@@ -173,7 +230,7 @@ function handleRefClick(span) {
         processRefs(expEl);
         typeset(expEl);
       } else {
-        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition noch nicht vorhanden.</em>';
+        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition not yet available.</em>';
       }
       expEl.dataset.rendered = '1';
     }
@@ -183,24 +240,24 @@ function handleRefClick(span) {
 }
 
 function renderBlock(block) {
-  const cls  = TYPE_CLASS[block.type] || 'label-def';
+  const cls = TYPE_CLASS[block.type] || 'label-def';
   let body;
-  if (block.type === 'proof') {
-    body = block.steps.map((s, i) =>
-      `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`
-    ).join('');
-  } else if (block.type === 'equiv' || block.type === 'cases') {
+  if (block.type === 'equiv' || block.type === 'cases') {
     body = (block.items || []).map(item => `<div class="list-item">${item}</div>`).join('');
   } else {
     body = block.body;
   }
-  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
+  const pid = block.proof ? 'p' + Math.random().toString(36).slice(2, 9) : null;
+  const proofHtml = pid
+    ? `<div class="proof-toggle-row"><button class="proof-toggle" onclick="toggleProof(this,'${pid}')">Proof</button></div><div class="proof-body" id="${pid}" style="display:none">${block.proof}</div>`
+    : '';
+  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div>${proofHtml}</div>`;
 }
 
 function renderConceptBody(c) {
   if (!isFullConcept(c)) {
     return `<div class="entry-block"><div class="block-body">${c.inline || ''}</div></div>
-            <p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
+            <p style="font-size:13px;color:#ccc;margin-top:1rem">Full entry not yet available.</p>`;
   }
   const related = (c.page.related || []).map(entry => {
     const id    = typeof entry === 'string' ? entry : entry.id;
@@ -209,7 +266,8 @@ function renderConceptBody(c) {
     const cls   = rc ? 'pill' : 'pill pill-pending';
     return `<span class="${cls}" data-nav="${id}">${label}</span>`;
   }).join('');
-  return c.page.blocks.map(renderBlock).join('');
+  return c.page.blocks.map(renderBlock).join('') +
+    (c.generated ? `<p style="font-size:11px;color:#bbb;text-align:right;margin-top:2rem;margin-bottom:0">${c.generated}</p>` : '');
 }
 
 // ── Quiz state ────────────────────────────────────────────────────────────
@@ -358,9 +416,9 @@ function renderQuizStatus() {
   const knTitles  = [...knownSet].map(id => conceptIndex[id]?.title || id);
   let html = '';
   if (unkTitles.length)
-    html += `<div class="status-block"><span class="status-label">Noch zu lernen (${unkTitles.length})</span><div class="status-pills">${unkTitles.map(t => `<span class="spill spill-unknown">${t}</span>`).join('')}</div></div>`;
+    html += `<div class="status-block"><span class="status-label">Still to learn (${unkTitles.length})</span><div class="status-pills">${unkTitles.map(t => `<span class="spill spill-unknown">${t}</span>`).join('')}</div></div>`;
   if (knTitles.length)
-    html += `<div class="status-block"><span class="status-label">Bereits bekannt (${knTitles.length})</span><div class="status-pills">${knTitles.map(t => `<span class="spill spill-known">${t}</span>`).join('')}</div></div>`;
+    html += `<div class="status-block"><span class="status-label">Already known (${knTitles.length})</span><div class="status-pills">${knTitles.map(t => `<span class="spill spill-known">${t}</span>`).join('')}</div></div>`;
   el.innerHTML = html;
 }
 
@@ -379,8 +437,8 @@ function buildReadingList(sortedIds) {
   const readCount = document.getElementById('read-count');
   const readSub   = document.getElementById('read-sub');
   if (readTitle) readTitle.textContent = target?.title || targetId;
-  if (readCount) readCount.textContent = `${sortedIds.length} Begriff${sortedIds.length !== 1 ? 'e' : ''}`;
-  if (readSub)   readSub.textContent   = 'Sortiert von den Grundlagen zum Lernziel — kein Begriff setzt ein unbekanntes Vorwissen voraus.';
+  if (readCount) readCount.textContent = `${sortedIds.length} concept${sortedIds.length !== 1 ? 's' : ''}`;
+  if (readSub)   readSub.textContent   = 'Sorted from foundations to target — no concept assumes unknown prior knowledge.';
 
   // Overview pills
   const overviewEl = document.getElementById('overview-row');

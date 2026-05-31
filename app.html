@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commutative Algebra</title>
+<script>
+(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});});})();
+function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});if(typeof updateGraph==='function')updateGraph();}
+</script>
 <style>
 body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0 24px;background:#fff;color:#1a1a1a}
 .entry-block{border:0.5px solid #ddd;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;background:#fff}
@@ -24,6 +28,10 @@ body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0
 .pill:hover{border-color:#555;color:#1a1a1a}
 .pill-pending{border-style:dashed;color:#aaa}
 .pill-pending:hover{border-color:#aaa;color:#888}
+.proof-toggle-row{margin-top:10px}
+.proof-toggle{font-size:11px;color:#999;cursor:pointer;background:none;border:none;padding:0;font-family:inherit;letter-spacing:.04em}
+.proof-toggle:hover{color:#1a1a1a}
+.proof-body{margin-top:10px;padding-top:12px;border-top:0.5px solid #eee;font-size:14px;color:#444;line-height:1.85}
 #nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:0.5px solid #eee}
 .nav-item{font-size:12px;padding:4px 14px;border-radius:99px;border:0.5px solid #ddd;color:#666;cursor:pointer;background:#fafafa;user-select:none}
 .nav-item:hover{border-color:#555;color:#1a1a1a}
@@ -31,6 +39,29 @@ body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0
 #viewnav{position:fixed;top:14px;right:16px;z-index:20;display:flex;gap:7px}
 .vnav{font-size:12px;padding:4px 13px;border-radius:99px;border:0.5px solid #ddd;color:#666;background:rgba(255,255,255,0.92);backdrop-filter:blur(4px);text-decoration:none;user-select:none}
 .vnav:hover{border-color:#555;color:#1a1a1a}
+button.vnav{cursor:pointer;border:none;font-family:inherit}
+html.dm body{background:#141414;color:#e6e6e6}
+html.dm .entry-block{background:#1e1e1e;border-color:#2e2e2e}
+html.dm .block-body{color:#e6e6e6}
+html.dm .list-item::before{color:#555}
+html.dm .t{border-bottom-color:#555}
+html.dm .t:hover{background:#262626}
+html.dm .t.open{border-bottom-color:#aaa}
+html.dm .t.pending{border-bottom-color:#3a3a3a}
+html.dm .t.pending.open{border-bottom-color:#777}
+html.dm .exp{border-left-color:#2e2e2e;color:#e6e6e6}
+html.dm .step-num{color:#666}
+html.dm .pill{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .pill:hover{border-color:#777;color:#e6e6e6}
+html.dm .proof-toggle{color:#666}
+html.dm .proof-toggle:hover{color:#e6e6e6}
+html.dm .proof-body{border-top-color:#2e2e2e;color:#b0b0b0}
+html.dm #nav{border-bottom-color:#2e2e2e}
+html.dm .nav-item{border-color:#2e2e2e;color:#aaa;background:#1e1e1e}
+html.dm .nav-item:hover{border-color:#777;color:#e6e6e6}
+html.dm .nav-item.active{background:#e6e6e6;color:#141414;border-color:#e6e6e6}
+html.dm .vnav{border-color:#2e2e2e;color:#aaa;background:rgba(20,20,20,0.92)}
+html.dm .vnav:hover{border-color:#777;color:#e6e6e6}
 </style>
 </head>
 <body>
@@ -42,6 +73,7 @@ body{font-family:system-ui,sans-serif;max-width:780px;margin:40px auto;padding:0
   <a class="vnav" href="graph.html">Graph</a>
   <a id="nav-tree" class="vnav" href="tree.html">Tree</a>
   <a id="nav-learn"    class="vnav" href="learn-visual.html"  >Learn</a>
+  <button class="vnav theme-toggle" onclick="toggleTheme()">Dark</button>
 </div>
 
 <script>
@@ -53,6 +85,18 @@ const TYPE_CLASS = { why:'label-why', def:'label-def', prop:'label-prop', proof:
 
 function typeset(el) {
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.error);
+}
+
+function toggleProof(btn, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? 'Proof' : 'Hide proof';
+  if (!open && !el.dataset.rendered) {
+    processRefs(el); typeset(el);
+    el.dataset.rendered = '1';
+  }
 }
 
 function processRefs(container) {
@@ -98,7 +142,7 @@ function handleRefClick(span) {
         processRefs(expEl);
         typeset(expEl);
       } else {
-        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition noch nicht vorhanden.</em>';
+        expEl.innerHTML = '<em style="color:#aaa;font-size:13px">Definition not yet available.</em>';
       }
       expEl.dataset.rendered = '1';
     }
@@ -110,16 +154,16 @@ function handleRefClick(span) {
 function renderBlock(block) {
   const cls = TYPE_CLASS[block.type] || 'label-def';
   let body;
-  if (block.type === 'proof') {
-    body = block.steps.map((s, i) =>
-      `<div class="proof-step"><span class="step-num">${STEP_NUMS[i]}</span><span>${s}</span></div>`
-    ).join('');
-  } else if (block.type === 'equiv' || block.type === 'cases') {
+  if (block.type === 'equiv' || block.type === 'cases') {
     body = (block.items || []).map(item => `<div class="list-item">${item}</div>`).join('');
   } else {
     body = block.body;
   }
-  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div></div>`;
+  const pid = block.proof ? 'p' + Math.random().toString(36).slice(2, 9) : null;
+  const proofHtml = pid
+    ? `<div class="proof-toggle-row"><button class="proof-toggle" onclick="toggleProof(this,'${pid}')">Proof</button></div><div class="proof-body" id="${pid}" style="display:none">${block.proof}</div>`
+    : '';
+  return `<div class="entry-block"><div class="block-label ${cls}">${block.label}</div><div class="block-body">${body}</div>${proofHtml}</div>`;
 }
 
 function isFullConcept(c) {
@@ -133,7 +177,7 @@ function renderConcept(concept) {
     app.innerHTML =
       `<h2 style="font-size:22px;font-weight:500;margin:0 0 1.5rem">${concept.title}</h2>` +
       `<div class="entry-block"><div class="block-body">${concept.inline}</div></div>` +
-      `<p style="font-size:13px;color:#ccc;margin-top:1rem">Vollständiger Eintrag noch nicht vorhanden.</p>`;
+      `<p style="font-size:13px;color:#ccc;margin-top:1rem">Full entry not yet available.</p>`;
     processRefs(app);
     typeset(app);
     return;
@@ -149,7 +193,8 @@ function renderConcept(concept) {
 
   app.innerHTML =
     `<h2 style="font-size:22px;font-weight:500;margin:0 0 1.5rem">${concept.title}</h2>` +
-    concept.page.blocks.map(renderBlock).join('');
+    concept.page.blocks.map(renderBlock).join('') +
+    (concept.generated ? `<p style="font-size:11px;color:#bbb;text-align:right;margin-top:2rem;margin-bottom:0">${concept.generated}</p>` : '');
 
   processRefs(app);
 
@@ -185,6 +230,10 @@ fetch('concepts.json')
     allConcepts.forEach(c => conceptIndex[c.id] = c);
     const startId = new URLSearchParams(location.search).get('c');
     const first = (startId && conceptIndex[startId]) || allConcepts.find(isFullConcept) || allConcepts[0];
+    if (!first) {
+      document.getElementById('app').textContent = 'No concepts yet.';
+      return;
+    }
     renderNav(first.id);
     renderConcept(first);
   })

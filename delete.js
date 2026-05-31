@@ -25,8 +25,9 @@ function extractDataRefs(html) {
 function allHtmlStrings(concept) {
   const out = [concept.inline];
   for (const b of concept.page?.blocks ?? []) {
-    if (b.body) out.push(b.body);
-    for (const s of b.steps ?? []) out.push(s);
+    if (b.body)   out.push(b.body);
+    if (b.proof)  out.push(b.proof);
+    for (const s    of b.steps ?? []) out.push(s);
     for (const item of b.items ?? []) out.push(item);
   }
   return out.filter(Boolean);
