@@ -17,14 +17,14 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #d0d0d0; f
 .link { fill: none; }
 .link-required { stroke: #555; stroke-width: 1.5; opacity: 0.5; }
 .link-dimmed   { opacity: 0.04 !important; }
-.link-active   { stroke: #534AB7; stroke-width: 2.5; opacity: 0.9; }
+.link-active   { stroke: #1a1a1a; stroke-width: 2.5; opacity: 0.9; }
 
 /* ── Nodes ── */
 .node { cursor: pointer; }
 .node-full circle { fill: #1a1a1a; stroke: none; }
 .node-stub circle { fill: #fff;    stroke: #c0c0c0; stroke-width: 1.5; }
 .node-dimmed      { opacity: 0.06 !important; }
-.node:hover circle { stroke: #534AB7 !important; stroke-width: 3 !important; }
+.node:hover circle { stroke: #1a1a1a !important; stroke-width: 3 !important; }
 
 /* ── Labels ── */
 .lbl {
@@ -107,6 +107,9 @@ html.dm #hint{color:#666;background:rgba(20,20,20,0.82)}
 html.dm .vnav{border-color:#2e2e2e;color:#aaa;background:rgba(20,20,20,0.92)}
 html.dm .vnav:hover{border-color:#777;color:#e6e6e6}
 html.dm #tip{background:#e6e6e6;color:#141414}
+html.dm .link-active{stroke:#e6e6e6}
+html.dm .node:hover circle{stroke:#e6e6e6 !important}
+html.dm #arr-active path{fill:#e6e6e6}
 </style>
 </head>
 <body>
@@ -244,7 +247,7 @@ function drawGraph(data) {
 
   // Arrow markers — one for default, one for hover-active state
   const defs = svg.append('defs');
-  for (const [id, color] of [['arr', '#888'], ['arr-active', '#534AB7']]) {
+  for (const [id, color] of [['arr', '#888'], ['arr-active', '#1a1a1a']]) {
     defs.append('marker')
       .attr('id',          id)
       .attr('viewBox',     '0 -4 9 8')
@@ -329,23 +332,20 @@ function drawGraph(data) {
     nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
   });
 
-  // ── Hover: highlight outgoing edges & their targets ────────────────────
+  // ── Hover: highlight incoming + outgoing edges & connected nodes ────────
   const tip = d3.select('#tip');
 
   function onEnter(_ev, d) {
-    // Collect IDs reachable in one hop from d
-    const outIds = new Set(
-      links.filter(l => l.source.id === d.id).map(l => l.target.id)
-    );
-    outIds.add(d.id);
+    const outTargets = links.filter(l => l.source.id === d.id).map(l => l.target.id);
+    const inSources  = links.filter(l => l.target.id === d.id).map(l => l.source.id);
+    const connected  = new Set([d.id, ...outTargets, ...inSources]);
 
-    nodeSel
-      .classed('node-dimmed', n => !outIds.has(n.id));
+    nodeSel.classed('node-dimmed', n => !connected.has(n.id));
 
     linkSel
-      .classed('link-dimmed', l => l.source.id !== d.id)
-      .classed('link-active', l => l.source.id === d.id)
-      .attr('marker-end', l => l.source.id === d.id ? 'url(#arr-active)' : 'url(#arr)');
+      .classed('link-dimmed', l => l.source.id !== d.id && l.target.id !== d.id)
+      .classed('link-active', l => l.source.id === d.id || l.target.id === d.id)
+      .attr('marker-end', l => (l.source.id === d.id || l.target.id === d.id) ? 'url(#arr-active)' : 'url(#arr)');
 
     tip.style('opacity', 1).text(d.title);
   }

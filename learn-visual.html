@@ -293,7 +293,7 @@ let gSim, gLinkLayer, gNodeLayer;
 function gFill(state)   { const dk=document.documentElement.classList.contains('dm'); return ({current:'#534AB7',unknown:dk?'#e6e6e6':'#1a1a1a',known:dk?'#333':'#c8c8c8',queued:dk?'#555':'#888'})[state]; }
 function gStroke(state) { const dk=document.documentElement.classList.contains('dm'); return ({current:'#534AB7',unknown:dk?'#e6e6e6':'#1a1a1a',known:dk?'#555':'#bbb',queued:dk?'#555':'#888'})[state]; }
 
-function gNodeR(d) { return d.isTarget ? 22 : (d.isFull ? 16 : 10); }
+function gNodeR(d) { return d.isTarget ? 32 : (d.isFull ? 16 : 10); }
 
 // ── Helpers (shared with quiz logic) ─────────────────────────────────────────
 const STEP_NUMS  = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨'];
@@ -707,7 +707,7 @@ function renderGraph() {
   groups.select('circle.gring')
     .attr('r', d => gNodeR(d) + 6)
     .attr('fill', 'none')
-    .attr('stroke', d => d.isTarget ? '#534AB7' : 'none')
+    .attr('stroke', 'none')
     .attr('stroke-width', 1.5)
     .attr('stroke-dasharray', '4 3');
 
