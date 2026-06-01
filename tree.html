@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commutative Algebra · Tree</title>
 <script>
-(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});});})();
-function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});if(typeof updateGraph==='function')updateGraph();}
+(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');})();
+function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');if(typeof updateGraph==='function')updateGraph();}
 </script>
 <style>
 /* ── Reset & layout ── */
@@ -107,6 +107,10 @@ text.lbl {
   .app-content { margin: 24px auto; padding: 0 16px 60px; }
 }
 button.vnav{cursor:pointer;border:none;font-family:inherit}
+button.theme-toggle{background:none;backdrop-filter:none;color:#555;padding:4px 6px;display:inline-flex;align-items:center}
+button.theme-toggle:hover{background:none;color:#1a1a1a}
+html.dm button.theme-toggle{color:#999}
+html.dm button.theme-toggle:hover{color:#e6e6e6}
 html.dm,html.dm body,html.dm #tree-panel,html.dm #app-panel{background:#141414}
 html.dm #app-panel{border-top-color:#2e2e2e}
 html.dm .app-content{color:#e6e6e6}
@@ -144,10 +148,9 @@ html.dm .vnav:hover{border-color:#777;color:#e6e6e6}
 </div>
 
 <div id="viewnav">
-  <a id="nav-app"      class="vnav" href="app.html"   >App</a>
   <a class="vnav"      href="graph.html"   >Graph</a>
   <a id="nav-learn" class="vnav" href="learn-visual.html">Learn</a>
-  <button class="vnav theme-toggle" onclick="toggleTheme()">Dark</button>
+  <button class="vnav theme-toggle" onclick="toggleTheme()" title="Toggle theme"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
@@ -353,7 +356,6 @@ function navigateTo(targetId, animate = true) {
 // ── Nav link sync ─────────────────────────────────────────────────────────────
 function syncNavLinks(id) {
   const c = encodeURIComponent(id);
-  document.getElementById('nav-app').href      = `app.html?c=${c}`;
   document.getElementById('nav-learn').href = `learn-visual.html?c=${c}`;
 }
 

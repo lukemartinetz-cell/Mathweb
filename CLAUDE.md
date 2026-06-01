@@ -38,15 +38,15 @@ These two systems are separate: a concept can be in `refs[]` without appearing a
 
 ### Views
 All views are self-contained HTML files sharing no JS modules:
-- `app.html` — nav bar + concept reader (index.html redirects here)
+- `app.html` — nav bar + concept reader (index.html redirects here). **Not linked from other views' navbars** — it is still maintained but treated as an entry point, not a navigation destination.
 - `tree.html` — D3 radial tree centred on selected concept; left panel = tree, right panel = concept content
 - `graph.html` — D3 force-directed graph of all full concepts + stubs with dependency edges. Uses a topology-aware layout: `computeDepths` runs Kahn's topological sort + longest-path propagation on the link list to assign each node a depth, then `forceY` pulls connected nodes toward their depth band (foundational concepts near top, advanced near bottom). Isolated nodes (no edges) get `forceY` strength 0 so repulsion scatters them naturally instead of bunching them in a line.
-- `learn.html` — three-phase quiz: select target → quiz prerequisites → reading list
+- `learn.html` — three-phase quiz: select target → quiz prerequisites → reading list. Always opens at the concept-selection phase regardless of URL params (`?c=` is ignored).
 - `learn-visual.html` — same quiz but with live D3 graph panel alongside
 
 `renderBlock`, `processRefs`, `handleRefClick`, `typeset`, and `toggleProof` are duplicated across all views — edit all four when changing shared rendering logic.
 
-All views support dark mode: a `.dm` class on `<html>` is toggled by `toggleTheme()` and persisted in `localStorage('theme')`; the initial value also respects `prefers-color-scheme`. When adding new UI elements, add corresponding `html.dm` CSS rules in every view.
+All views support dark mode: a `.dm` class on `<html>` is toggled by `toggleTheme()` and persisted in `localStorage('theme')`; the initial value also respects `prefers-color-scheme`. The toggle button is a borderless SVG lightbulb icon (no background, `currentColor` — dark in light mode, light in dark mode); `toggleTheme()` no longer sets any button text. When adding new UI elements, add corresponding `html.dm` CSS rules in every view.
 
 ### generate.js pipeline (3 LLM calls + post-processing + validation)
 P1 calls `claude-opus-4-7` with adaptive extended thinking; P2 and P3 are plain calls (no thinking).

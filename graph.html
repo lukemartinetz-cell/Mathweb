@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Concept Graph · Commutative Algebra</title>
 <script>
-(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});});})();
-function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});if(typeof updateGraph==='function')updateGraph();}
+(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');})();
+function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');if(typeof updateGraph==='function')updateGraph();}
 </script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -87,6 +87,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #d0d0d0; f
   opacity: 0; transition: opacity 0.1s;
 }
 button.vnav{cursor:pointer;border:none;font-family:inherit}
+button.theme-toggle{background:none;backdrop-filter:none;color:#555;padding:4px 6px;display:inline-flex;align-items:center}
+button.theme-toggle:hover{background:none;color:#1a1a1a}
+html.dm button.theme-toggle{color:#999}
+html.dm button.theme-toggle:hover{color:#e6e6e6}
 html.dm,html.dm body{background:#0c0c0c}
 html.dm .link-required{stroke:#666}
 html.dm .node-full circle{fill:#e6e6e6}
@@ -119,10 +123,9 @@ html.dm #tip{background:#e6e6e6;color:#141414}
 <div id="hint">Scroll to zoom · Drag to pan · Click node to open in App</div>
 
 <div id="viewnav">
-  <a class="vnav" href="app.html">App</a>
   <a class="vnav" href="tree.html">Tree</a>
   <a class="vnav" href="learn-visual.html">Learn</a>
-  <button class="vnav theme-toggle" onclick="toggleTheme()">Dark</button>
+  <button class="vnav theme-toggle" onclick="toggleTheme()" title="Toggle theme"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></button>
 </div>
 
 <div id="tip"></div>

@@ -106,7 +106,6 @@ text.lbl {
 <div id="hint">Scroll to zoom · Drag to pan · Click satellite · ⌫ back · Enter öffnet in App</div>
 
 <div id="viewnav">
-  <a id="nav-app"      class="vnav" href="index.html"    target="_blank">App</a>
   <a class="vnav"      href="graph.html"    target="_blank">Graph</a>
   <a id="nav-combined" class="vnav" href="combined.html" target="_blank">Combined</a>
   <a id="nav-tree"     class="vnav" href="tree.html"     target="_blank">Tree</a>
@@ -427,7 +426,6 @@ function navigateTo(targetId, forceX, forceY, isBack = false) {
   );
 
   applyLayout(newLayout, tr);
-  document.getElementById('nav-app').href      = `index.html?c=${encodeURIComponent(currentId)}`;
   document.getElementById('nav-combined').href = `combined.html?c=${encodeURIComponent(currentId)}`;
   document.getElementById('nav-tree').href     = `tree.html?c=${encodeURIComponent(currentId)}`;
   document.getElementById('nav-learn').href    = `learn.html?c=${encodeURIComponent(currentId)}`;
@@ -458,7 +456,6 @@ fetch('concepts.json')
     currentId = first.id; centerX = 0; centerY = 0;
     const tIn = d3.transition().duration(Math.round(DUR * 0.65)).ease(d3.easeCubicOut);
     applyLayout(computeLayout(currentId, 0, 0), tIn);
-    document.getElementById('nav-app').href      = `index.html?c=${encodeURIComponent(currentId)}`;
     document.getElementById('nav-combined').href = `combined.html?c=${encodeURIComponent(currentId)}`;
     document.getElementById('nav-tree').href     = `tree.html?c=${encodeURIComponent(currentId)}`;
     document.getElementById('nav-learn').href    = `learn.html?c=${encodeURIComponent(currentId)}`;

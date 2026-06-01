@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learn · Commutative Algebra</title>
 <script>
-(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});});})();
-function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=dark?'Light':'Dark';});if(typeof updateGraph==='function')updateGraph();}
+(function(){var s=localStorage.getItem('theme'),os=window.matchMedia('(prefers-color-scheme:dark)').matches,dark=s==='dark'||(s===null&&os);if(dark)document.documentElement.classList.add('dm');})();
+function toggleTheme(){var dark=document.documentElement.classList.toggle('dm');localStorage.setItem('theme',dark?'dark':'light');if(typeof updateGraph==='function')updateGraph();}
 </script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -170,6 +170,10 @@ text.glbl {
   .status-block { margin-bottom: 0.75rem; }
 }
 button.vnav{cursor:pointer;border:none;font-family:inherit}
+button.theme-toggle{background:none;backdrop-filter:none;color:#555;padding:4px 6px;display:inline-flex;align-items:center}
+button.theme-toggle:hover{background:none;color:#1a1a1a}
+html.dm button.theme-toggle{color:#999}
+html.dm button.theme-toggle:hover{color:#e6e6e6}
 html.dm,html.dm body{background:#141414;color:#e6e6e6}
 html.dm #question-panel{border-right-color:#2e2e2e;border-bottom-color:#2e2e2e}
 html.dm #graph-panel{background:#0c0c0c}
@@ -219,10 +223,9 @@ html.dm .concept-entry{border-bottom-color:#2e2e2e}
     <div id="viewnav">
       <button id="btn-restart" class="ghost-btn" style="display:none">← Restart</button>
       <div class="vnav-group">
-        <a class="vnav" href="app.html">App</a>
         <a class="vnav" href="graph.html">Graph</a>
         <a class="vnav" href="tree.html">Tree</a>
-        <button class="vnav theme-toggle" onclick="toggleTheme()">Dark</button>
+        <button class="vnav theme-toggle" onclick="toggleTheme()" title="Toggle theme"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></button>
       </div>
     </div>
 
@@ -586,7 +589,7 @@ function initGraph() {
   defs.append('marker')
     .attr('id', 'garr').attr('viewBox', '0 -4 9 8')
     .attr('refX', 9).attr('refY', 0)
-    .attr('markerWidth', 5).attr('markerHeight', 5).attr('orient', 'auto')
+    .attr('markerWidth', 9).attr('markerHeight', 9).attr('orient', 'auto')
     .append('path').attr('d', 'M0,-4L9,0L0,4').attr('fill', '#aaa');
 
   gLinkLayer = gSel.append('g');
