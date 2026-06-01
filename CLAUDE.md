@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A static commutative algebra learning app deployed on GitHub Pages (`lukemartinetz-cell/Mathweb`, main branch). No build step — edited files go live after `git push`. The entire data layer is `concepts.json`.
+A static algebra learning app deployed on GitHub Pages (`lukemartinetz-cell/Mathweb`, main branch). No build step — edited files go live after `git push`. The entire data layer is `concepts.json`.
 
 ## Common commands
 
@@ -53,10 +53,9 @@ P1 calls `claude-opus-4-7` with adaptive extended thinking; P2 and P3 are plain 
 
 1. **P1** — generates raw content (title, inline, sections) as plain text + LaTeX + `{ref:id}` notation markers. Strips unknown marker IDs before proceeding.
 2. **P2** — detects concept references in the plain text; returns `word/id/inline` triples. Provides `inline` text for stubs and new concepts. Builds `p2InlineMap` used in stub creation.
-3. **P3** — classifies each ref as `required` or `enriches`. `required` applies when the concept is the IS-A parent type of what's being defined ("X is a Y" → Y is required) or a core definitional ingredient; everything else is `enriches`. Cycles in the required graph are prevented here.
-4. **IS-A safety net** — deterministic post-P3 pass: scans the raw def text (LaTeX stripped) for the pattern `(is|are|be) + up to 4 words + ref-word` and promotes any matching `enriches` ref to `required`, subject to the cycle rule and 10-ref cap. Catches IS-A misclassifications the LLM might miss.
-5. **P4** — deterministic HTML assembly: `wrapRefs` wraps matched words with `<span class="t" data-ref="...">`, `resolveNotationRefs` converts `{ref:id}` markers on LaTeX expressions. Block labels and proof fields are attached here via `assembleBlocks`.
-6. **Validation** — checks for unknown `data-ref` IDs, unknown `refs[]` IDs, cycle detection.
+3. **P3** — classifies each ref as `required` or `enriches`. `required` applies only when the concept is syntactically load-bearing in the formal definition (`def` field): either the IS-A parent type ("X is a Y" → Y is required) or a core definitional ingredient whose absence makes the definition unreadable. Everything else is `enriches`. Cycles in the required graph are prevented here.
+4. **P4** — deterministic HTML assembly: `plainToHtml` converts `\emph{...}` → `<em>` and `\textbf{...}` → `<strong>` and newlines to `<br>`. `tokenizeLatex` splits text into LaTeX regions (`\(...\)`, `\[...\]`) and `{ref:...}` marker regions, all of which `wrapRefs` skips when matching concept words. `resolveNotationRefs` converts `\(...\){ref:id}` markers into clickable spans, then strips any remaining orphaned `{ref:...}` markers. Block labels and proof fields are attached here via `assembleBlocks`.
+5. **Validation** — checks for unknown `data-ref` IDs, unknown `refs[]` IDs, cycle detection.
 
 After writing, stubs are auto-created for any `data-ref` ID not yet in the file, using inline text from `p2InlineMap`. If `p2InlineMap` has no entry for a `data-ref` ID, the stub is not created (logged as a warning).
 

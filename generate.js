@@ -9,7 +9,7 @@ const client = new Anthropic();
 
 // ── System prompts ────────────────────────────────────────────────────────
 
-const SYS_P1 = `You generate rigorous mathematical content for a commutative algebra learning app.
+const SYS_P1 = `You generate rigorous mathematical content for an algebra learning app.
 
 Output a single JSON object — NO HTML, NO <span> tags, NO data-ref attributes. Plain text with LaTeX math only, plus {ref:id} notation markers (see below).
 
@@ -19,7 +19,7 @@ Schema:
   "title": "English title",
   "inline": "1–3 sentence English summary. Plain text with LaTeX. No HTML.",
   "sections": {
-    "why": "Motivation paragraph in English. What problem does this concept solve?",
+    "why": "Motivation paragraph in English (3–5 sentences). Open with a concrete problem, puzzle, or observation — something the reader can feel without yet knowing the concept. Build narrative tension: show what fails, what is awkward, or what question goes unanswered without this concept. Only mention concepts that are prerequisites (simpler than this one) — do NOT invoke advanced machinery such as Spec(R), algebraic geometry, schemes, or category theory unless that IS the concept being defined. Close by making the formal definition feel inevitable: the reader should sense they would have arrived at it themselves.",
     "def": "Primary formal definition in English — ONE definition only, no equivalent formulations here.",
     "def_proof": "(optional) Complete proof as continuous mathematical prose with LaTeX.",
     "equiv": ["First equivalent characterization in English with LaTeX", "Second equivalent characterization", "..."],
@@ -42,6 +42,7 @@ Rules:
 - equiv: array of equivalent characterizations, one complete English sentence per item. Omit key entirely if none.
 - def_proof / equiv_proof / prop_proof: write as a complete, rigorous, standalone proof in the style of a graduate algebra textbook — continuous mathematical prose with LaTeX. Use \\[ ... \\] for key equations. No step numbers, no bullet points, no section headers. Include every logical step needed for the proof to be self-contained. Omit if there is nothing non-trivial to prove.
 - cases: array of PARALLEL worked examples or remarks (e.g. "In \\(\\mathbb{Z}\\), ...", "If \\(R\\) is a field, ...") — rendered as a dashed list labelled "Examples". Do NOT use for proofs; proofs belong in the *_proof fields.
+- why: Write for a reader who has seen only the prerequisites. Never open with "X is the fundamental tool for Y" or "X is central to Z" — that is an encyclopedia entry, not a hook. Make the reader feel the absence of the concept before you name it.
 - Omit "equiv", "prop", "cases", "def_proof", "equiv_proof", "prop_proof" keys entirely if not applicable.
 - Output only JSON, no markdown fences.`;
 
@@ -153,12 +154,17 @@ function tokenizeLatex(text) {
   while (i < text.length) {
     const il = text.indexOf('\\(', i);
     const dl = text.indexOf('\\[', i);
-    let next = -1, end = '';
-    if (il !== -1 && (dl === -1 || il <= dl)) { next = il; end = '\\)'; }
-    else if (dl !== -1) { next = dl; end = '\\]'; }
+    const rl = text.indexOf('{ref:', i);
+
+    // Pick the earliest special region: \(...\), \[...\], or {ref:...}
+    let next = -1, end = '', skip = 2;
+    for (const [pos, e, s] of [[il, '\\)', 2], [dl, '\\]', 2], [rl, '}', 5]]) {
+      if (pos !== -1 && (next === -1 || pos < next)) { next = pos; end = e; skip = s; }
+    }
+
     if (next === -1) { segs.push({ text: text.slice(i), latex: false }); break; }
     if (next > i) segs.push({ text: text.slice(i, next), latex: false });
-    const ei = text.indexOf(end, next + 2);
+    const ei = text.indexOf(end, next + skip);
     if (ei === -1) { segs.push({ text: text.slice(next), latex: false }); break; }
     segs.push({ text: text.slice(next, ei + end.length), latex: true });
     i = ei + end.length;
