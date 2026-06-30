@@ -729,7 +729,7 @@ function renderGraph() {
 }
 
 // ── Bootstrap ─────────────────────────────────────────────────────────────────
-document.getElementById('btn-restart').addEventListener('click', restart);
+document.getElementById('btn-restart').addEventListener('click', () => window.location.href = 'graph.html');
 
 document.addEventListener('keydown', e => {
   if (document.getElementById('phase-quiz').style.display === 'none') return;

@@ -87,6 +87,14 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #d0d0d0; f
   opacity: 0; transition: opacity 0.1s;
 }
 button.vnav{cursor:pointer;border:none;font-family:inherit}
+#mode-switch{display:flex;border:0.5px solid #ddd;border-radius:99px;overflow:hidden;background:rgba(255,255,255,0.92);backdrop-filter:blur(4px)}
+.mode-btn{font-size:12px;padding:4px 14px;border:none;background:none;color:#666;cursor:pointer;font-family:inherit;user-select:none;transition:background .12s,color .12s}
+.mode-btn.active{background:#1a1a1a;color:#fff}
+.mode-btn:not(.active):hover{color:#1a1a1a}
+html.dm #mode-switch{border-color:#2e2e2e;background:rgba(20,20,20,0.92)}
+html.dm .mode-btn{color:#aaa}
+html.dm .mode-btn.active{background:#e6e6e6;color:#141414}
+html.dm .mode-btn:not(.active):hover{color:#e6e6e6}
 button.theme-toggle{background:none;backdrop-filter:none;color:#555;padding:4px 6px;display:inline-flex;align-items:center}
 button.theme-toggle:hover{background:none;color:#1a1a1a}
 html.dm button.theme-toggle{color:#999}
@@ -126,8 +134,10 @@ html.dm #arr-active path{fill:#e6e6e6}
 <div id="hint">Scroll to zoom · Drag to pan · Click node to open in App</div>
 
 <div id="viewnav">
-  <a class="vnav" href="tree.html">Tree</a>
-  <a class="vnav" href="learn-visual.html">Learn</a>
+  <div id="mode-switch">
+    <button id="mode-learn" class="mode-btn">Learn</button>
+    <button id="mode-tree"  class="mode-btn">Tree</button>
+  </div>
   <button class="vnav theme-toggle" onclick="toggleTheme()" title="Toggle theme"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></button>
 </div>
 
@@ -138,6 +148,7 @@ html.dm #arr-active path{fill:#e6e6e6}
 const R_FULL    = 22;   // radius for full concepts
 const R_STUB    = 9;    // radius for stubs
 const LABEL_MAX = 19;   // truncation length for node labels
+let graphMode = localStorage.getItem('graphMode') || 'learn';
 
 function isFullConcept(c) {
   return !!(c.page && Array.isArray(c.page.blocks) && c.page.blocks.length > 0 && !c.stub);
@@ -298,9 +309,13 @@ function drawGraph(data) {
     .call(makeDrag(simulation))
     .on('mouseenter', onEnter)
     .on('mouseleave', onLeave)
-    .on('click', (_ev, d) =>
-      window.location.href = `tree.html?c=${encodeURIComponent(d.id)}`
-    );
+    .on('click', (_ev, d) => {
+      if (!d.isFull || graphMode === 'tree') {
+        window.location.href = `tree.html?c=${encodeURIComponent(d.id)}`;
+      } else {
+        window.location.href = `learn-visual.html?c=${encodeURIComponent(d.id)}`;
+      }
+    });
 
   nodeSel.append('circle').attr('r', d => nodeR(d));
 
@@ -383,6 +398,20 @@ function makeDrag(sim) {
       d.fy = null;
     });
 }
+
+function setMode(m) {
+  graphMode = m;
+  localStorage.setItem('graphMode', m);
+  document.getElementById('mode-learn').classList.toggle('active', m === 'learn');
+  document.getElementById('mode-tree').classList.toggle('active',  m === 'tree');
+  document.getElementById('hint').textContent =
+    m === 'learn'
+      ? 'Scroll to zoom · Drag to pan · Click concept → quiz · Click stub → tree'
+      : 'Scroll to zoom · Drag to pan · Click node → tree';
+}
+document.getElementById('mode-learn').addEventListener('click', () => setMode('learn'));
+document.getElementById('mode-tree').addEventListener('click',  () => setMode('tree'));
+setMode(graphMode);
 </script>
 </body>
 </html>

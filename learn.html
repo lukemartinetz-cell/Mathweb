@@ -509,7 +509,7 @@ function updateNavLinks(id) {
 
 // ── Restart buttons ───────────────────────────────────────────────────────
 
-document.getElementById('btn-restart').addEventListener('click', restart);
+document.getElementById('btn-restart').addEventListener('click', () => window.location.href = 'graph.html');
 
 // ── Keyboard shortcuts (quiz phase only) ─────────────────────────────────
 

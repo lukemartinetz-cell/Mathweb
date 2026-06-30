@@ -697,13 +697,97 @@
       }
     },
     {
-      "stub": true,
       "id": "integral-domain",
-      "title": "integral domain",
-      "inline": "An integral domain is a nonzero commutative ring in which the product of any two nonzero elements is nonzero.",
-      "refs": [],
+      "title": "Integral Domain",
+      "generated": "2026-06-01",
+      "inline": "An integral domain is a nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> in which the product of any two nonzero elements is nonzero. Equivalently, it is a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> with no nontrivial <span class=\"t\" data-ref=\"zero-divisor\">zero divisors</span>, allowing cancellation \\(ab = ac \\Rightarrow b = c\\) whenever \\(a \\neq 0\\).",
+      "refs": [
+        {
+          "id": "commutative-ring",
+          "type": "required"
+        },
+        {
+          "id": "zero-divisor",
+          "type": "enriches"
+        },
+        {
+          "id": "zero-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "prime-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "subring",
+          "type": "enriches"
+        },
+        {
+          "id": "field",
+          "type": "enriches"
+        },
+        {
+          "id": "field-of-fractions",
+          "type": "enriches"
+        },
+        {
+          "id": "polynomial-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "unit",
+          "type": "enriches"
+        },
+        {
+          "id": "gaussian-integers",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        }
+      ],
       "page": {
-        "blocks": [],
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "In \\(\\mathbb{Z}\\) one freely cancels: if \\(2x = 2y\\), then \\(x = y\\). But in <span class=\"t\" data-ref=\"quotient-ring\">\\(\\mathbb{Z}/6\\mathbb{Z}\\)</span> the equation \\(2 \\cdot 1 = 2 \\cdot 4\\) holds even though \\(1 \\neq 4\\), because \\(2 \\cdot 3 = 0\\) without either factor being zero. This phenomenon — a product of nonzero elements collapsing to zero — wrecks the most basic algebraic manipulations and blocks any sensible notion of fractions: how can one form \\(a/b\\) when multiplying by \\(b\\) loses information? To single out the rings where polynomial identities behave as expected and where one can later embed into a <span class=\"t\" data-ref=\"field\">field</span> of quotients, we isolate exactly the rings in which this pathology is absent."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "An <em>integral domain</em> is a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> <span class=\"t\" data-ref=\"commutative-ring\">\\(R\\)</span> such that<br>(i) \\(R \\neq 0\\), i.e. \\(1 \\neq 0\\) in \\(R\\);<br>(ii) for all \\(a, b \\in R\\), if \\(ab = 0\\) then \\(a = 0\\) or \\(b = 0\\)."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "\\(R\\) is a nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> in which the <span class=\"t\" data-ref=\"zero-ideal\">zero ideal</span> \\((0)\\) is a <span class=\"t\" data-ref=\"prime-ideal\">prime ideal</span>.",
+              "\\(R\\) is a nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> satisfying the cancellation law: for all \\(a, b, c \\in R\\) with \\(a \\neq 0\\), \\(ab = ac\\) implies \\(b = c\\).",
+              "\\(R\\) is a nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> that embeds as a <span class=\"t\" data-ref=\"subring\">subring</span> of a <span class=\"t\" data-ref=\"field\">field</span> (namely its <span class=\"t\" data-ref=\"field-of-fractions\">field of fractions</span>)."
+            ],
+            "proof": "Let \\(R\\) be a nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span>. The condition that \\((0)\\) is prime states precisely that \\(ab \\in (0)\\) implies \\(a \\in (0)\\) or \\(b \\in (0)\\), which is condition (ii) of the definition. Hence the first characterization is a direct restatement.<br><br>For the cancellation law, suppose \\(R\\) is an integral domain and \\(ab = ac\\) with \\(a \\neq 0\\). Then \\(a(b-c) = 0\\), so by the defining property \\(b - c = 0\\), i.e. \\(b = c\\). Conversely, if cancellation holds and \\(ab = 0\\) with \\(a \\neq 0\\), then \\(ab = a \\cdot 0\\) gives \\(b = 0\\).<br><br>For the embedding into a <span class=\"t\" data-ref=\"field\">field</span>, if \\(R\\) is an integral domain then the set \\(S = R \\setminus \\{0\\}\\) is multiplicatively closed (it contains \\(1\\) and is closed under products by the domain property), so the localization \\(S^{-1}R\\) is defined. Every nonzero element \\(a/s\\) has inverse \\(s/a\\), so \\(S^{-1}R\\) is a <span class=\"t\" data-ref=\"field\">field</span>, and the canonical map \\(R \\to S^{-1}R\\), \\(r \\mapsto r/1\\), is injective precisely because \\(r/1 = 0\\) forces \\(rt = 0\\) for some \\(t \\in S\\), hence \\(r = 0\\). Conversely, any <span class=\"t\" data-ref=\"subring\">subring</span> of a <span class=\"t\" data-ref=\"field\">field</span> is itself a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> in which \\(ab = 0\\) forces \\(a = 0\\) or \\(b = 0\\), since fields have no <span class=\"t\" data-ref=\"zero-divisor\">zero divisors</span>, and a <span class=\"t\" data-ref=\"subring\">subring</span> of a <span class=\"t\" data-ref=\"field\">field</span> is nonzero provided it contains \\(1 \\neq 0\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "A <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\) is an integral domain if and only if the <span class=\"t\" data-ref=\"polynomial-ring\">polynomial ring</span> \\(R[x]\\) is an integral domain. In that case, for nonzero \\(f, g \\in R[x]\\) one has \\(\\deg(fg) = \\deg(f) + \\deg(g)\\).",
+            "proof": "Suppose \\(R\\) is an integral domain. Since \\(R \\subseteq R[x]\\) and \\(1_{R[x]} = 1_R \\neq 0\\), the ring \\(R[x]\\) is nonzero. Let \\(f, g \\in R[x]\\) be nonzero, write<br>\\[ f = a_m x^m + \\text{lower terms}, \\qquad g = b_n x^n + \\text{lower terms}, \\]<br>with \\(a_m, b_n \\neq 0\\) the leading coefficients. The coefficient of \\(x^{m+n}\\) in \\(fg\\) is \\(a_m b_n\\), which is nonzero because \\(R\\) is a domain. Hence \\(fg \\neq 0\\) and \\(\\deg(fg) = m + n = \\deg(f) + \\deg(g)\\). This shows \\(R[x]\\) is an integral domain and establishes the degree formula.<br><br>Conversely, suppose \\(R[x]\\) is an integral domain. Then \\(R[x] \\neq 0\\) forces \\(R \\neq 0\\), and any zero divisor relation \\(ab = 0\\) in \\(R\\) is also a relation in \\(R[x]\\) (viewing \\(a, b\\) as constant polynomials), so \\(a = 0\\) or \\(b = 0\\). Hence \\(R\\) is an integral domain."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "The ring \\(\\mathbb{Z}\\) of integers is the prototypical integral domain; its <span class=\"t\" data-ref=\"field-of-fractions\">field of fractions</span> is \\(\\mathbb{Q}\\).",
+              "Every <span class=\"t\" data-ref=\"field\">field</span> is an integral domain, since nonzero elements are <span class=\"t\" data-ref=\"unit\">units</span> and <span class=\"t\" data-ref=\"unit\">units</span> cannot be <span class=\"t\" data-ref=\"zero-divisor\">zero divisors</span>.",
+              "For any <span class=\"t\" data-ref=\"field\">field</span> \\(k\\), the <span class=\"t\" data-ref=\"polynomial-ring\">polynomial ring</span> \\(k[x_1, \\dots, x_n]\\) is an integral domain.",
+              "The ring \\(\\mathbb{Z}/n\\mathbb{Z}\\) is an integral domain if and only if \\(n\\) is prime; for instance \\(\\mathbb{Z}/6\\mathbb{Z}\\) is not, since \\(2 \\cdot 3 = 0\\).",
+              "The ring \\(\\mathbb{Z}[i] = \\{a + bi : a, b \\in \\mathbb{Z}\\}\\) of <span class=\"t\" data-ref=\"gaussian-integers\">Gaussian integers</span> is an integral domain, as a <span class=\"t\" data-ref=\"subring\">subring</span> of \\(\\mathbb{C}\\).",
+              "A <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> <span class=\"t\" data-ref=\"quotient-ring\">\\(R/\\mathfrak{p}\\)</span> is an integral domain if and only if \\(\\mathfrak{p}\\) is a <span class=\"t\" data-ref=\"prime-ideal\">prime ideal</span> of \\(R\\)."
+            ]
+          }
+        ],
         "related": []
       }
     },
@@ -1444,6 +1528,141 @@
       "id": "image-of-ring-homomorphism",
       "title": "images",
       "inline": "The image of a ring homomorphism \\(\\varphi: R \\to S\\) is the subring \\(\\varphi(R) \\subseteq S\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "zero-divisor",
+      "title": "zero divisors",
+      "inline": "A zero divisor in a ring is a nonzero element \\(a\\) such that \\(ab = 0\\) for some nonzero \\(b\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "zero-ideal",
+      "title": "zero ideal",
+      "inline": "The zero ideal of a ring \\(R\\) is the ideal \\(\\{0\\}\\), often denoted \\((0)\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "gaussian-integers",
+      "title": "Gaussian integers",
+      "inline": "The Gaussian integers are the ring \\(\\mathbb{Z}[i] = \\{a + bi : a, b \\in \\mathbb{Z}\\}\\), a subring of \\(\\mathbb{C}\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "coprime-ideals",
+      "title": "Coprime Ideals",
+      "generated": "2026-06-30",
+      "inline": "Two <span class=\"t\" data-ref=\"ideal\">ideals</span> \\(\\mathfrak{a},\\mathfrak{b}\\) of a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\) are coprime (or comaximal) when \\(\\mathfrak{a}+\\mathfrak{b}=R\\). This generalizes the notion of two integers having no common prime factor and underlies the <span class=\"t\" data-ref=\"chinese-remainder-theorem\">Chinese Remainder Theorem</span>.",
+      "refs": [
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "commutative-ring",
+          "type": "required"
+        },
+        {
+          "id": "chinese-remainder-theorem",
+          "type": "enriches"
+        },
+        {
+          "id": "maximal-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "ring-isomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "principal-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "polynomial-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "field",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "In the integers, two numbers like \\(8\\) and \\(15\\) share no common factor, and this lets us solve simultaneous congruences: any pair of remainders modulo \\(8\\) and modulo \\(15\\) can be realized by a single integer. But what is it about \\(8\\) and \\(15\\) that makes this work? Writing \\(\\gcd(8,15)=1\\) hides the real mechanism, which is the Bézout identity \\(2\\cdot 8 - 1\\cdot 15 = 1\\): the number \\(1\\) lives in the set of all combinations \\(8\\mathbb{Z}+15\\mathbb{Z}\\). In a general <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> there may be no notion of greatest common divisor, yet the sum of two <span class=\"t\" data-ref=\"ideal\">ideals</span> always makes sense. The condition that this sum recover the whole ring is exactly the structural fact we need, and once isolated it makes the splitting of quotients feel inevitable."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Let \\(R\\) be a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> and let \\(\\mathfrak{a},\\mathfrak{b}\\subseteq R\\) be <span class=\"t\" data-ref=\"ideal\">ideals</span>. We say \\(\\mathfrak{a}\\) and \\(\\mathfrak{b}\\) are <em>coprime</em> (equivalently <em>comaximal</em>) if their sum is the whole ring, that is \\[ \\mathfrak{a}+\\mathfrak{b}=R. \\]"
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "There exist elements \\(a\\in\\mathfrak{a}\\) and \\(b\\in\\mathfrak{b}\\) with \\(a+b=1\\).",
+              "No <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> \\(\\mathfrak{m}\\) of \\(R\\) contains both \\(\\mathfrak{a}\\) and \\(\\mathfrak{b}\\)."
+            ],
+            "proof": "Since \\(\\mathfrak{a}+\\mathfrak{b}\\) is an ideal of \\(R\\), it equals \\(R\\) if and only if it contains the unit \\(1\\), because an ideal containing a unit is all of \\(R\\). But \\(1\\in\\mathfrak{a}+\\mathfrak{b}\\) means precisely that \\(1=a+b\\) for some \\(a\\in\\mathfrak{a}\\) and \\(b\\in\\mathfrak{b}\\); this gives the equivalence with the first characterization. For the second, suppose \\(\\mathfrak{a}+\\mathfrak{b}=R\\) and that some <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> \\(\\mathfrak{m}\\) contained both \\(\\mathfrak{a}\\) and \\(\\mathfrak{b}\\). Then \\(\\mathfrak{m}\\supseteq\\mathfrak{a}+\\mathfrak{b}=R\\), contradicting that \\(\\mathfrak{m}\\) is proper. Conversely, suppose \\(\\mathfrak{a}+\\mathfrak{b}\\neq R\\). Then \\(\\mathfrak{a}+\\mathfrak{b}\\) is a proper ideal, and every proper ideal is contained in some <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> \\(\\mathfrak{m}\\) by an application of Zorn's lemma. This \\(\\mathfrak{m}\\) contains \\(\\mathfrak{a}+\\mathfrak{b}\\) and hence both \\(\\mathfrak{a}\\) and \\(\\mathfrak{b}\\), so the second condition fails. Thus the negations correspond, proving the equivalence."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "If \\(\\mathfrak{a}\\) and \\(\\mathfrak{b}\\) are coprime, then \\(\\mathfrak{a}\\cap\\mathfrak{b}=\\mathfrak{a}\\mathfrak{b}\\), and the natural map induces an <span class=\"t\" data-ref=\"ring-isomorphism\">isomorphism of rings</span> \\[ R/(\\mathfrak{a}\\mathfrak{b})\\;\\cong\\;R/\\mathfrak{a}\\,\\times\\,R/\\mathfrak{b}. \\] This is the <span class=\"t\" data-ref=\"chinese-remainder-theorem\">Chinese Remainder Theorem</span>.",
+            "proof": "The inclusion \\(\\mathfrak{a}\\mathfrak{b}\\subseteq\\mathfrak{a}\\cap\\mathfrak{b}\\) holds for any two <span class=\"t\" data-ref=\"ideal\">ideals</span>, since every generator \\(ab\\) with \\(a\\in\\mathfrak{a}\\), \\(b\\in\\mathfrak{b}\\) lies in both \\(\\mathfrak{a}\\) and \\(\\mathfrak{b}\\). For the reverse inclusion we use coprimality: choose \\(a\\in\\mathfrak{a}\\) and \\(b\\in\\mathfrak{b}\\) with \\(a+b=1\\). Given \\(x\\in\\mathfrak{a}\\cap\\mathfrak{b}\\), multiply the identity by \\(x\\) to obtain \\[ x = x\\cdot 1 = xa + xb. \\] Here \\(xb\\in\\mathfrak{a}\\mathfrak{b}\\) because \\(x\\in\\mathfrak{a}\\) and \\(b\\in\\mathfrak{b}\\), while \\(xa\\in\\mathfrak{a}\\mathfrak{b}\\) because \\(a\\in\\mathfrak{a}\\) and \\(x\\in\\mathfrak{b}\\). Hence \\(x\\in\\mathfrak{a}\\mathfrak{b}\\), proving \\(\\mathfrak{a}\\cap\\mathfrak{b}=\\mathfrak{a}\\mathfrak{b}\\). Now consider the ring homomorphism \\[ \\varphi:R\\longrightarrow R/\\mathfrak{a}\\times R/\\mathfrak{b},\\qquad \\varphi(r)=(r+\\mathfrak{a},\\,r+\\mathfrak{b}). \\] Its kernel is \\(\\mathfrak{a}\\cap\\mathfrak{b}=\\mathfrak{a}\\mathfrak{b}\\). To see that \\(\\varphi\\) is surjective, take any target element \\((u+\\mathfrak{a},\\,v+\\mathfrak{b})\\). Using \\(a+b=1\\) with \\(a\\equiv 0\\pmod{\\mathfrak{a}}\\), \\(a\\equiv 1\\pmod{\\mathfrak{b}}\\) and symmetrically \\(b\\equiv 1\\pmod{\\mathfrak{a}}\\), \\(b\\equiv 0\\pmod{\\mathfrak{b}}\\), set \\(r = ub + va\\). Then \\(r\\equiv u\\cdot 1 + v\\cdot 0 = u \\pmod{\\mathfrak{a}}\\) and \\(r\\equiv u\\cdot 0 + v\\cdot 1 = v \\pmod{\\mathfrak{b}}\\), so \\(\\varphi(r)=(u+\\mathfrak{a},\\,v+\\mathfrak{b})\\). By the first isomorphism theorem, \\(\\varphi\\) descends to an isomorphism \\(R/(\\mathfrak{a}\\mathfrak{b})\\cong R/\\mathfrak{a}\\times R/\\mathfrak{b}\\)."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "In \\(\\mathbb{Z}\\), the <span class=\"t\" data-ref=\"principal-ideal\">principal ideals</span> \\((m)\\) and \\((n)\\) are coprime exactly when \\(\\gcd(m,n)=1\\); for instance \\((8)+(15)=\\mathbb{Z}\\) because \\(2\\cdot 8 - 15 = 1\\), recovering the classical <span class=\"t\" data-ref=\"chinese-remainder-theorem\">Chinese Remainder Theorem</span> \\(\\mathbb{Z}/120\\cong\\mathbb{Z}/8\\times\\mathbb{Z}/15\\).",
+              "In the <span class=\"t\" data-ref=\"polynomial-ring\">polynomial ring</span> \\(k[x]\\) over a <span class=\"t\" data-ref=\"field\">field</span>, the <span class=\"t\" data-ref=\"ideal\">ideals</span> \\((x-a)\\) and \\((x-b)\\) are coprime whenever \\(a\\neq b\\), since \\(\\frac{1}{b-a}\\big((x-a)-(x-b)\\big)=1\\).",
+              "Two distinct <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> \\(\\mathfrak{m}_1\\neq\\mathfrak{m}_2\\) are always coprime: their sum strictly contains \\(\\mathfrak{m}_1\\), so by maximality \\(\\mathfrak{m}_1+\\mathfrak{m}_2=R\\).",
+              "The <span class=\"t\" data-ref=\"ideal\">ideals</span> \\((2)\\) and \\((4)\\) in \\(\\mathbb{Z}\\) are not coprime, since \\((2)+(4)=(2)\\neq\\mathbb{Z}\\); both lie inside the <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> \\((2)\\)."
+            ]
+          }
+        ],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "chinese-remainder-theorem",
+      "title": "Chinese Remainder Theorem",
+      "inline": "The Chinese Remainder Theorem states that if ideals \\(\\mathfrak{a}\\) and \\(\\mathfrak{b}\\) are coprime, then \\(R/(\\mathfrak{a}\\mathfrak{b})\\cong R/\\mathfrak{a}\\times R/\\mathfrak{b}\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "ring-isomorphism",
+      "title": "isomorphism of rings",
+      "inline": "A ring isomorphism is a bijective ring homomorphism whose inverse is also a ring homomorphism.",
       "refs": [],
       "page": {
         "blocks": [],

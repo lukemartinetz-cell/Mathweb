@@ -127,7 +127,7 @@ function parseJSON(raw) {
 
 async function callClaude(system, user, { thinking = false, maxTokens = 4000 } = {}) {
   const params = {
-    model: 'claude-opus-4-7',
+    model: 'claude-opus-4-8',
     max_tokens: maxTokens,
     system,
     messages: [{ role: 'user', content: user }],

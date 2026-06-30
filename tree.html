@@ -115,6 +115,7 @@ html.dm,html.dm body,html.dm #tree-panel,html.dm #app-panel{background:#141414}
 html.dm #app-panel{border-top-color:#2e2e2e}
 html.dm .app-content{color:#e6e6e6}
 html.dm .tree-edge{stroke:#333}
+html.dm #tarr path{fill:#333}
 html.dm .tree-node circle{fill:#e6e6e6}
 html.dm .tree-node.is-stub circle{fill:#1e1e1e;stroke:#888}
 html.dm .tree-node:not(.is-center):hover circle{stroke:#aaa}
@@ -175,9 +176,24 @@ let TW = 0, TH = 0;
 // ── SVG setup (dimensions set after fetch when layout is applied) ─────────────
 const treePanel = document.getElementById('tree-panel');
 const svg       = d3.select('#canvas');
+svg.append('defs').append('marker')
+  .attr('id', 'tarr').attr('viewBox', '0 -4 9 8')
+  .attr('refX', 9).attr('refY', 0)
+  .attr('markerWidth', 9).attr('markerHeight', 9).attr('orient', 'auto')
+  .append('path').attr('d', 'M0,-4L9,0L0,4').attr('fill', '#bbb');
 const root      = svg.append('g');
 const edgeLayer = root.append('g');
 const nodeLayer = root.append('g');
+
+function edgePts(d) {
+  const dx = d.x2 - d.x1, dy = d.y2 - d.y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len, uy = dy / len;
+  return {
+    x1: d.x1 + ux * (d.r1 + 2), y1: d.y1 + uy * (d.r1 + 2),
+    x2: d.x2 - ux * (d.r2 + 4), y2: d.y2 - uy * (d.r2 + 4)
+  };
+}
 
 // Block all pointer-driven panning/zooming on the SVG element itself
 svg.on('wheel.zoom',      null)
@@ -243,7 +259,7 @@ function computeLayout(conceptId) {
     const y = cy - (ri + 1) * VERT_GAP;
     placeRow(row, y).forEach(n => {
       nodes.push({ ...n, role: 'parent', r: R_NODE });
-      links.push({ key: `${n.id}|${conceptId}`, x1: n.x, y1: y, x2: 0, y2: cy });
+      links.push({ key: `${n.id}|${conceptId}`, x1: n.x, y1: y, x2: 0, y2: cy, r1: R_NODE, r2: R_CENTER });
     });
   });
 
@@ -252,7 +268,7 @@ function computeLayout(conceptId) {
     const y = cy + (ri + 1) * VERT_GAP;
     placeRow(row, y).forEach(n => {
       nodes.push({ ...n, role: 'child', r: R_NODE });
-      links.push({ key: `${conceptId}|${n.id}`, x1: 0, y1: cy, x2: n.x, y2: y });
+      links.push({ key: `${conceptId}|${n.id}`, x1: 0, y1: cy, x2: n.x, y2: y, r1: R_CENTER, r2: R_NODE });
     });
   });
 
@@ -297,13 +313,14 @@ function navigateTo(targetId, animate = true) {
   // ── Edges ──
   edgeLayer.selectAll('line.tree-edge').data(layout.links, d => d.key).join(
     enter => enter.append('line').attr('class', 'tree-edge')
-      .attr('x1', d => d.x1).attr('y1', d => d.y1)
-      .attr('x2', d => d.x2).attr('y2', d => d.y2)
+      .attr('marker-end', 'url(#tarr)')
+      .attr('x1', d => edgePts(d).x1).attr('y1', d => edgePts(d).y1)
+      .attr('x2', d => edgePts(d).x2).attr('y2', d => edgePts(d).y2)
       .style('opacity', 0)
       .call(s => s.transition(t).delay(delayIn).style('opacity', 1)),
-    update => update.transition(t)
-      .attr('x1', d => d.x1).attr('y1', d => d.y1)
-      .attr('x2', d => d.x2).attr('y2', d => d.y2)
+    update => update.attr('marker-end', 'url(#tarr)').transition(t)
+      .attr('x1', d => edgePts(d).x1).attr('y1', d => edgePts(d).y1)
+      .attr('x2', d => edgePts(d).x2).attr('y2', d => edgePts(d).y2)
       .style('opacity', 1),
     exit => exit.transition(t).duration(Math.round(dur * 0.38)).style('opacity', 0).remove()
   );
