@@ -224,10 +224,14 @@ function resolveNotationRefs(text) {
 
 function plainToHtml(text) {
   if (!text) return '';
-  return text
-    .replace(/\\emph\{([^}]*)\}/g, '<em>$1</em>')
-    .replace(/\\textbf\{([^}]*)\}/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>')
+  // Argument pattern tolerates one level of nested braces: \emph{the ring \(\mathbb{Z}\)}
+  const converted = text
+    .replace(/\\emph\{((?:[^{}]|\{[^{}]*\})*)\}/g, '<em>$1</em>')
+    .replace(/\\textbf\{((?:[^{}]|\{[^{}]*\})*)\}/g, '<strong>$1</strong>');
+  // \n → <br> only outside LaTeX regions — a <br> inside \( \) or \[ \] breaks MathJax
+  return tokenizeLatex(converted)
+    .map(seg => seg.latex ? seg.text : seg.text.replace(/\n/g, '<br>'))
+    .join('')
     .trim();
 }
 
@@ -314,14 +318,14 @@ function makeStub(id, title, inline) {
   return {
     stub: true, id,
     title: title || id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-    inline,
+    inline: plainToHtml(inline),
     refs: [],
     page: { blocks: [], related: [] },
   };
 }
 
 function makeAlias(id, alias_of, inline) {
-  return { id, alias_of, inline: inline || '' };
+  return { id, alias_of, inline: plainToHtml(inline) };
 }
 
 // ── Phase 5: Validation ───────────────────────────────────────────────────
@@ -411,7 +415,9 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     ...(content.sections?.equiv ?? []),
     content.sections?.prop,
     ...(content.sections?.cases ?? []),
-    ...(content.sections?.proof ?? []),
+    content.sections?.def_proof,
+    content.sections?.equiv_proof,
+    content.sections?.prop_proof,
   ].filter(Boolean).join('\n\n');
 
   const notationRefIds = new Set();
@@ -430,10 +436,10 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     const stripRe = new RegExp(`\\{ref:(${escapedIds.join('|')})\\}`, 'g');
     content.inline = content.inline?.replace(stripRe, '') ?? content.inline;
     if (content.sections) {
-      for (const key of ['why', 'def', 'prop']) {
+      for (const key of ['why', 'def', 'prop', 'def_proof', 'equiv_proof', 'prop_proof']) {
         if (content.sections[key]) content.sections[key] = content.sections[key].replace(stripRe, '');
       }
-      for (const key of ['equiv', 'cases', 'proof']) {
+      for (const key of ['equiv', 'cases']) {
         if (Array.isArray(content.sections[key]))
           content.sections[key] = content.sections[key].map(s => s.replace(stripRe, ''));
       }
@@ -449,7 +455,6 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     ...(content.sections?.equiv ?? []),
     content.sections?.prop,
     ...(content.sections?.cases ?? []),
-    ...(content.sections?.proof ?? []),
   ].filter(Boolean).join('\n\n').replace(/\{ref:[\w-]+\}/g, '');
 
   // ── Phase 2: Ref detection ──────────────────────────────────────────────
@@ -542,7 +547,7 @@ async function generateConcept(topic, { dryRun = false, verbose = false } = {}) 
     id:        content.id,
     title:     content.title,
     generated: new Date().toISOString().slice(0, 10),
-    inline:    resolveNotationRefs(wrapRefs(content.inline, refList)),
+    inline:    resolveNotationRefs(wrapRefs(plainToHtml(content.inline), refList)),
     refs:      classifiedRefs ?? [],
     page: {
       blocks:  assembleBlocks(content.sections, refList),

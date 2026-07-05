@@ -346,13 +346,104 @@
       }
     },
     {
-      "stub": true,
       "id": "maximal-ideal",
-      "title": "maximal",
-      "inline": "A maximal ideal of a ring \\(R\\) is a proper ideal not contained in any other proper ideal.",
-      "refs": [],
+      "title": "Maximal Ideal",
+      "generated": "2026-07-03",
+      "inline": "A maximal <span class=\"t\" data-ref=\"ideal\">ideal</span> of a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\) is a <span class=\"t\" data-ref=\"ideal\">proper ideal</span> that is not strictly contained in any other <span class=\"t\" data-ref=\"ideal\">proper ideal</span>. Equivalently, \\(\\mathfrak{m}\\) is maximal precisely when the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> \\(R/\\mathfrak{m}\\) is a <span class=\"t\" data-ref=\"field\">field</span>.",
+      "refs": [
+        {
+          "id": "commutative-ring",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "field",
+          "type": "enriches"
+        },
+        {
+          "id": "zero-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "unit",
+          "type": "enriches"
+        },
+        {
+          "id": "zero-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "prime-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "polynomial-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "principal-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "irreducible-polynomial",
+          "type": "enriches"
+        },
+        {
+          "id": "local-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "semi-local-ring",
+          "type": "enriches"
+        }
+      ],
       "page": {
-        "blocks": [],
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Given a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span>, the <span class=\"t\" data-ref=\"ideal\">ideals</span>  form a hierarchy ordered by inclusion, with the whole ring \\(R\\) sitting at the top and the <span class=\"t\" data-ref=\"zero-ideal\">zero ideal</span> at the bottom. Suppose we want to produce a <span class=\"t\" data-ref=\"field\">field</span>  out of \\(R\\) by collapsing an <span class=\"t\" data-ref=\"ideal\">ideal</span> to zero in the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span>  — how small must the <span class=\"t\" data-ref=\"ideal\">ideal</span> be, and how large can we push it? If we <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> by too little, leftover <span class=\"t\" data-ref=\"unit\">non-units</span> survive and we fail to get a <span class=\"t\" data-ref=\"field\">field</span>; if we <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> by everything, the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> collapses to the <span class=\"t\" data-ref=\"zero-ring\">zero ring</span>. The natural target is an <span class=\"t\" data-ref=\"ideal\">ideal</span> that is as large as possible while still being proper: enlarging it any further would force it to swallow a <span class=\"t\" data-ref=\"unit\">unit</span> and become all of \\(R\\). This extremal position is exactly what makes such an <span class=\"t\" data-ref=\"ideal\">ideal</span> special, and it turns out to correspond precisely to the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> being a <span class=\"t\" data-ref=\"field\">field</span>."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Let \\(R\\) be a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span>. An <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{m} \\subsetneq R\\) is called <em>maximal</em> if it is a <span class=\"t\" data-ref=\"ideal\">proper ideal</span> and there is no <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{a}\\) with \\(\\mathfrak{m} \\subsetneq \\mathfrak{a} \\subsetneq R\\); that is, whenever \\(\\mathfrak{a}\\) is an <span class=\"t\" data-ref=\"ideal\">ideal</span> with \\(\\mathfrak{m} \\subseteq \\mathfrak{a} \\subseteq R\\), one has \\(\\mathfrak{a} = \\mathfrak{m}\\) or \\(\\mathfrak{a} = R\\)."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "The <span class=\"t\" data-ref=\"quotient-ring\">quotient ring</span> <span class=\"t\" data-ref=\"quotient-ring\">\\(R/\\mathfrak{m}\\)</span> is a <span class=\"t\" data-ref=\"field\">field</span> .",
+              "\\(\\mathfrak{m}\\) is a <span class=\"t\" data-ref=\"ideal\">proper ideal</span> and for every \\(x \\in R \\setminus \\mathfrak{m}\\) there exists \\(y \\in R\\) with \\(1 - xy \\in \\mathfrak{m}\\).",
+              "\\(\\mathfrak{m}\\) is a maximal element, with respect to inclusion, of the set of proper <span class=\"t\" data-ref=\"ideal\">ideals</span> of \\(R\\)."
+            ],
+            "proof": "We prove that \\(\\mathfrak{m}\\) is maximal if and only if \\(R/\\mathfrak{m}\\) is a <span class=\"t\" data-ref=\"field\">field</span>, and along the way the third characterization is merely a restatement of the definition. There is an inclusion-preserving bijection between <span class=\"t\" data-ref=\"ideal\">ideals</span> of \\(R\\) containing \\(\\mathfrak{m}\\) and <span class=\"t\" data-ref=\"ideal\">ideals</span> of \\(R/\\mathfrak{m}\\), given by \\(\\mathfrak{a} \\mapsto \\mathfrak{a}/\\mathfrak{m}\\), the correspondence theorem for the canonical projection \\(\\pi: R \\to R/\\mathfrak{m}\\). Under this bijection \\(\\mathfrak{m}\\) corresponds to the <span class=\"t\" data-ref=\"zero-ideal\">zero ideal</span> and \\(R\\) corresponds to \\(R/\\mathfrak{m}\\) itself. Thus \\(\\mathfrak{m}\\) is maximal, meaning there is no <span class=\"t\" data-ref=\"ideal\">ideal</span> strictly between \\(\\mathfrak{m}\\) and \\(R\\), if and only if \\(R/\\mathfrak{m}\\) has no <span class=\"t\" data-ref=\"ideal\">ideal</span> strictly between \\((0)\\) and the whole ring, i.e. \\(R/\\mathfrak{m}\\) has exactly the two <span class=\"t\" data-ref=\"ideal\">ideals</span> \\((0)\\) and \\(R/\\mathfrak{m}\\), and is not the <span class=\"t\" data-ref=\"zero-ring\">zero ring</span>. A nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> has only these two <span class=\"t\" data-ref=\"ideal\">ideals</span> precisely when it is a <span class=\"t\" data-ref=\"field\">field</span>: if it is a <span class=\"t\" data-ref=\"field\">field</span>, every nonzero element is a <span class=\"t\" data-ref=\"unit\">unit</span> and any nonzero <span class=\"t\" data-ref=\"ideal\">ideal</span> contains a <span class=\"t\" data-ref=\"unit\">unit</span>, hence equals the ring; conversely, if the only <span class=\"t\" data-ref=\"ideal\">ideals</span> are \\((0)\\) and the whole ring, then for any nonzero \\(a\\) the principal <span class=\"t\" data-ref=\"ideal\">ideal</span> \\((a)\\) is nonzero, hence equals the ring, so \\(1 \\in (a)\\) and \\(a\\) is a <span class=\"t\" data-ref=\"unit\">unit</span>. This proves the equivalence with the first characterization. For the second characterization, \\(x \\in R \\setminus \\mathfrak{m}\\) means the class \\(\\bar{x}\\) is nonzero in \\(R/\\mathfrak{m}\\); the existence of \\(y\\) with \\(1 - xy \\in \\mathfrak{m}\\) means \\(\\bar{x}\\bar{y} = \\bar{1}\\), i.e. \\(\\bar{x}\\) is a <span class=\"t\" data-ref=\"unit\">unit</span>. Requiring this for all such \\(x\\) is exactly the statement that every nonzero element of \\(R/\\mathfrak{m}\\) is invertible, which again says \\(R/\\mathfrak{m}\\) is a <span class=\"t\" data-ref=\"field\">field</span>."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Every maximal <span class=\"t\" data-ref=\"ideal\">ideal</span> is a <span class=\"t\" data-ref=\"prime-ideal\">prime ideal</span> , and every nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> possesses at least one maximal <span class=\"t\" data-ref=\"ideal\">ideal</span>. More generally, every <span class=\"t\" data-ref=\"ideal\">proper ideal</span> of a nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> is contained in some maximal <span class=\"t\" data-ref=\"ideal\">ideal</span>.",
+            "proof": "Since a maximal <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{m}\\) has <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> \\(R/\\mathfrak{m}\\) a <span class=\"t\" data-ref=\"field\">field</span>, and every <span class=\"t\" data-ref=\"field\">field</span> is an integral domain, the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> is an integral domain; an <span class=\"t\" data-ref=\"ideal\">ideal</span> whose <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> is an integral domain is <span class=\"t\" data-ref=\"prime-ideal\">prime</span>, so \\(\\mathfrak{m}\\) is <span class=\"t\" data-ref=\"prime-ideal\">prime</span>. For the existence statement it suffices to prove the more general claim, since the <span class=\"t\" data-ref=\"zero-ideal\">zero ideal</span> is proper in any nonzero ring. Let \\(\\mathfrak{a} \\subsetneq R\\) be a <span class=\"t\" data-ref=\"ideal\">proper ideal</span> and consider the set \\(\\Sigma\\) of all proper <span class=\"t\" data-ref=\"ideal\">ideals</span> of \\(R\\) containing \\(\\mathfrak{a}\\), partially ordered by inclusion. Then \\(\\Sigma\\) is nonempty because \\(\\mathfrak{a} \\in \\Sigma\\). Let \\(\\{\\mathfrak{a}_i\\}_{i \\in I}\\) be a chain in \\(\\Sigma\\), and set \\(\\mathfrak{b} = \\bigcup_{i \\in I} \\mathfrak{a}_i\\). A union of a chain of <span class=\"t\" data-ref=\"ideal\">ideals</span> is again an <span class=\"t\" data-ref=\"ideal\">ideal</span>, because any two elements of \\(\\mathfrak{b}\\) lie in a common member of the chain where the <span class=\"t\" data-ref=\"ideal\">ideal</span> axioms apply. Moreover \\(\\mathfrak{b}\\) is proper: if \\(1 \\in \\mathfrak{b}\\) then \\(1 \\in \\mathfrak{a}_i\\) for some \\(i\\), forcing \\(\\mathfrak{a}_i = R\\), contradicting \\(\\mathfrak{a}_i \\in \\Sigma\\). Hence \\(\\mathfrak{b} \\in \\Sigma\\) is an upper bound for the chain. By Zorn's lemma \\(\\Sigma\\) has a maximal element \\(\\mathfrak{m}\\), which is a <span class=\"t\" data-ref=\"ideal\">proper ideal</span> containing \\(\\mathfrak{a}\\) and maximal among proper <span class=\"t\" data-ref=\"ideal\">ideals</span> of \\(R\\), hence a maximal <span class=\"t\" data-ref=\"ideal\">ideal</span>."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "In \\(\\mathbb{Z}\\), the maximal <span class=\"t\" data-ref=\"ideal\">ideals</span> are exactly the <span class=\"t\" data-ref=\"ideal\">ideals</span> \\((p)\\) for \\(p\\) <span class=\"t\" data-ref=\"prime-ideal\">prime</span>; indeed \\(\\mathbb{Z}/(p)\\) is the <span class=\"t\" data-ref=\"field\">field</span> with \\(p\\) elements, whereas \\((0)\\) is <span class=\"t\" data-ref=\"prime-ideal\">prime</span> but not maximal since \\(\\mathbb{Z}\\) is not a <span class=\"t\" data-ref=\"field\">field</span>.",
+              "In a <span class=\"t\" data-ref=\"field\">field</span> \\(k\\), the only maximal <span class=\"t\" data-ref=\"ideal\">ideal</span> is the <span class=\"t\" data-ref=\"zero-ideal\">zero ideal</span> \\((0)\\), and it is the unique <span class=\"t\" data-ref=\"ideal\">proper ideal</span>.",
+              "In the <span class=\"t\" data-ref=\"polynomial-ring\">polynomial ring</span> \\(k[x]\\) over a <span class=\"t\" data-ref=\"field\">field</span>, the maximal <span class=\"t\" data-ref=\"ideal\">ideals</span> are the <span class=\"t\" data-ref=\"principal-ideal\">principal ideals</span> \\((f)\\) generated by <span class=\"t\" data-ref=\"irreducible-polynomial\">monic irreducible polynomials</span>; for \\(k\\) algebraically closed these are exactly \\((x - a)\\) with \\(a \\in k\\).",
+              "In \\(k[x, y]\\), the <span class=\"t\" data-ref=\"ideal\">ideal</span> \\((x, y)\\) is maximal since \\(k[x,y]/(x,y) \\cong k\\), while the <span class=\"t\" data-ref=\"prime-ideal\">prime ideal</span> \\((x)\\) is not maximal because \\(k[x,y]/(x) \\cong k[y]\\) is not a <span class=\"t\" data-ref=\"field\">field</span>.",
+              "A <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> with exactly one maximal <span class=\"t\" data-ref=\"ideal\">ideal</span> is a <span class=\"t\" data-ref=\"local-ring\">local ring</span> , and one with finitely many is a <span class=\"t\" data-ref=\"semi-local-ring\">semi-local ring</span> ."
+            ]
+          }
+        ],
         "related": []
       }
     },
@@ -470,7 +561,7 @@
       "id": "unit",
       "title": "Unit",
       "generated": "2026-05-31",
-      "inline": "A \\emph{unit} in a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> <span class=\"t\" data-ref=\"commutative-ring\">\\(R\\)</span> is an element possessing a multiplicative inverse. The units of \\(R\\) form an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> \\(R^\\times\\) under multiplication.",
+      "inline": "A <em>unit</em> in a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> <span class=\"t\" data-ref=\"commutative-ring\">\\(R\\)</span> is an element possessing a multiplicative inverse. The units of \\(R\\) form an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> \\(R^\\times\\) under multiplication.",
       "refs": [
         {
           "id": "commutative-ring",
@@ -522,7 +613,7 @@
           {
             "type": "why",
             "label": "Motivation",
-            "body": "Units are the invertible elements of a ring, and they govern much of its arithmetic structure. Identifying which elements are units distinguishes <span class=\"t\" data-ref=\"field\">fields</span> (where every nonzero element is a unit) from more general rings, and the group of units \\(R^\\times\\) is a fundamental invariant — for example, \\(\\mathbb{Z}^\\times = \\{\\pm 1\\}\\), while \\(K^\\times\\) for a <span class=\"t\" data-ref=\"field\">field</span> \\(K\\){ref:<span class=\"t\" data-ref=\"field\">field</span>} captures the entire multiplicative structure. The notion of unit is also dual to that of a non-unit, which is intimately related to <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> and to <span class=\"t\" data-ref=\"localization-of-rings\">localization</span>{ref:<span class=\"t\" data-ref=\"localization-of-rings\">localization</span>-of-rings}."
+            "body": "Units are the invertible elements of a ring, and they govern much of its arithmetic structure. Identifying which elements are units distinguishes <span class=\"t\" data-ref=\"field\">fields</span> (where every nonzero element is a unit) from more general rings, and the group of units \\(R^\\times\\) is a fundamental invariant — for example, \\(\\mathbb{Z}^\\times = \\{\\pm 1\\}\\), while \\(K^\\times\\) for a <span class=\"t\" data-ref=\"field\">field</span> <span class=\"t\" data-ref=\"field\">\\(K\\)</span> captures the entire multiplicative structure. The notion of unit is also dual to that of a non-unit, which is intimately related to <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> and to <span class=\"t\" data-ref=\"localization-of-rings\">localization</span>."
           },
           {
             "type": "def",
@@ -536,7 +627,7 @@
               "The <span class=\"t\" data-ref=\"principal-ideal\">principal ideal</span> generated by \\(u\\) is the whole ring: \\((u) = R\\).",
               "The element \\(u\\) is not contained in any <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> of \\(R\\).",
               "The element \\(u\\) is not contained in any <span class=\"t\" data-ref=\"prime-ideal\">prime ideal</span> of \\(R\\), provided \\(R\\) is nonzero.",
-              "The <span class=\"t\" data-ref=\"image-of-ring-homomorphism\">image</span> of \\(u\\) in every <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> \\(R/\\mathfrak{m}\\){ref:<span class=\"t\" data-ref=\"quotient-ring\">quotient</span>-ring} by a <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> <span class=\"t\" data-ref=\"maximal-ideal\">\\(\\mathfrak{m}\\)</span> is nonzero."
+              "The <span class=\"t\" data-ref=\"image-of-ring-homomorphism\">image</span> of \\(u\\) in every <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> <span class=\"t\" data-ref=\"quotient-ring\">\\(R/\\mathfrak{m}\\)</span> by a <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> <span class=\"t\" data-ref=\"maximal-ideal\">\\(\\mathfrak{m}\\)</span> is nonzero."
             ],
             "proof": "Suppose \\(u\\) is a unit with inverse \\(v\\). Then \\(1 = uv \\in (u)\\), so \\((u) = R\\). Conversely, if \\((u) = R\\), then \\(1 \\in (u)\\), meaning \\(1 = uv\\) for some \\(v \\in R\\), so \\(u\\) is a unit.<br><br>Now assume \\(u\\) is a unit. If \\(\\mathfrak{m}\\) is any maximal (or more generally proper) ideal containing \\(u\\), then \\(1 = uv \\in \\mathfrak{m}\\), contradicting properness. Thus \\(u\\) lies in no <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span>. Conversely, if \\(u\\) is not a unit, then \\((u) \\subsetneq R\\) is a proper ideal, hence is contained in some <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> by Zorn's lemma, so \\(u\\) belongs to some <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span>. This proves the equivalence with the second characterization. The third is similar, noting that every <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> is prime, and in a nonzero ring proper ideals are contained in maximal (hence prime) ideals.<br><br>Finally, \\(u\\) lies outside every <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> \\(\\mathfrak{m}\\) if and only if its <span class=\"t\" data-ref=\"image-of-ring-homomorphism\">image</span> in \\(R/\\mathfrak{m}\\) is nonzero for every \\(\\mathfrak{m}\\), proving the last equivalence."
           },
@@ -551,11 +642,11 @@
             "label": "Examples",
             "items": [
               "In \\(\\mathbb{Z}\\), the units are \\(\\mathbb{Z}^\\times = \\{+1, -1\\}\\).",
-              "In a <span class=\"t\" data-ref=\"field\">field</span> \\(K\\){ref:<span class=\"t\" data-ref=\"field\">field</span>}, every nonzero element is a unit: \\(K^\\times = K \\setminus \\{0\\}\\). Conversely, a nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> is a <span class=\"t\" data-ref=\"field\">field</span> if and only if every nonzero element is a unit.",
+              "In a <span class=\"t\" data-ref=\"field\">field</span> <span class=\"t\" data-ref=\"field\">\\(K\\)</span>, every nonzero element is a unit: \\(K^\\times = K \\setminus \\{0\\}\\). Conversely, a nonzero <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> is a <span class=\"t\" data-ref=\"field\">field</span> if and only if every nonzero element is a unit.",
               "In the <span class=\"t\" data-ref=\"polynomial-ring\">polynomial ring</span> <span class=\"t\" data-ref=\"polynomial-ring\">\\(K[x]\\)</span> over a <span class=\"t\" data-ref=\"field\">field</span> \\(K\\), the units are exactly the nonzero constants: \\(K[x]^\\times = K^\\times\\).",
               "In \\(\\mathbb{Z}/n\\mathbb{Z}\\), the units are the residue classes \\(\\overline{a}\\) with \\(\\gcd(a, n) = 1\\); the group \\((\\mathbb{Z}/n\\mathbb{Z})^\\times\\) has order \\(\\varphi(n)\\).",
               "In the formal power series ring \\(K[\\![x]\\!]\\), a series \\(\\sum a_n x^n\\) is a unit if and only if its constant term \\(a_0\\) is a unit in \\(K\\).",
-              "If \\(n \\in R\\) is <span class=\"t\" data-ref=\"nilpotent-element\">nilpotent</span>{ref:<span class=\"t\" data-ref=\"nilpotent-element\">nilpotent</span>-element}, then \\(1 + n\\) is a unit, with inverse \\(1 - n + n^2 - n^3 + \\cdots\\) (a finite sum)."
+              "If \\(n \\in R\\) is <span class=\"t\" data-ref=\"nilpotent-element\">nilpotent</span>, then \\(1 + n\\) is a unit, with inverse \\(1 - n + n^2 - n^3 + \\cdots\\) (a finite sum)."
             ]
           }
         ],
@@ -1125,7 +1216,7 @@
     {
       "id": "abelian-group",
       "title": "Abelian Group",
-      "inline": "An \\emph{abelian <span class=\"t\" data-ref=\"group\">group</span>} is a <span class=\"t\" data-ref=\"group\">group</span> whose binary operation is commutative. Equivalently, it is a set \\(A\\) equipped with an associative, commutative addition \\(+\\) admitting an identity \\(0\\) and additive inverses.",
+      "inline": "An <em>abelian <span class=\"t\" data-ref=\"group\">group</span></em> is a <span class=\"t\" data-ref=\"group\">group</span> whose binary operation is commutative. Equivalently, it is a set \\(A\\) equipped with an associative, commutative addition \\(+\\) admitting an identity \\(0\\) and additive inverses.",
       "refs": [
         {
           "id": "group",
@@ -1283,7 +1374,7 @@
     {
       "id": "group",
       "title": "Group",
-      "inline": "A \\emph{group} is a set \\(G\\) equipped with an associative binary operation, an identity element, and inverses for every element. Groups formalize the algebraic structure underlying symmetry and invertible transformations.",
+      "inline": "A <em>group</em> is a set \\(G\\) equipped with an associative binary operation, an identity element, and inverses for every element. Groups formalize the algebraic structure underlying symmetry and invertible transformations.",
       "refs": [
         {
           "id": "ring",
@@ -1363,7 +1454,7 @@
       "id": "ring",
       "title": "Ring",
       "generated": "2026-05-31",
-      "inline": "A \\emph{ring} is a set equipped with two operations — addition and multiplication — such that addition makes it an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span>, multiplication is associative with an identity, and the two operations are linked by distributivity.",
+      "inline": "A <em>ring</em> is a set equipped with two operations — addition and multiplication — such that addition makes it an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span>, multiplication is associative with an identity, and the two operations are linked by distributivity.",
       "refs": [
         {
           "id": "abelian-group",
@@ -1663,6 +1754,122 @@
       "id": "ring-isomorphism",
       "title": "isomorphism of rings",
       "inline": "A ring isomorphism is a bijective ring homomorphism whose inverse is also a ring homomorphism.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "semi-local-ring",
+      "title": "Semi-local Ring",
+      "generated": "2026-07-03",
+      "inline": "A <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> is semi-local if it has only finitely many <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span>. This generalizes the notion of a <span class=\"t\" data-ref=\"local-ring\">local ring</span>, which has exactly one.",
+      "refs": [
+        {
+          "id": "commutative-ring",
+          "type": "required"
+        },
+        {
+          "id": "maximal-ideal",
+          "type": "required"
+        },
+        {
+          "id": "local-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "unit",
+          "type": "enriches"
+        },
+        {
+          "id": "localization-of-rings",
+          "type": "enriches"
+        },
+        {
+          "id": "chinese-remainder-theorem",
+          "type": "enriches"
+        },
+        {
+          "id": "zero-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "jacobson-radical",
+          "type": "enriches"
+        },
+        {
+          "id": "ring-isomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "direct-product",
+          "type": "enriches"
+        },
+        {
+          "id": "field",
+          "type": "enriches"
+        },
+        {
+          "id": "multiplicatively-closed-subset",
+          "type": "enriches"
+        },
+        {
+          "id": "coprime-ideals",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "A <span class=\"t\" data-ref=\"local-ring\">local ring</span>, with its single <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span>, is remarkably easy to reason about: everything outside that one ideal is a <span class=\"t\" data-ref=\"unit\">unit</span>, and there is a unique \"point\" at which the ring can degenerate. But many rings that arise naturally are not quite so tidy. Take the <span class=\"t\" data-ref=\"localization-of-rings\">localization</span> of \\(\\mathbb{Z}\\) at the set of integers <span class=\"t\" data-ref=\"coprime-ideals\">coprime</span> to \\(6\\): it is no longer local, yet it fails to be maximal-ideal-free in only a mild way, having precisely two <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span>, above \\(2\\) and above \\(3\\). One wants to keep the computational leverage of the local case — controlling <span class=\"t\" data-ref=\"unit\">units</span>, applying the <span class=\"t\" data-ref=\"chinese-remainder-theorem\">Chinese Remainder Theorem</span> cleanly — while allowing a small, finite collection of \"bad points\" rather than a single one. The moment we ask which rings still permit this kind of control, the finiteness of the set of <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> forces itself upon us as the natural hypothesis."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "A <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\) is called <em>semi-local</em> if the set of its <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> is finite; that is, there exist finitely many <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> <span class=\"t\" data-ref=\"maximal-ideal\">\\(\\mathfrak{m}_1, \\dots, \\mathfrak{m}_n\\)</span> (possibly \\(n = 0\\) only for the <span class=\"t\" data-ref=\"zero-ring\">zero ring</span>, or \\(n = 1\\) in the local case) such that every <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> of \\(R\\) equals some \\(\\mathfrak{m}_i\\)."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "\\(R\\) has finitely many <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> \\(\\mathfrak{m}_1, \\dots, \\mathfrak{m}_n\\), and the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> \\(R/\\mathrm{Jac}(R)\\) by the <span class=\"t\" data-ref=\"jacobson-radical\">Jacobson radical</span> is <span class=\"t\" data-ref=\"ring-isomorphism\">isomorphic</span> to the <span class=\"t\" data-ref=\"direct-product\">finite product of fields</span> \\(\\prod_{i=1}^n R/\\mathfrak{m}_i\\).",
+              "There is a finite set of <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> whose intersection equals the <span class=\"t\" data-ref=\"jacobson-radical\">Jacobson radical</span> \\(\\mathrm{Jac}(R) = \\bigcap_{i=1}^n \\mathfrak{m}_i\\) and which contains every <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span>."
+            ],
+            "proof": "Suppose \\(R\\) is semi-local with <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> \\(\\mathfrak{m}_1, \\dots, \\mathfrak{m}_n\\). By definition the <span class=\"t\" data-ref=\"jacobson-radical\">Jacobson radical</span>, the intersection of all <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span>, is \\(\\mathrm{Jac}(R) = \\bigcap_{i=1}^n \\mathfrak{m}_i\\). Distinct <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> are pairwise <span class=\"t\" data-ref=\"coprime-ideals\">coprime</span>: if \\(\\mathfrak{m}_i \\ne \\mathfrak{m}_j\\) then \\(\\mathfrak{m}_i + \\mathfrak{m}_j\\) is an ideal strictly larger than the <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> \\(\\mathfrak{m}_i\\), hence equals \\(R\\). The <span class=\"t\" data-ref=\"chinese-remainder-theorem\">Chinese Remainder Theorem</span> therefore applies to the finite family \\(\\mathfrak{m}_1, \\dots, \\mathfrak{m}_n\\), yielding a ring isomorphism<br>\\[<br>R/\\textstyle\\bigcap_{i=1}^n \\mathfrak{m}_i \\;\\xrightarrow{\\;\\sim\\;}\\; \\prod_{i=1}^n R/\\mathfrak{m}_i.<br>\\]<br>Since each \\(R/\\mathfrak{m}_i\\) is a <span class=\"t\" data-ref=\"field\">field</span> and the intersection is \\(\\mathrm{Jac}(R)\\), we obtain \\(R/\\mathrm{Jac}(R) \\cong \\prod_{i=1}^n R/\\mathfrak{m}_i\\), a <span class=\"t\" data-ref=\"direct-product\">finite product of fields</span>. This establishes the first characterization, and the second is merely a restatement of the two facts used: finiteness of the collection of <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> together with the identification of their intersection as \\(\\mathrm{Jac}(R)\\). Conversely, if \\(\\mathrm{Jac}(R)\\) is the intersection of finitely many <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> \\(\\mathfrak{m}_1, \\dots, \\mathfrak{m}_n\\) and these exhaust all <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span>, then by definition \\(R\\) has finitely many <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> and is semi-local."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Every <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> of a semi-<span class=\"t\" data-ref=\"local-ring\">local ring</span> is semi-local, and any <span class=\"t\" data-ref=\"direct-product\">finite direct product</span> of semi-local rings is semi-local.",
+            "proof": "Let \\(R\\) be semi-local with <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> \\(\\mathfrak{m}_1, \\dots, \\mathfrak{m}_n\\), and let \\(\\mathfrak{a} \\subseteq R\\) be an ideal. The <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> of the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> ring <span class=\"t\" data-ref=\"quotient-ring\">\\(R/\\mathfrak{a}\\)</span> correspond bijectively, via the canonical projection \\(\\pi\\colon R \\to R/\\mathfrak{a}\\), to the <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> of \\(R\\) that contain \\(\\mathfrak{a}\\). Indeed, if \\(\\bar{\\mathfrak{n}}\\) is maximal in \\(R/\\mathfrak{a}\\), then \\(\\pi^{-1}(\\bar{\\mathfrak{n}})\\) is a <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> of \\(R\\) containing \\(\\mathfrak{a}\\), and conversely <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> of \\(R\\) containing \\(\\mathfrak{a}\\) descend to <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> of \\(R/\\mathfrak{a}\\). Thus the <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> of \\(R/\\mathfrak{a}\\) form a subset of the images of \\(\\{\\mathfrak{m}_1, \\dots, \\mathfrak{m}_n\\}\\), a finite set, so \\(R/\\mathfrak{a}\\) is semi-local. Now let \\(R = R_1 \\times \\cdots \\times R_k\\) be a finite product of semi-local rings. Every <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> \\(\\mathfrak{m}\\) of \\(R\\) has the form<br>\\[<br>\\mathfrak{m} = R_1 \\times \\cdots \\times \\mathfrak{m}_j \\times \\cdots \\times R_k,<br>\\]<br>where \\(\\mathfrak{m}_j\\) is a <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> of exactly one factor \\(R_j\\); this holds because the projection \\(R \\to R_j\\) is surjective and the remaining factors contribute the whole ring to keep the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> a <span class=\"t\" data-ref=\"field\">field</span>. Since each \\(R_j\\) contributes only finitely many <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span>, the total number of <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> of \\(R\\) is the finite sum of these counts, and \\(R\\) is semi-local."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "Every <span class=\"t\" data-ref=\"local-ring\">local ring</span>, in particular every <span class=\"t\" data-ref=\"field\">field</span>, is semi-local, having exactly one <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span>.",
+              "The ring \\(\\mathbb{Z}/720\\mathbb{Z}\\) is semi-local: since \\(720 = 2^4 \\cdot 3^2 \\cdot 5\\), its <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> correspond to the primes \\(2, 3, 5\\), so there are exactly three.",
+              "The <span class=\"t\" data-ref=\"localization-of-rings\">localization</span> of \\(\\mathbb{Z}\\) at the <span class=\"t\" data-ref=\"multiplicatively-closed-subset\">multiplicatively closed set</span> of integers <span class=\"t\" data-ref=\"coprime-ideals\">coprime</span> to \\(6\\) is semi-local with the two <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> generated by \\(2\\) and by \\(3\\).",
+              "The ring \\(\\mathbb{Z}\\) itself is <em>not</em> semi-local: it has infinitely many <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> \\((p)\\), one for each prime \\(p\\).",
+              "A <span class=\"t\" data-ref=\"direct-product\">finite product of fields</span> \\(k_1 \\times \\cdots \\times k_n\\) is semi-local with exactly \\(n\\) <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span>."
+            ]
+          }
+        ],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "jacobson-radical",
+      "title": "Jacobson radical",
+      "inline": "The Jacobson radical of a ring is the intersection of all its maximal ideals.",
       "refs": [],
       "page": {
         "blocks": [],

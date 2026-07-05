@@ -228,6 +228,17 @@ function drawGraph(data) {
     }
   }
 
+  // Undirected degree per node — hubs (high degree) get weaker per-link pull,
+  // longer link distances, and stronger repulsion so they don't collapse
+  // their many dependents into one spot.
+  const degree = new Map(nodes.map(n => [n.id, 0]));
+  for (const l of links) {
+    degree.set(l.source, degree.get(l.source) + 1);
+    degree.set(l.target, degree.get(l.target) + 1);
+  }
+  // Works before and after forceLink resolves string IDs to node objects
+  const deg = n => degree.get(typeof n === 'object' ? n.id : n) || 0;
+
   const W = window.innerWidth;
   const H = window.innerHeight;
 
@@ -277,11 +288,16 @@ function drawGraph(data) {
     .force('link',
       d3.forceLink(links)
         .id(d => d.id)
-        .distance(160)
-        .strength(0.3)
+        // Hubs hold neighbors on a wider ring instead of a fixed 160px clump
+        .distance(l => 110 + 26 * Math.sqrt(Math.max(deg(l.source), deg(l.target))))
+        // A leaf's only link pulls strongly; each of a hub's many links pulls
+        // weakly, so high-degree nodes can't drag everything into one spot
+        .strength(l => Math.min(0.5, 1 / Math.min(deg(l.source), deg(l.target))))
     )
     .force('charge',
-      d3.forceManyBody().strength(d => d.isFull ? -800 : -260)
+      d3.forceManyBody()
+        .strength(d => (d.isFull ? -800 : -260) - 120 * deg(d))
+        .distanceMax(900)
     )
     .force('center',  d3.forceCenter(W / 2, H / 2).strength(0.02))
     .force('collide', d3.forceCollide().radius(d => nodeR(d) + 38).strength(0.8))
