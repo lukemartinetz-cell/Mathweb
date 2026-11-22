@@ -2355,6 +2355,248 @@
         "blocks": [],
         "related": []
       }
+    },
+    {
+      "id": "algebra-over-a-ring",
+      "title": "Algebra over a Ring",
+      "generated": "2026-11-22",
+      "inline": "An algebra over a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\) is a <span class=\"t\" data-ref=\"ring\">ring</span> \\(A\\) equipped with a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(R \\to A\\) landing in the center of \\(A\\), so that \\(A\\) is simultaneously a <span class=\"t\" data-ref=\"ring\">ring</span> and an \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span> whose two multiplications are compatible.",
+      "refs": [
+        {
+          "id": "commutative-ring",
+          "type": "required"
+        },
+        {
+          "id": "ring",
+          "type": "required"
+        },
+        {
+          "id": "ring-homomorphism",
+          "type": "required"
+        },
+        {
+          "id": "module",
+          "type": "enriches"
+        },
+        {
+          "id": "polynomial-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "algebra-homomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "initial-object",
+          "type": "enriches"
+        },
+        {
+          "id": "field-extension",
+          "type": "enriches"
+        },
+        {
+          "id": "field",
+          "type": "enriches"
+        },
+        {
+          "id": "matrix-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "ideal",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "You already know two ways to enrich a set with structure: you can make it a <span class=\"t\" data-ref=\"ring\">ring</span>, giving it its own multiplication, or you can make it a <span class=\"t\" data-ref=\"module\">module</span> over a <span class=\"t\" data-ref=\"ring\">base ring</span> \\(R\\), letting scalars from \\(R\\) act. But countless objects carry both at once. The <span class=\"t\" data-ref=\"polynomial-ring\">polynomial ring</span> \\(R[x]\\) multiplies polynomials together and also scales them by elements of \\(R\\); the complex numbers \\(\\mathbb{C}\\) multiply and also scale by reals; matrices over a <span class=\"t\" data-ref=\"field\">field</span> both multiply and absorb <span class=\"t\" data-ref=\"field\">field</span> scalars. In each case the scalar action and the internal multiplication are not independent — scaling a product should be the same as scaling either factor. Without a single notion that packages these two structures together and demands they cooperate, we would keep reproving the same compatibility by hand; the natural move is to fix the <span class=\"t\" data-ref=\"ring\">base ring</span> \\(R\\) once and define an object that is a <span class=\"t\" data-ref=\"ring\">ring</span> and an \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span> at the same time."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Let \\(R\\) be a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span>. An \\(R\\)-algebra is a <span class=\"t\" data-ref=\"ring\">ring</span> <span class=\"t\" data-ref=\"ring\">\\(A\\)</span> together with a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> <span class=\"t\" data-ref=\"ring-homomorphism\">\\(\\varphi\\colon R \\to A\\)</span>, called the structure map, whose image lies in the center of \\(A\\), that is \\(\\varphi(r)a = a\\varphi(r)\\) for all \\(r \\in R\\) and \\(a \\in A\\). A homomorphism of \\(R\\)-algebras \\(f\\colon A \\to B\\) is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> satisfying \\(f \\circ \\varphi_A = \\varphi_B\\)."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "An \\(R\\)-algebra is an \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span> <span class=\"t\" data-ref=\"module\">\\(A\\)</span> equipped with an \\(R\\)-bilinear multiplication \\(A \\times A \\to A\\) that is associative and has a multiplicative identity, so that the <span class=\"t\" data-ref=\"ring\">ring</span> multiplication and the scalar multiplication are linked by \\(r(ab) = (ra)b = a(rb)\\) for all \\(r \\in R\\) and \\(a,b \\in A\\).",
+              "When \\(A\\) is commutative, an \\(R\\)-algebra structure on \\(A\\) is exactly the same data as a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> <span class=\"t\" data-ref=\"ring-homomorphism\">\\(R \\to A\\)</span>, since the centrality condition is automatic."
+            ],
+            "proof": "Suppose first that \\(A\\) is an \\(R\\)-algebra in the sense of the primary definition, with structure map \\(\\varphi\\colon R \\to A\\) whose image is central. Define a scalar multiplication by \\(r \\cdot a := \\varphi(r)a\\). Since \\(\\varphi\\) is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> and \\(A\\) is an abelian group under addition, this makes \\(A\\) an \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span>: \\((r+s)\\cdot a = \\varphi(r+s)a = (\\varphi(r)+\\varphi(s))a = r\\cdot a + s\\cdot a\\), \\(r\\cdot(a+b) = \\varphi(r)(a+b) = r\\cdot a + r\\cdot b\\), \\((rs)\\cdot a = \\varphi(rs)a = \\varphi(r)\\varphi(s)a = r\\cdot(s\\cdot a)\\), and \\(1_R \\cdot a = \\varphi(1_R)a = 1_A a = a\\). The <span class=\"t\" data-ref=\"ring\">ring</span> multiplication of \\(A\\) is by definition associative with unit, and it is \\(R\\)-bilinear: using centrality, \\[ r\\cdot(ab) = \\varphi(r)(ab) = (\\varphi(r)a)b = (r\\cdot a)b, \\] and also \\(r\\cdot(ab) = \\varphi(r)(ab) = a(\\varphi(r)b) = a(r\\cdot b)\\), where the middle step uses \\(\\varphi(r)(ab) = (a\\varphi(r))b = a(\\varphi(r)b)\\) by centrality of \\(\\varphi(r)\\). This yields precisely the second description.<br><br>Conversely, suppose \\(A\\) is an \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span> with an associative, unital, \\(R\\)-bilinear multiplication. Define \\(\\varphi\\colon R \\to A\\) by \\(\\varphi(r) = r\\cdot 1_A\\). Then \\(\\varphi(r+s) = (r+s)\\cdot 1_A = r\\cdot 1_A + s\\cdot 1_A = \\varphi(r)+\\varphi(s)\\), and \\(\\varphi(1_R) = 1_R \\cdot 1_A = 1_A\\). Multiplicativity follows from bilinearity: \\[ \\varphi(rs) = (rs)\\cdot 1_A = r\\cdot(s\\cdot 1_A) = r\\cdot(1_A (s\\cdot 1_A)) = (r\\cdot 1_A)(s\\cdot 1_A) = \\varphi(r)\\varphi(s), \\] using \\(r\\cdot(xy) = (r\\cdot x)y\\) with \\(x = 1_A\\), \\(y = s\\cdot 1_A\\). Finally \\(\\varphi(r)\\) is central because for any \\(a \\in A\\), \\[ \\varphi(r)a = (r\\cdot 1_A)a = r\\cdot(1_A a) = r\\cdot a = r\\cdot(a 1_A) = a(r\\cdot 1_A) = a\\varphi(r), \\] again by bilinearity. Thus the two definitions carry exactly the same information. The commutative case is immediate: if \\(A\\) is commutative, centrality of \\(\\varphi(R)\\) holds trivially, so an \\(R\\)-algebra structure is nothing more than a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(R \\to A\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "For every <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\) there is a unique \\(R\\)-algebra homomorphism from \\(R\\) to any \\(R\\)-algebra \\(A\\); that is, \\(R\\) itself, with structure map the identity, is the <span class=\"t\" data-ref=\"initial-object\">initial object</span> in the category of \\(R\\)-algebras.",
+            "proof": "Let \\(A\\) be an \\(R\\)-algebra with structure map \\(\\varphi\\colon R \\to A\\), and regard \\(R\\) as an \\(R\\)-algebra via the identity map \\(\\mathrm{id}_R\\colon R \\to R\\). An \\(R\\)-algebra homomorphism \\(f\\colon R \\to A\\) must by definition satisfy \\(f \\circ \\mathrm{id}_R = \\varphi\\), which forces \\(f = \\varphi\\). Hence there is at most one such homomorphism. Conversely, \\(\\varphi\\) itself is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span>, and it trivially satisfies the compatibility condition \\(\\varphi \\circ \\mathrm{id}_R = \\varphi\\), so it is an \\(R\\)-algebra homomorphism. Therefore \\(\\varphi\\) is the unique \\(R\\)-algebra map \\(R \\to A\\), proving that \\(R\\) is initial."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "Every <span class=\"t\" data-ref=\"ring\">ring</span> \\(A\\) is canonically a \\(\\mathbb{Z}\\)-algebra, since there is a unique <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(\\mathbb{Z} \\to A\\) sending \\(1\\) to \\(1_A\\); thus \\(\\mathbb{Z}\\)-algebras are just rings.",
+              "The <span class=\"t\" data-ref=\"polynomial-ring\">polynomial ring</span> <span class=\"t\" data-ref=\"polynomial-ring\">\\(R[x_1,\\dots,x_n]\\)</span> is an \\(R\\)-algebra via the inclusion of constants \\(R \\hookrightarrow R[x_1,\\dots,x_n]\\).",
+              "If \\(K\\) is a <span class=\"t\" data-ref=\"field\">field</span>, then \\(\\mathbb{C}\\) is an \\(\\mathbb{R}\\)-algebra and, more generally, any <span class=\"t\" data-ref=\"field-extension\">field extension</span> \\(L/K\\) makes \\(L\\) a \\(K\\)-algebra.",
+              "The \\(n \\times n\\) <span class=\"t\" data-ref=\"matrix-ring\">matrix ring</span> \\(M_n(R)\\) is an \\(R\\)-algebra with structure map \\(r \\mapsto r I_n\\); here \\(A\\) is noncommutative for \\(n \\geq 2\\), illustrating why the centrality condition is needed.",
+              "Any <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> <span class=\"t\" data-ref=\"quotient-ring\">\\(A/\\mathfrak{a}\\)</span> of an \\(R\\)-algebra \\(A\\) by a <span class=\"t\" data-ref=\"two-sided-ideal\">two-sided ideal</span> \\(\\mathfrak{a}\\) is again an \\(R\\)-algebra, with structure map the composite \\(R \\to A \\to A/\\mathfrak{a}\\)."
+            ]
+          }
+        ],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "matrix-ring",
+      "title": "matrix ring",
+      "inline": "The matrix ring \\(M_n(R)\\) is the ring of \\(n \\times n\\) matrices with entries in a ring \\(R\\) under matrix addition and multiplication.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "algebra-homomorphism",
+      "title": "Algebra Homomorphism",
+      "generated": "2026-11-22",
+      "inline": "An algebra homomorphism between two \\(R\\)-algebras is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> that respects the underlying \\(R\\)-module structure, i.e. that commutes with the two <span class=\"t\" data-ref=\"algebra-over-a-ring\">structure maps</span> from \\(R\\).",
+      "refs": [
+        {
+          "id": "ring-homomorphism",
+          "type": "required"
+        },
+        {
+          "id": "algebra-over-a-ring",
+          "type": "required"
+        },
+        {
+          "id": "commutative-ring",
+          "type": "required"
+        },
+        {
+          "id": "module",
+          "type": "enriches"
+        },
+        {
+          "id": "category-of-commutative-rings",
+          "type": "enriches"
+        },
+        {
+          "id": "identity-morphism",
+          "type": "enriches"
+        },
+        {
+          "id": "polynomial-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "evaluation-map",
+          "type": "enriches"
+        },
+        {
+          "id": "universal-property",
+          "type": "enriches"
+        },
+        {
+          "id": "complex-conjugation",
+          "type": "enriches"
+        },
+        {
+          "id": "ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "Once we agree to study an \\(R\\)-algebra \\(A\\) — a ring that also carries an action of a <span class=\"t\" data-ref=\"commutative-ring\">base ring</span> \\(R\\) — we immediately want to compare two of them. A bare <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> between \\(A\\) and \\(B\\) remembers the multiplication but may completely forget that both sit over the same \\(R\\): it could send the scalar copy of \\(R\\) inside \\(A\\) somewhere incompatible with the scalar copy inside \\(B\\). For instance, a map of \\(\\mathbb{C}\\)-algebras that secretly conjugates \\(\\mathbb{C}\\) is a <span class=\"t\" data-ref=\"ring-map\">ring map</span> but betrays the \\(\\mathbb{C}\\)-structure we care about. We therefore need a notion of morphism that is simultaneously a <span class=\"t\" data-ref=\"ring-map\">ring map</span> and a map of \\(R\\)-modules, so that scalars are transported faithfully. Demanding compatibility with the <span class=\"t\" data-ref=\"algebra-over-a-ring\">structure maps</span> is the only honest way to keep track of the <span class=\"t\" data-ref=\"commutative-ring\">base ring</span>, and the definition below is exactly that demand."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Let \\(R\\) be a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> and let \\(A, B\\) be \\(R\\)-algebras with <span class=\"t\" data-ref=\"algebra-over-a-ring\">structure homomorphisms</span> \\(\\alpha \\colon R \\to A\\) and \\(\\beta \\colon R \\to B\\). An <em>\\(R\\)-algebra homomorphism</em> is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(\\varphi \\colon A \\to B\\) such that \\(\\varphi \\circ \\alpha = \\beta\\); that is, the diagram of <span class=\"t\" data-ref=\"algebra-over-a-ring\">structure maps</span> commutes:<br>(i) \\(\\varphi(xy) = \\varphi(x)\\varphi(y)\\) for all \\(x,y \\in A\\),<br>(ii) \\(\\varphi(x+y) = \\varphi(x) + \\varphi(y)\\) for all \\(x,y \\in A\\),<br>(iii) \\(\\varphi(1_A) = 1_B\\),<br>(iv) \\(\\varphi(\\alpha(r)) = \\beta(r)\\) for all \\(r \\in R\\)."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "A map \\(\\varphi \\colon A \\to B\\) is an \\(R\\)-algebra homomorphism if and only if it is simultaneously a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> and a homomorphism of \\(R\\)-modules, where \\(A\\) and \\(B\\) carry the module structures induced by their <span class=\"t\" data-ref=\"algebra-over-a-ring\">structure maps</span>.",
+              "A <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(\\varphi \\colon A \\to B\\) is an \\(R\\)-algebra homomorphism if and only if it is \\(R\\)-linear, meaning \\(\\varphi(r \\cdot x) = r \\cdot \\varphi(x)\\) for all \\(r \\in R\\) and \\(x \\in A\\)."
+            ],
+            "proof": "Write \\(r \\cdot x := \\alpha(r)x\\) for the \\(R\\)-module structure on \\(A\\) and \\(r \\cdot y := \\beta(r)y\\) for that on \\(B\\). Suppose first that \\(\\varphi\\) is an \\(R\\)-algebra homomorphism, so it is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> with \\(\\varphi \\circ \\alpha = \\beta\\). Then for all \\(r \\in R\\) and \\(x \\in A\\),<br>\\[\n\\varphi(r \\cdot x) = \\varphi(\\alpha(r)x) = \\varphi(\\alpha(r))\\varphi(x) = \\beta(r)\\varphi(x) = r \\cdot \\varphi(x),\n\\]<br>using multiplicativity of \\(\\varphi\\) and the identity \\(\\varphi(\\alpha(r)) = \\beta(r)\\). Since \\(\\varphi\\) is additive it is therefore \\(R\\)-linear, and being also a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> it is a morphism of \\(R\\)-modules and of rings. This establishes both equivalent characterizations from the definition. Conversely, suppose \\(\\varphi\\) is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> that is \\(R\\)-linear. Applying \\(R\\)-linearity to \\(x = 1_A\\) and using \\(\\varphi(1_A) = 1_B\\) gives<br>\\[\n\\varphi(\\alpha(r)) = \\varphi(r \\cdot 1_A) = r \\cdot \\varphi(1_A) = r \\cdot 1_B = \\beta(r)1_B = \\beta(r),\n\\]<br>so \\(\\varphi \\circ \\alpha = \\beta\\) and \\(\\varphi\\) satisfies the defining compatibility. Hence the three formulations coincide."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "For a fixed <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\), the \\(R\\)-algebras together with their \\(R\\)-algebra homomorphisms form a <span class=\"t\" data-ref=\"category-of-commutative-rings\">category</span>: the <span class=\"t\" data-ref=\"identity-morphism\">identity map</span> \\(\\mathrm{id}_A\\) is an \\(R\\)-algebra homomorphism, and the composite of two \\(R\\)-algebra homomorphisms is again an \\(R\\)-algebra homomorphism.",
+            "proof": "Let \\(A\\) be an \\(R\\)-algebra with structure map \\(\\alpha \\colon R \\to A\\). The identity \\(\\mathrm{id}_A \\colon A \\to A\\) is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span>, and \\(\\mathrm{id}_A \\circ \\alpha = \\alpha\\), so it satisfies the compatibility condition and is an \\(R\\)-algebra homomorphism. Now let \\(\\varphi \\colon A \\to B\\) and \\(\\psi \\colon B \\to C\\) be \\(R\\)-algebra homomorphisms, with <span class=\"t\" data-ref=\"algebra-over-a-ring\">structure maps</span> \\(\\alpha \\colon R \\to A\\), \\(\\beta \\colon R \\to B\\), \\(\\gamma \\colon R \\to C\\). The composite \\(\\psi \\circ \\varphi \\colon A \\to C\\) is a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span>, being a composite of ring homomorphisms. Moreover<br>\\[\n(\\psi \\circ \\varphi) \\circ \\alpha = \\psi \\circ (\\varphi \\circ \\alpha) = \\psi \\circ \\beta = \\gamma,\n\\]<br>using \\(\\varphi \\circ \\alpha = \\beta\\) and \\(\\psi \\circ \\beta = \\gamma\\). Thus \\(\\psi \\circ \\varphi\\) commutes with the <span class=\"t\" data-ref=\"algebra-over-a-ring\">structure maps</span> and is an \\(R\\)-algebra homomorphism. Associativity of composition and the unit laws are inherited from composition of functions, so the data assemble into a <span class=\"t\" data-ref=\"category-of-commutative-rings\">category</span>."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "Every ring is uniquely a \\(\\mathbb{Z}\\)-algebra, and every <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> is automatically a \\(\\mathbb{Z}\\)-algebra homomorphism, since any <span class=\"t\" data-ref=\"ring-map\">ring map</span> necessarily respects the unique structure map \\(\\mathbb{Z} \\to A\\).",
+              "For the <span class=\"t\" data-ref=\"polynomial-algebra\">polynomial algebra</span> <span class=\"t\" data-ref=\"polynomial-ring\">\\(R[x]\\)</span> and any \\(R\\)-algebra \\(B\\), choosing an element \\(b \\in B\\) determines a unique \\(R\\)-algebra homomorphism \\(R[x] \\to B\\) sending \\(x \\mapsto b\\); this <span class=\"t\" data-ref=\"evaluation-map\">evaluation map</span> is the <span class=\"t\" data-ref=\"universal-property\">universal property</span> of \\(R[x]\\).",
+              "Over \\(R = \\mathbb{C}\\), the identity \\(\\mathbb{C} \\to \\mathbb{C}\\) is a \\(\\mathbb{C}\\)-algebra homomorphism, but <span class=\"t\" data-ref=\"complex-conjugation\">complex conjugation</span> \\(z \\mapsto \\bar{z}\\), though a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span>, is <em>not</em> a \\(\\mathbb{C}\\)-algebra homomorphism, as it fails \\(\\varphi(r \\cdot 1) = r\\) for non-real \\(r\\).",
+              "If \\(\\mathfrak{a} \\subseteq A\\) is an <span class=\"t\" data-ref=\"ideal\">ideal</span> of an \\(R\\)-algebra \\(A\\), the <span class=\"t\" data-ref=\"quotient-ring\">canonical projection</span> <span class=\"t\" data-ref=\"quotient-ring\">\\(A \\to A/\\mathfrak{a}\\)</span> is an \\(R\\)-algebra homomorphism onto the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span>, which inherits its \\(R\\)-algebra structure via the composite \\(R \\to A \\to A/\\mathfrak{a}\\)."
+            ]
+          }
+        ],
+        "related": []
+      }
+    },
+    {
+      "id": "polynomial-algebra",
+      "alias_of": "polynomial-ring",
+      "inline": "The polynomial algebra \\(R[x]\\) is the \\(R\\)-algebra of polynomials in one variable with coefficients in \\(R\\)."
+    },
+    {
+      "stub": true,
+      "id": "identity-morphism",
+      "title": "identity map",
+      "inline": "The identity map on an object \\(A\\) is the morphism \\(\\mathrm{id}_A\\) that sends every element to itself.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "evaluation-map",
+      "title": "evaluation map",
+      "inline": "The evaluation map is the \\(R\\)-algebra homomorphism \\(R[x] \\to B\\) sending \\(x\\) to a chosen element \\(b \\in B\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "complex-conjugation",
+      "title": "complex conjugation",
+      "inline": "Complex conjugation is the ring automorphism of \\(\\mathbb{C}\\) sending \\(z = a+bi\\) to \\(\\bar{z} = a-bi\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
     }
   ]
 }
