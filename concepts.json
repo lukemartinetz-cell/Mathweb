@@ -1149,13 +1149,107 @@
       }
     },
     {
-      "stub": true,
       "id": "module",
-      "title": "module",
-      "inline": "A module over a ring \\(R\\) is an abelian group equipped with a compatible scalar multiplication by \\(R\\).",
-      "refs": [],
+      "title": "Module",
+      "generated": "2026-07-16",
+      "inline": "A module over a <span class=\"t\" data-ref=\"ring\">ring</span> \\(R\\) is an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> equipped with an action of \\(R\\) by scalar multiplication, satisfying distributivity and associativity axioms that generalize how a <span class=\"t\" data-ref=\"field\">field</span> acts on a <span class=\"t\" data-ref=\"vector-space\">vector space</span>.",
+      "refs": [
+        {
+          "id": "ring",
+          "type": "required"
+        },
+        {
+          "id": "abelian-group",
+          "type": "required"
+        },
+        {
+          "id": "field",
+          "type": "enriches"
+        },
+        {
+          "id": "vector-space",
+          "type": "enriches"
+        },
+        {
+          "id": "ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "ring-homomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "endomorphism-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "group-homomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "endomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "submodule",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "algebra-over-a-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "commutative-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "free-module",
+          "type": "enriches"
+        }
+      ],
       "page": {
-        "blocks": [],
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "You already know several situations where you can \"multiply\" the elements of an additive group by elements of a <span class=\"t\" data-ref=\"ring\">ring</span>. In an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> you can add \\(g+g\\) and, more generally, form integer multiples \\(n g\\); in a <span class=\"t\" data-ref=\"vector-space\">vector space</span> you scale vectors by elements of a <span class=\"t\" data-ref=\"field\">field</span>; inside a <span class=\"t\" data-ref=\"ring\">ring</span> \\(R\\) you can multiply any <span class=\"t\" data-ref=\"ideal\">ideal</span> element by any <span class=\"t\" data-ref=\"ring\">ring</span> element and stay in the <span class=\"t\" data-ref=\"ideal\">ideal</span>. Each of these is an additive group carrying a compatible multiplication by scalars drawn from a <span class=\"t\" data-ref=\"ring\">ring</span>, yet we have no single word for the pattern, and every theorem about one instance must be reproved for the others. The awkwardness sharpens once you notice that a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(R \\to S\\) lets \\(R\\) act on \\(S\\), so even <span class=\"t\" data-ref=\"ring-map\">ring maps</span> secretly produce such structures. What is missing is a name and a set of axioms that isolate exactly the compatibility a scalar action must satisfy — and once you write those axioms down, you find they are forced upon you by the very examples that motivated them."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Let \\(R\\) be a <span class=\"t\" data-ref=\"ring\">ring with identity</span> \\(1\\). A <em>left module</em> over \\(R\\) (an \\(R\\)-module) is an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> \\((M,+)\\) together with a map \\(R \\times M \\to M\\), written \\((r,m) \\mapsto rm\\), such that for all \\(r,s \\in R\\) and all \\(m,n \\in M\\):<br>(i) \\(r(m+n) = rm + rn\\)<br>(ii) \\((r+s)m = rm + sm\\)<br>(iii) \\((rs)m = r(sm)\\)<br>(iv) \\(1\\,m = m\\)."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "An \\(R\\)-module structure on an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> \\(M\\) is the same data as a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(\\rho : R \\to \\operatorname{End}(M)\\) into the <span class=\"t\" data-ref=\"endomorphism-ring\">endomorphism ring</span> of \\(M\\), where \\(\\operatorname{End}(M)\\) consists of the <span class=\"t\" data-ref=\"group-homomorphism\">group homomorphisms</span> \\(M \\to M\\) under pointwise addition and composition.",
+              "A left \\(R\\)-module is precisely an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> \\(M\\) on which \\(R\\) acts so that each fixed \\(r \\in R\\) acts as a <span class=\"t\" data-ref=\"endomorphism\">group endomorphism</span> of \\(M\\), the assignment \\(r \\mapsto (m \\mapsto rm)\\) respects addition and multiplication of scalars, and \\(1\\) acts as the identity."
+            ],
+            "proof": "Suppose \\(M\\) is a left \\(R\\)-module in the sense of the definition. For each \\(r \\in R\\) define \\(\\rho(r) : M \\to M\\) by \\(\\rho(r)(m) = rm\\). Axiom (i) says \\(\\rho(r)(m+n) = \\rho(r)(m) + \\rho(r)(n)\\), so each \\(\\rho(r)\\) is an endomorphism of the <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> \\(M\\); thus \\(\\rho(r) \\in \\operatorname{End}(M)\\). Axiom (ii) states \\(\\rho(r+s)(m) = rm + sm = \\rho(r)(m) + \\rho(s)(m)\\) for all \\(m\\), hence \\(\\rho(r+s) = \\rho(r) + \\rho(s)\\), so \\(\\rho\\) is additive. Axiom (iii) states \\(\\rho(rs)(m) = (rs)m = r(sm) = \\rho(r)\\big(\\rho(s)(m)\\big)\\), hence \\(\\rho(rs) = \\rho(r) \\circ \\rho(s)\\), which is multiplication in \\(\\operatorname{End}(M)\\). Finally axiom (iv) gives \\(\\rho(1) = \\mathrm{id}_M\\), the multiplicative identity of \\(\\operatorname{End}(M)\\). Therefore \\(\\rho : R \\to \\operatorname{End}(M)\\) is a homomorphism of rings.<br><br>Conversely, given a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(\\rho : R \\to \\operatorname{End}(M)\\), define a scalar action by \\(rm := \\rho(r)(m)\\). Because \\(\\rho(r)\\) is a <span class=\"t\" data-ref=\"endomorphism\">group endomorphism</span>, (i) holds; because \\(\\rho\\) is additive, \\((r+s)m = \\rho(r+s)(m) = \\big(\\rho(r)+\\rho(s)\\big)(m) = rm + sm\\), giving (ii); because \\(\\rho\\) is multiplicative, \\((rs)m = \\rho(rs)(m) = \\big(\\rho(r)\\circ\\rho(s)\\big)(m) = r(sm)\\), giving (iii); and \\(\\rho(1) = \\mathrm{id}_M\\) yields \\(1m = m\\), giving (iv). These two constructions are mutually inverse, since each recovers the map \\((r,m)\\mapsto rm\\) it started from. Hence module structures and <span class=\"t\" data-ref=\"ring\">ring</span> homomorphisms \\(R \\to \\operatorname{End}(M)\\) are the same data."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "If \\(R\\) is a <span class=\"t\" data-ref=\"field\">field</span>, then the notion of an \\(R\\)-module coincides exactly with the notion of a <span class=\"t\" data-ref=\"vector-space\">vector space</span> over \\(R\\); more generally, the <span class=\"t\" data-ref=\"ideal\">ideals</span> of \\(R\\) are precisely the \\(R\\)-<span class=\"t\" data-ref=\"submodule\">submodules</span> of \\(R\\) regarded as a module over itself.",
+            "proof": "The four module axioms are word-for-word the <span class=\"t\" data-ref=\"vector-space\">vector space</span> axioms once \\(R\\) is a <span class=\"t\" data-ref=\"field\">field</span>, so an \\(R\\)-module and an \\(R\\)-<span class=\"t\" data-ref=\"vector-space\">vector space</span> are literally the same structure; no further argument is needed beyond comparing the axiom lists.<br><br>For the second claim, regard \\(R\\) as a left module over itself via its own multiplication, which satisfies (i)–(iv) by the <span class=\"t\" data-ref=\"ring\">ring</span> axioms (distributivity, associativity, and the identity law). A subset \\(N \\subseteq R\\) is an \\(R\\)-submodule when it is an additive subgroup closed under scalar multiplication, i.e. \\(N\\) is a subgroup of \\((R,+)\\) with \\(rN \\subseteq N\\) for all \\(r \\in R\\). These are exactly the defining conditions of an <span class=\"t\" data-ref=\"ideal\">ideal</span> of \\(R\\): a nonempty subset closed under addition, under additive inverses, and under multiplication by arbitrary <span class=\"t\" data-ref=\"ring\">ring</span> elements. Conversely every <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{a} \\subseteq R\\) is an additive subgroup absorbing multiplication by all of \\(R\\), hence an \\(R\\)-submodule. Thus the <span class=\"t\" data-ref=\"submodule\">submodules</span> of \\(R\\) are precisely its <span class=\"t\" data-ref=\"ideal\">ideals</span>."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "Every <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> \\(M\\) is a module over \\(\\mathbb{Z}\\) in a unique way: the action \\(n \\cdot m\\) is forced to be the \\(n\\)-fold sum \\(m + \\cdots + m\\) by the axioms. Thus \\(\\mathbb{Z}\\)-modules and abelian groups are the same thing.",
+              "If \\(R\\) is a <span class=\"t\" data-ref=\"field\">field</span>, an \\(R\\)-module is exactly a <span class=\"t\" data-ref=\"vector-space\">vector space</span> over \\(R\\), and the entire theory of dimension and bases applies.",
+              "The <span class=\"t\" data-ref=\"ring\">ring</span> \\(R\\) is a module over itself, and its <span class=\"t\" data-ref=\"submodule\">submodules</span> are precisely its <span class=\"t\" data-ref=\"ideal\">ideals</span>; more generally, for any <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{a} \\subseteq R\\) both \\(\\mathfrak{a}\\) and the <span class=\"t\" data-ref=\"quotient-ring\">quotient ring</span> <span class=\"t\" data-ref=\"quotient-ring\">\\(R/\\mathfrak{a}\\)</span> are \\(R\\)-modules.",
+              "A <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(\\varphi : R \\to S\\) makes \\(S\\) into an \\(R\\)-module by \\(r \\cdot s := \\varphi(r) s\\), so every \\(R\\)-algebra is in particular an \\(R\\)-module.",
+              "For a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\), the set \\(R^n\\) of \\(n\\)-tuples with componentwise operations is an \\(R\\)-module, the prototype of a <span class=\"t\" data-ref=\"free-module\">free module</span> of rank \\(n\\)."
+            ]
+          }
+        ],
         "related": []
       }
     },
@@ -1870,6 +1964,392 @@
       "id": "jacobson-radical",
       "title": "Jacobson radical",
       "inline": "The Jacobson radical of a ring is the intersection of all its maximal ideals.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "radical-ideal",
+      "title": "Radical Ideal",
+      "generated": "2026-07-07",
+      "inline": "The radical of an <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{a}\\) in a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> \\(R\\) is the set \\(\\sqrt{\\mathfrak{a}}\\) of elements some power of which lies in \\(\\mathfrak{a}\\); an <span class=\"t\" data-ref=\"ideal\">ideal</span> equal to its own radical is called a radical <span class=\"t\" data-ref=\"ideal\">ideal</span>.",
+      "refs": [
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "commutative-ring",
+          "type": "required"
+        },
+        {
+          "id": "prime-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "reduced-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "nilpotent-element",
+          "type": "enriches"
+        },
+        {
+          "id": "nilradical",
+          "type": "enriches"
+        },
+        {
+          "id": "maximal-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "polynomial-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "zero-ideal",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "In the ring \\(\\mathbb{Z}\\), knowing that \\(x^2\\) is divisible by \\(12\\) does not tell you that \\(x\\) is divisible by \\(12\\): take \\(x=6\\), where \\(x^2=36\\) is a multiple of \\(12\\) but \\(x\\) is not. Yet if \\(x^2\\) is divisible by a squarefree number like \\(30\\), then \\(x\\) itself must be. Something distinguishes <span class=\"t\" data-ref=\"ideal\">ideals</span> that <em>detect roots</em> from those that do not, and the offending elements are exactly those whose powers slip into the <span class=\"t\" data-ref=\"ideal\">ideal</span> even though they themselves stay out. To measure this failure we collect every element with a power inside \\(\\mathfrak{a}\\), forming a larger set that repairs the defect. The question of when an <span class=\"t\" data-ref=\"ideal\">ideal</span> already contains all such elements — when it cannot be enlarged this way — leads inevitably to the notion of a radical <span class=\"t\" data-ref=\"ideal\">ideal</span>."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Let \\(R\\) be a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> and \\(\\mathfrak{a}\\) an <span class=\"t\" data-ref=\"ideal\">ideal</span> of \\(R\\). The <em>radical</em> of \\(\\mathfrak{a}\\) is<br>\\[\\sqrt{\\mathfrak{a}} = \\{\\, x \\in R : x^n \\in \\mathfrak{a} \\text{ for some integer } n \\geq 1 \\,\\}.\\]<br>The <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{a}\\) is called a <em>radical <span class=\"t\" data-ref=\"ideal\">ideal</span></em> if \\(\\sqrt{\\mathfrak{a}} = \\mathfrak{a}\\).",
+            "proof": "We verify that \\(\\sqrt{\\mathfrak{a}}\\) is an <span class=\"t\" data-ref=\"ideal\">ideal</span> of \\(R\\). Since \\(0 = 0^1 \\in \\mathfrak{a}\\), we have \\(0 \\in \\sqrt{\\mathfrak{a}}\\). Suppose \\(x, y \\in \\sqrt{\\mathfrak{a}}\\), say \\(x^m \\in \\mathfrak{a}\\) and \\(y^n \\in \\mathfrak{a}\\). Expanding by the binomial theorem,<br>\\[(x+y)^{m+n-1} = \\sum_{k=0}^{m+n-1} \\binom{m+n-1}{k} x^k y^{m+n-1-k}.\\]<br>In each term either \\(k \\geq m\\) or \\(m+n-1-k \\geq n\\), for otherwise \\(k \\leq m-1\\) and \\(m+n-1-k \\leq n-1\\) would give \\(m+n-1 = k + (m+n-1-k) \\leq (m-1)+(n-1) = m+n-2\\), a contradiction. Hence every term contains either a factor \\(x^m\\) or a factor \\(y^n\\), so each term lies in \\(\\mathfrak{a}\\), whence \\((x+y)^{m+n-1} \\in \\mathfrak{a}\\) and \\(x+y \\in \\sqrt{\\mathfrak{a}}\\). Finally, if \\(x \\in \\sqrt{\\mathfrak{a}}\\) with \\(x^m \\in \\mathfrak{a}\\) and \\(r \\in R\\), then \\((rx)^m = r^m x^m \\in \\mathfrak{a}\\) since \\(\\mathfrak{a}\\) is an <span class=\"t\" data-ref=\"ideal\">ideal</span>, so \\(rx \\in \\sqrt{\\mathfrak{a}}\\). Thus \\(\\sqrt{\\mathfrak{a}}\\) is an <span class=\"t\" data-ref=\"ideal\">ideal</span>, and it contains \\(\\mathfrak{a}\\) because \\(x \\in \\mathfrak{a}\\) gives \\(x^1 \\in \\mathfrak{a}\\)."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "The radical \\(\\sqrt{\\mathfrak{a}}\\) is the intersection of all <span class=\"t\" data-ref=\"prime-ideal\">prime ideals</span> of \\(R\\) containing \\(\\mathfrak{a}\\).",
+              "An <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{a}\\) is radical if and only if the <span class=\"t\" data-ref=\"quotient-ring\">quotient ring</span> \\(R/\\mathfrak{a}\\) is <span class=\"t\" data-ref=\"reduced-ring\">reduced</span>, that is, has no nonzero <span class=\"t\" data-ref=\"nilpotent-element\">nilpotent elements</span>.",
+              "Under the correspondence between <span class=\"t\" data-ref=\"ideal\">ideals</span> of \\(R/\\mathfrak{a}\\) and <span class=\"t\" data-ref=\"ideal\">ideals</span> of \\(R\\) containing \\(\\mathfrak{a}\\), the radical \\(\\sqrt{\\mathfrak{a}}\\) is the preimage of the <span class=\"t\" data-ref=\"nilradical\">nilradical</span> of \\(R/\\mathfrak{a}\\)."
+            ],
+            "proof": "Write \\(\\pi\\colon R \\to R/\\mathfrak{a}\\) for the quotient map. An element \\(x \\in R\\) satisfies \\(x^n \\in \\mathfrak{a}\\) for some \\(n\\) if and only if \\(\\pi(x)^n = 0\\) in \\(R/\\mathfrak{a}\\), i.e. \\(\\pi(x)\\) is nilpotent. Hence \\(\\sqrt{\\mathfrak{a}} = \\pi^{-1}(\\mathfrak{N})\\) where \\(\\mathfrak{N}\\) is the <span class=\"t\" data-ref=\"nilradical\">nilradical</span> of \\(R/\\mathfrak{a}\\); this establishes the third characterization. Consequently \\(\\sqrt{\\mathfrak{a}} = \\mathfrak{a}\\) holds exactly when \\(\\pi^{-1}(\\mathfrak{N}) = \\mathfrak{a} = \\pi^{-1}(0)\\), i.e. when \\(\\mathfrak{N} = 0\\), which means \\(R/\\mathfrak{a}\\) is <span class=\"t\" data-ref=\"reduced-ring\">reduced</span>; this gives the second characterization.<br><br>For the first, recall that the <span class=\"t\" data-ref=\"nilradical\">nilradical</span> of any <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> equals the intersection of all its <span class=\"t\" data-ref=\"prime-ideal\">prime ideals</span>. Applying this to \\(R/\\mathfrak{a}\\) and pulling back along \\(\\pi\\), and using that the primes of \\(R/\\mathfrak{a}\\) correspond bijectively to the primes of \\(R\\) containing \\(\\mathfrak{a}\\), we obtain<br>\\[\\sqrt{\\mathfrak{a}} = \\pi^{-1}(\\mathfrak{N}) = \\pi^{-1}\\Big(\\bigcap_{\\bar{\\mathfrak{p}}} \\bar{\\mathfrak{p}}\\Big) = \\bigcap_{\\mathfrak{p} \\supseteq \\mathfrak{a}} \\mathfrak{p},\\]<br>the intersection ranging over <span class=\"t\" data-ref=\"prime-ideal\">prime ideals</span> \\(\\mathfrak{p}\\) of \\(R\\) containing \\(\\mathfrak{a}\\). To prove the underlying fact that the <span class=\"t\" data-ref=\"nilradical\">nilradical</span> is the intersection of all primes: if \\(x\\) is nilpotent then \\(x^n = 0\\) lies in every prime \\(\\mathfrak{p}\\), and primeness forces \\(x \\in \\mathfrak{p}\\); conversely if \\(x\\) is not nilpotent, consider the multiplicatively closed set \\(S = \\{1, x, x^2, \\dots\\}\\), which does not contain \\(0\\). By Zorn's lemma choose an <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{p}\\) maximal among those disjoint from \\(S\\); such \\(\\mathfrak{p}\\) is prime, for if \\(a,b \\notin \\mathfrak{p}\\) then \\(\\mathfrak{p}+(a)\\) and \\(\\mathfrak{p}+(b)\\) both meet \\(S\\), giving powers \\(x^i, x^j \\in \\mathfrak{p}+(a), \\mathfrak{p}+(b)\\), and multiplying shows \\(\\mathfrak{p}+(ab)\\) meets \\(S\\), so \\(ab \\notin \\mathfrak{p}\\). This prime avoids \\(x\\), so \\(x\\) lies outside the intersection of all primes."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "Every <span class=\"t\" data-ref=\"prime-ideal\">prime ideal</span> is a radical <span class=\"t\" data-ref=\"ideal\">ideal</span>, and the radical operation satisfies \\(\\sqrt{\\sqrt{\\mathfrak{a}}} = \\sqrt{\\mathfrak{a}}\\), so \\(\\sqrt{\\mathfrak{a}}\\) is always a radical <span class=\"t\" data-ref=\"ideal\">ideal</span> — indeed the smallest radical <span class=\"t\" data-ref=\"ideal\">ideal</span> containing \\(\\mathfrak{a}\\).",
+            "proof": "If \\(\\mathfrak{p}\\) is prime and \\(x^n \\in \\mathfrak{p}\\), then by primeness, applied inductively to \\(x \\cdot x^{n-1} \\in \\mathfrak{p}\\), we conclude \\(x \\in \\mathfrak{p}\\); thus \\(\\sqrt{\\mathfrak{p}} \\subseteq \\mathfrak{p}\\), and since always \\(\\mathfrak{p} \\subseteq \\sqrt{\\mathfrak{p}}\\), we get \\(\\sqrt{\\mathfrak{p}} = \\mathfrak{p}\\).<br><br>Now we show \\(\\sqrt{\\sqrt{\\mathfrak{a}}} = \\sqrt{\\mathfrak{a}}\\). The inclusion \\(\\supseteq\\) holds because \\(\\mathfrak{b} \\subseteq \\sqrt{\\mathfrak{b}}\\) for any <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{b}\\). For \\(\\subseteq\\), suppose \\(x \\in \\sqrt{\\sqrt{\\mathfrak{a}}}\\), so \\(x^n \\in \\sqrt{\\mathfrak{a}}\\) for some \\(n \\geq 1\\); then \\((x^n)^m \\in \\mathfrak{a}\\) for some \\(m \\geq 1\\), whence \\(x^{nm} \\in \\mathfrak{a}\\) and \\(x \\in \\sqrt{\\mathfrak{a}}\\). Thus \\(\\sqrt{\\mathfrak{a}}\\) equals its own radical and is a radical <span class=\"t\" data-ref=\"ideal\">ideal</span>. Finally, if \\(\\mathfrak{b}\\) is any radical <span class=\"t\" data-ref=\"ideal\">ideal</span> with \\(\\mathfrak{a} \\subseteq \\mathfrak{b}\\), then taking radicals gives \\(\\sqrt{\\mathfrak{a}} \\subseteq \\sqrt{\\mathfrak{b}} = \\mathfrak{b}\\), so \\(\\sqrt{\\mathfrak{a}}\\) is the smallest radical <span class=\"t\" data-ref=\"ideal\">ideal</span> containing \\(\\mathfrak{a}\\)."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "In \\(\\mathbb{Z}\\), the radical of \\((n)\\) is \\((m)\\) where \\(m\\) is the product of the distinct primes dividing \\(n\\); for instance \\(\\sqrt{(12)} = (6)\\) and \\(\\sqrt{(72)} = (6)\\). Thus \\((n)\\) is radical precisely when \\(n\\) is squarefree.",
+              "The radical of the <span class=\"t\" data-ref=\"zero-ideal\">zero ideal</span> is the <span class=\"t\" data-ref=\"nilradical\">nilradical</span>: \\(\\sqrt{(0)} = \\mathfrak{N}(R)\\). Hence \\((0)\\) is a radical <span class=\"t\" data-ref=\"ideal\">ideal</span> exactly when \\(R\\) is <span class=\"t\" data-ref=\"reduced-ring\">reduced</span>.",
+              "Every <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> is radical, since <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideals</span> are prime and <span class=\"t\" data-ref=\"prime-ideal\">prime ideals are radical</span>.",
+              "In the <span class=\"t\" data-ref=\"polynomial-ring\">polynomial ring</span> \\(k[x,y]\\), the <span class=\"t\" data-ref=\"ideal\">ideal</span> \\((x^2, y)\\) is not radical: its radical is the <span class=\"t\" data-ref=\"maximal-ideal\">maximal ideal</span> \\((x,y)\\), because \\(x^2 \\in (x^2,y)\\) shows \\(x \\in \\sqrt{(x^2,y)}\\) while \\(x \\notin (x^2,y)\\)."
+            ]
+          }
+        ],
+        "related": []
+      }
+    },
+    {
+      "id": "ring-map",
+      "alias_of": "ring-homomorphism",
+      "inline": "A ring map is a ring homomorphism, a function between rings preserving addition, multiplication, and the identity."
+    },
+    {
+      "stub": true,
+      "id": "vector-space",
+      "title": "vector space",
+      "inline": "A vector space over a field \\(F\\) is an abelian group equipped with a scalar multiplication by elements of \\(F\\) satisfying distributivity and associativity axioms.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "endomorphism",
+      "title": "group endomorphism",
+      "inline": "A group endomorphism of \\(M\\) is a group homomorphism from \\(M\\) to itself.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "endomorphism-ring",
+      "title": "endomorphism ring",
+      "inline": "The endomorphism ring of an abelian group \\(M\\) is the ring \\(\\operatorname{End}(M)\\) of group homomorphisms \\(M \\to M\\) under pointwise addition and composition.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "submodule",
+      "title": "R-submodules",
+      "inline": "An \\(R\\)-submodule of an \\(R\\)-module \\(M\\) is a subgroup of \\(M\\) closed under the scalar action of \\(R\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "free-module",
+      "title": "free module",
+      "inline": "A free module of rank \\(n\\) over a ring \\(R\\) is an \\(R\\)-module isomorphic to \\(R^n\\) with componentwise operations.",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "faithful-module",
+      "title": "Faithful Module",
+      "generated": "2026-07-16",
+      "inline": "An \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span> \\(M\\) is faithful if no nonzero <span class=\"t\" data-ref=\"ring\">ring</span> element acts as zero on all of \\(M\\); equivalently, its <span class=\"t\" data-ref=\"annihilator\">annihilator</span> \\(\\mathrm{Ann}_R(M)\\) is the <span class=\"t\" data-ref=\"zero-ideal\">zero ideal</span>.",
+      "refs": [
+        {
+          "id": "module",
+          "type": "required"
+        },
+        {
+          "id": "annihilator",
+          "type": "required"
+        },
+        {
+          "id": "commutative-ring",
+          "type": "required"
+        },
+        {
+          "id": "ring",
+          "type": "required"
+        },
+        {
+          "id": "zero-ideal",
+          "type": "enriches"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "abelian-group",
+          "type": "enriches"
+        },
+        {
+          "id": "endomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "free-module",
+          "type": "enriches"
+        },
+        {
+          "id": "cyclic-module",
+          "type": "enriches"
+        },
+        {
+          "id": "vector-space",
+          "type": "enriches"
+        },
+        {
+          "id": "field",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "A <span class=\"t\" data-ref=\"module\">module</span> over \\(R\\) is really a way of letting the <span class=\"t\" data-ref=\"ring\">ring</span> act on an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span>, one element of \\(R\\) at a time. But nothing forces distinct <span class=\"t\" data-ref=\"ring\">ring</span> elements to act differently: in \\(\\mathbb{Z}/6\\mathbb{Z}\\) viewed as a \\(\\mathbb{Z}\\)-<span class=\"t\" data-ref=\"module\">module</span>, the integer \\(6\\) sends every element to \\(0\\), so this <span class=\"t\" data-ref=\"module\">module</span> simply cannot <em>see</em> the difference between \\(6\\) and \\(0\\). In effect the <span class=\"t\" data-ref=\"module\">module</span> perceives a smaller <span class=\"t\" data-ref=\"ring\">ring</span> than the one it is defined over, and part of \\(R\\) becomes invisible. It is natural to isolate those modules that hide nothing — where the only element acting as zero really is zero — so that the action mirrors the <span class=\"t\" data-ref=\"ring\">ring</span> exactly. Once we ask which elements act trivially, we are already looking at the <span class=\"t\" data-ref=\"annihilator\">annihilator</span>, and the condition that it vanish writes itself down."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Let \\(R\\) be a <span class=\"t\" data-ref=\"commutative-ring\">commutative ring</span> and \\(M\\) an \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span>. The <em><span class=\"t\" data-ref=\"annihilator\">annihilator</span></em> of \\(M\\) is<br>\\[\n\\mathrm{Ann}_R(M) = \\{\\, r \\in R : rm = 0 \\text{ for all } m \\in M \\,\\},\n\\]<br>which is an <span class=\"t\" data-ref=\"ideal\">ideal</span> of \\(R\\). The <span class=\"t\" data-ref=\"module\">module</span> \\(M\\) is called <em>faithful</em> if <span class=\"t\" data-ref=\"zero-ideal\">\\(\\mathrm{Ann}_R(M) = 0\\)</span>, that is, if the only \\(r \\in R\\) with \\(rM = 0\\) is \\(r = 0\\)."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "The structure map <span class=\"t\" data-ref=\"endomorphism-ring\">\\(\\lambda \\colon R \\to \\mathrm{End}_{\\mathbb{Z}}(M)\\)</span> sending \\(r\\) to the <span class=\"t\" data-ref=\"endomorphism\">additive endomorphism</span> \\(m \\mapsto rm\\) is injective.",
+              "For every nonzero \\(r \\in R\\) there exists some \\(m \\in M\\) with \\(rm \\neq 0\\)."
+            ],
+            "proof": "The scalar multiplication of \\(M\\) determines a <span class=\"t\" data-ref=\"ring\">ring</span> homomorphism \\(\\lambda \\colon R \\to \\mathrm{End}_{\\mathbb{Z}}(M)\\) into the endomorphism <span class=\"t\" data-ref=\"ring\">ring</span> of the underlying <span class=\"t\" data-ref=\"abelian-group\">abelian group</span>, given by \\(\\lambda(r)(m) = rm\\); the <span class=\"t\" data-ref=\"module\">module</span> axioms are precisely the statement that \\(\\lambda\\) respects addition and multiplication and sends \\(1\\) to the identity. Now \\(r \\in \\ker(\\lambda)\\) means \\(\\lambda(r) = 0\\), i.e. \\(rm = 0\\) for all \\(m \\in M\\), which is exactly the condition \\(r \\in \\mathrm{Ann}_R(M)\\). Hence \\(\\ker(\\lambda) = \\mathrm{Ann}_R(M)\\), and \\(\\lambda\\) is injective if and only if \\(\\mathrm{Ann}_R(M) = 0\\), which is the definition of faithfulness. The second characterization is merely the contrapositive of membership in the <span class=\"t\" data-ref=\"annihilator\">annihilator</span>: \\(\\mathrm{Ann}_R(M) = 0\\) says that no nonzero \\(r\\) kills all of \\(M\\), equivalently every nonzero \\(r\\) fails to annihilate some \\(m\\)."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "For any \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span> \\(M\\), the <span class=\"t\" data-ref=\"module\">module</span> \\(M\\) carries a natural structure of <span class=\"t\" data-ref=\"module\">module</span> over the <span class=\"t\" data-ref=\"quotient-ring\">quotient ring</span> \\(R/\\mathrm{Ann}_R(M)\\), and as such it is faithful. Thus every <span class=\"t\" data-ref=\"module\">module</span> is faithful over the quotient of its coefficient <span class=\"t\" data-ref=\"ring\">ring</span> by its <span class=\"t\" data-ref=\"annihilator\">annihilator</span>.",
+            "proof": "Write \\(\\mathfrak{a} = \\mathrm{Ann}_R(M)\\), an <span class=\"t\" data-ref=\"ideal\">ideal</span> of \\(R\\). Define an action of \\(R/\\mathfrak{a}\\) on \\(M\\) by \\((r + \\mathfrak{a})\\cdot m = rm\\). This is well defined: if \\(r + \\mathfrak{a} = r' + \\mathfrak{a}\\), then \\(r - r' \\in \\mathfrak{a}\\), so \\((r-r')m = 0\\) for every \\(m \\in M\\), whence \\(rm = r'm\\). The <span class=\"t\" data-ref=\"module\">module</span> axioms for this action follow immediately from those of the original \\(R\\)-action, since they are verified representative-wise; for instance associativity reads \\((r+\\mathfrak a)(r'+\\mathfrak a)\\cdot m = (rr')m = r(r'm) = (r+\\mathfrak a)\\cdot\\big((r'+\\mathfrak a)\\cdot m\\big)\\). It remains to compute the <span class=\"t\" data-ref=\"annihilator\">annihilator</span> of \\(M\\) as an \\(R/\\mathfrak{a}\\)-<span class=\"t\" data-ref=\"module\">module</span>. An element \\(r + \\mathfrak{a}\\) annihilates \\(M\\) if and only if \\(rm = 0\\) for all \\(m \\in M\\), i.e. if and only if \\(r \\in \\mathfrak{a}\\), i.e. if and only if \\(r + \\mathfrak{a} = 0\\) in \\(R/\\mathfrak{a}\\). Therefore \\(\\mathrm{Ann}_{R/\\mathfrak{a}}(M) = 0\\), so \\(M\\) is a faithful \\(R/\\mathfrak{a}\\)-<span class=\"t\" data-ref=\"module\">module</span>."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "The <span class=\"t\" data-ref=\"ring\">ring</span> \\(R\\) regarded as a <span class=\"t\" data-ref=\"module\">module</span> over itself is faithful, since \\(r\\cdot 1 = r\\) forces \\(\\mathrm{Ann}_R(R) = 0\\).",
+              "Every <span class=\"t\" data-ref=\"free-module\">free module</span> \\(R^{(I)}\\) with \\(I \\neq \\varnothing\\) is faithful, as any \\(r\\) annihilating it must annihilate a basis element, hence equal \\(0\\).",
+              "The \\(\\mathbb{Z}\\)-<span class=\"t\" data-ref=\"module\">module</span> \\(\\mathbb{Z}/n\\mathbb{Z}\\) with \\(n > 1\\) is not faithful: its <span class=\"t\" data-ref=\"annihilator\">annihilator</span> is \\(n\\mathbb{Z} \\neq 0\\).",
+              "A <span class=\"t\" data-ref=\"cyclic-module\">cyclic module</span> \\(R/\\mathfrak{a}\\) has <span class=\"t\" data-ref=\"annihilator\">annihilator</span> \\(\\mathfrak{a}\\), so it is faithful over \\(R\\) if and only if \\(\\mathfrak{a} = 0\\).",
+              "Any <span class=\"t\" data-ref=\"vector-space\">vector space</span> over a <span class=\"t\" data-ref=\"field\">field</span> \\(k\\), if nonzero, is faithful, because the only ideals of \\(k\\) are \\(0\\) and \\(k\\), and \\(1\\) does not annihilate a nonzero vector."
+            ]
+          }
+        ],
+        "related": []
+      }
+    },
+    {
+      "id": "annihilator",
+      "title": "Annihilator",
+      "generated": "2026-07-16",
+      "inline": "The annihilator of an \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span> \\(M\\) is the set of <span class=\"t\" data-ref=\"ring\">ring</span> elements \\(r\\) with \\(rM = 0\\); it is a <span class=\"t\" data-ref=\"two-sided-ideal\">two-sided ideal</span> of \\(R\\) measuring how far the <span class=\"t\" data-ref=\"module\">module</span> is from being <span class=\"t\" data-ref=\"faithful-module\">faithful</span>.",
+      "refs": [
+        {
+          "id": "module",
+          "type": "required"
+        },
+        {
+          "id": "ring",
+          "type": "required"
+        },
+        {
+          "id": "ideal",
+          "type": "required"
+        },
+        {
+          "id": "faithful-module",
+          "type": "enriches"
+        },
+        {
+          "id": "abelian-group",
+          "type": "enriches"
+        },
+        {
+          "id": "quotient-ring",
+          "type": "enriches"
+        },
+        {
+          "id": "kernel-of-ring-homomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "ring-homomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "cyclic-module",
+          "type": "enriches"
+        },
+        {
+          "id": "ring-isomorphism",
+          "type": "enriches"
+        },
+        {
+          "id": "vector-space",
+          "type": "enriches"
+        },
+        {
+          "id": "field",
+          "type": "enriches"
+        },
+        {
+          "id": "zero-module",
+          "type": "enriches"
+        }
+      ],
+      "page": {
+        "blocks": [
+          {
+            "type": "why",
+            "label": "Motivation",
+            "body": "When \\(R\\) acts on an <span class=\"t\" data-ref=\"abelian-group\">abelian group</span> \\(M\\), some scalars may do nothing at all: multiplication by \\(2\\) kills every element of \\(\\mathbb{Z}/2\\mathbb{Z}\\), and multiplication by \\(6\\) kills every element of \\(\\mathbb{Z}/6\\mathbb{Z}\\). This is not an accident of a single element but a phenomenon shared by the whole <span class=\"t\" data-ref=\"module\">module</span>, and it suggests the <span class=\"t\" data-ref=\"ring\">ring</span> \\(R\\) is really acting through a smaller <span class=\"t\" data-ref=\"quotient-ring\">quotient</span>. If we want to know which scalars are genuinely visible to \\(M\\), and which are wasted, we need to collect all the scalars that annihilate everything at once. Doing so isolates the exact obstruction to \\(R\\) faithfully controlling \\(M\\), and it turns out that this collection is itself an <span class=\"t\" data-ref=\"ideal\">ideal</span> — the object we now define."
+          },
+          {
+            "type": "def",
+            "label": "Definition",
+            "body": "Let \\(R\\) be a <span class=\"t\" data-ref=\"ring\">ring</span> and \\(M\\) a left \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span>. The <em>annihilator</em> of \\(M\\) is<br>\\[\\operatorname{Ann}_R(M) = \\{\\, r \\in R : rm = 0 \\text{ for all } m \\in M \\,\\}.\\]<br>More generally, for a subset \\(S \\subseteq M\\) one writes \\(\\operatorname{Ann}_R(S) = \\{\\, r \\in R : rs = 0 \\text{ for all } s \\in S \\,\\}\\), and for a single element \\(m\\) one writes \\(\\operatorname{Ann}_R(m) = \\{\\, r \\in R : rm = 0 \\,\\}\\).",
+            "proof": "We verify that \\(\\operatorname{Ann}_R(M)\\) is a <span class=\"t\" data-ref=\"two-sided-ideal\">two-sided ideal</span> of \\(R\\). It is nonempty since \\(0 \\cdot m = 0\\) for all \\(m\\), so \\(0 \\in \\operatorname{Ann}_R(M)\\). If \\(r, s \\in \\operatorname{Ann}_R(M)\\), then for every \\(m \\in M\\) we have \\((r-s)m = rm - sm = 0 - 0 = 0\\), hence \\(r - s \\in \\operatorname{Ann}_R(M)\\), so it is an additive subgroup. For left absorption, let \\(a \\in R\\) and \\(r \\in \\operatorname{Ann}_R(M)\\); then \\((ar)m = a(rm) = a \\cdot 0 = 0\\) for all \\(m\\), so \\(ar \\in \\operatorname{Ann}_R(M)\\). For right absorption, \\((ra)m = r(am) = 0\\) because \\(am \\in M\\) and \\(r\\) kills every element of \\(M\\); thus \\(ra \\in \\operatorname{Ann}_R(M)\\). Therefore \\(\\operatorname{Ann}_R(M)\\) is a <span class=\"t\" data-ref=\"two-sided-ideal\">two-sided ideal</span>."
+          },
+          {
+            "type": "equiv",
+            "label": "Equivalent Characterizations",
+            "items": [
+              "\\(\\operatorname{Ann}_R(M)\\) is the <span class=\"t\" data-ref=\"kernel-of-ring-homomorphism\">kernel</span> of the <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(R \\to \\operatorname{End}_{\\mathbb{Z}}(M)\\) sending each \\(r\\) to the multiplication map \\(m \\mapsto rm\\).",
+              "\\(\\operatorname{Ann}_R(M) = \\bigcap_{m \\in M} \\operatorname{Ann}_R(m)\\), the intersection of the annihilators of all elements of \\(M\\).",
+              "\\(\\operatorname{Ann}_R(M)\\) is the largest <span class=\"t\" data-ref=\"ideal\">ideal</span> \\(\\mathfrak{a}\\) of \\(R\\) such that \\(M\\) is a <span class=\"t\" data-ref=\"module\">module</span> over the <span class=\"t\" data-ref=\"quotient-ring\">quotient</span> \\(R/\\mathfrak{a}\\) via the induced action."
+            ],
+            "proof": "For the first characterization, the <span class=\"t\" data-ref=\"module\">module</span> structure of \\(M\\) is precisely a <span class=\"t\" data-ref=\"ring-homomorphism\">ring homomorphism</span> \\(\\varphi : R \\to \\operatorname{End}_{\\mathbb{Z}}(M)\\), \\(\\varphi(r)(m) = rm\\). Now \\(r \\in \\ker(\\varphi)\\) if and only if \\(\\varphi(r)\\) is the zero endomorphism, i.e. \\(rm = 0\\) for all \\(m \\in M\\), which is exactly the condition \\(r \\in \\operatorname{Ann}_R(M)\\). For the second characterization, \\(r\\) kills every \\(m \\in M\\) if and only if \\(r \\in \\operatorname{Ann}_R(m)\\) for each individual \\(m\\), which is the definition of membership in \\(\\bigcap_{m \\in M} \\operatorname{Ann}_R(m)\\). For the third characterization, first note that if \\(\\mathfrak{a} \\subseteq \\operatorname{Ann}_R(M)\\) then the action \\((r + \\mathfrak{a}) \\cdot m := rm\\) is well defined, since \\(r + \\mathfrak{a} = r' + \\mathfrak{a}\\) gives \\(r - r' \\in \\mathfrak{a} \\subseteq \\operatorname{Ann}_R(M)\\), whence \\((r - r')m = 0\\) and \\(rm = r'm\\); this makes \\(M\\) an \\(R/\\mathfrak{a}\\)-<span class=\"t\" data-ref=\"module\">module</span>. Conversely, if the action of \\(R\\) factors through \\(R/\\mathfrak{a}\\), then every element of \\(\\mathfrak{a}\\) acts as zero on \\(M\\), forcing \\(\\mathfrak{a} \\subseteq \\operatorname{Ann}_R(M)\\). Hence \\(\\operatorname{Ann}_R(M)\\) is the largest such <span class=\"t\" data-ref=\"ideal\">ideal</span>, and \\(M\\) is naturally a <span class=\"t\" data-ref=\"faithful-module\">faithful</span> \\(R/\\operatorname{Ann}_R(M)\\)-<span class=\"t\" data-ref=\"module\">module</span>."
+          },
+          {
+            "type": "prop",
+            "label": "Proposition",
+            "body": "If \\(M\\) is a <span class=\"t\" data-ref=\"cyclic-module\">cyclic module</span>, say \\(M = Rm\\) for some \\(m \\in M\\), then \\(\\operatorname{Ann}_R(M) = \\operatorname{Ann}_R(m)\\), and there is an isomorphism of \\(R\\)-modules \\(M \\cong R/\\operatorname{Ann}_R(m)\\). Moreover \\(M\\) is <span class=\"t\" data-ref=\"faithful-module\">faithful</span> if and only if \\(\\operatorname{Ann}_R(M) = 0\\).",
+            "proof": "Suppose \\(M = Rm\\). Since \\(\\operatorname{Ann}_R(M) \\subseteq \\operatorname{Ann}_R(m)\\) trivially, it suffices to prove the reverse inclusion. Let \\(r \\in \\operatorname{Ann}_R(m)\\), so \\(rm = 0\\). Any element of \\(M\\) has the form \\(am\\) for some \\(a \\in R\\); assuming \\(R\\) is commutative we compute \\(r(am) = a(rm) = a \\cdot 0 = 0\\), so \\(r\\) annihilates all of \\(M\\) and thus \\(r \\in \\operatorname{Ann}_R(M)\\). Hence \\(\\operatorname{Ann}_R(M) = \\operatorname{Ann}_R(m)\\). Now define \\(\\psi : R \\to M\\) by \\(\\psi(a) = am\\). This is a surjective \\(R\\)-<span class=\"t\" data-ref=\"module\">module</span> homomorphism because \\(M = Rm\\), and its <span class=\"t\" data-ref=\"kernel-of-ring-homomorphism\">kernel</span> is exactly \\(\\{a \\in R : am = 0\\} = \\operatorname{Ann}_R(m)\\). The first isomorphism theorem gives \\(M \\cong R/\\operatorname{Ann}_R(m)\\). Finally, faithfulness of \\(M\\) means by definition that no nonzero scalar acts as zero on all of \\(M\\), i.e. \\(\\operatorname{Ann}_R(M) = 0\\)."
+          },
+          {
+            "type": "cases",
+            "label": "Examples",
+            "items": [
+              "In \\(\\mathbb{Z}\\), the <span class=\"t\" data-ref=\"module\">module</span> \\(M = \\mathbb{Z}/n\\mathbb{Z}\\) has \\(\\operatorname{Ann}_{\\mathbb{Z}}(M) = n\\mathbb{Z}\\), recovering \\(n\\) as the generator of the annihilator <span class=\"t\" data-ref=\"ideal\">ideal</span>.",
+              "For \\(M = \\mathbb{Z}/2\\mathbb{Z} \\oplus \\mathbb{Z}/3\\mathbb{Z}\\) over \\(\\mathbb{Z}\\), we get \\(\\operatorname{Ann}(M) = 2\\mathbb{Z} \\cap 3\\mathbb{Z} = 6\\mathbb{Z}\\), the least common multiple of the orders.",
+              "Any <span class=\"t\" data-ref=\"ring\">ring</span> \\(R\\), viewed as a <span class=\"t\" data-ref=\"module\">module</span> over itself, is <span class=\"t\" data-ref=\"faithful-module\">faithful</span>: \\(\\operatorname{Ann}_R(R) = 0\\), since \\(r \\cdot 1 = r = 0\\) forces \\(r = 0\\).",
+              "For a <span class=\"t\" data-ref=\"vector-space\">vector space</span> \\(V\\) over a <span class=\"t\" data-ref=\"field\">field</span> \\(k\\), \\(\\operatorname{Ann}_k(V) = 0\\) whenever \\(V \\neq 0\\), because a <span class=\"t\" data-ref=\"field\">field</span> has no nonzero elements acting as zero.",
+              "The annihilator of the <span class=\"t\" data-ref=\"zero-module\">zero module</span> is all of \\(R\\): \\(\\operatorname{Ann}_R(0) = R\\)."
+            ]
+          }
+        ],
+        "related": []
+      }
+    },
+    {
+      "stub": true,
+      "id": "cyclic-module",
+      "title": "cyclic module",
+      "inline": "A cyclic module is a module generated by a single element, hence isomorphic to \\(R/\\mathfrak{a}\\) for some ideal \\(\\mathfrak{a}\\).",
+      "refs": [],
+      "page": {
+        "blocks": [],
+        "related": []
+      }
+    },
+    {
+      "id": "two-sided-ideal",
+      "alias_of": "ideal",
+      "inline": "A two-sided ideal of a ring \\(R\\) is an additive subgroup closed under multiplication by ring elements on both sides."
+    },
+    {
+      "id": "left-module",
+      "alias_of": "module",
+      "inline": "A left \\(R\\)-module is an abelian group with a left action of a ring \\(R\\) compatible with its structure."
+    },
+    {
+      "stub": true,
+      "id": "zero-module",
+      "title": "zero module",
+      "inline": "The zero module is the module consisting of a single element \\(0\\).",
       "refs": [],
       "page": {
         "blocks": [],
